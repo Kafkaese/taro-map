@@ -4,7 +4,7 @@ import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simp
 const WorldMap = () => {
   const [zoom, setZoom] = useState(1);
   const defaultColor = '#ECEFF1';
-  const hoverColor = '#FF5722';
+  const hoverColor = '#c4ced4';
 
   const handleCountryHover = (event) => {
     event.target.setAttribute('fill', hoverColor);
