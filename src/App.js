@@ -3,8 +3,7 @@ import WorldMap from './WorldMap';
 
 const App = () => {
   return (
-    <div>
-      <h1>World Map</h1>
+    <div className="App">
       <WorldMap />
     </div>
   );
