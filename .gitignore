@@ -8,6 +8,8 @@ build/
 dist/
 *.zip
 
+package-lock.json
+
 # Testing
 coverage/
 
