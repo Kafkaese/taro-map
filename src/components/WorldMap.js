@@ -20,7 +20,7 @@ const WorldMap = () => {
 
   return (
     <ComposableMap projection="geoMercator">
-      <Geographies geography="https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json">
+      <Geographies geography="https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json">
         {({ geographies }) =>
           geographies.map((geo) => (
             <Geography
