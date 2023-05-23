@@ -1,58 +1,73 @@
-import React from 'react';
-import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
+import React, { useState } from 'react';
+import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 
 const WorldMap = () => {
-  // Define the colors for default and hover states
+  const [zoom, setZoom] = useState(1);
   const defaultColor = '#ECEFF1';
   const hoverColor = '#FF5722';
 
-  // Handle the country hover event
   const handleCountryHover = (event) => {
-    // Update the country color on hover
     event.target.setAttribute('fill', hoverColor);
   };
 
-  // Handle the country mouse leave event
   const handleCountryLeave = (event) => {
-    // Reset the country color on mouse leave
     event.target.setAttribute('fill', defaultColor);
   };
 
+  const handleZoomIn = () => {
+    setZoom((prevZoom) => prevZoom * 1.2); // Increase the zoom level
+  };
+
+  const handleZoomOut = () => {
+    setZoom((prevZoom) => prevZoom / 1.2); // Decrease the zoom level
+  };
+
   return (
-    <ComposableMap projection="geoMercator">
-      <Geographies geography="https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json">
-        {({ geographies }) =>
-          geographies.map((geo) => (
-            <Geography
-              key={geo.rsmKey}
-              geography={geo}
-              onMouseEnter={handleCountryHover}
-              onMouseLeave={handleCountryLeave}
-              style={{
-                default: {
-                  fill: defaultColor,
-                  stroke: '#607D8B',
-                  strokeWidth: 0.75,
-                  outline: 'none',
-                },
-                hover: {
-                  fill: hoverColor,
-                  stroke: '#607D8B',
-                  strokeWidth: 0.75,
-                  outline: 'none',
-                },
-                pressed: {
-                  fill: hoverColor,
-                  stroke: '#607D8B',
-                  strokeWidth: 0.75,
-                  outline: 'none',
-                },
-              }}
-            />
-          ))
-        }
-      </Geographies>
-    </ComposableMap>
+    <div>
+      <button onClick={handleZoomIn}>Zoom In</button>
+      <button onClick={handleZoomOut}>Zoom Out</button>
+      <ComposableMap
+        projection="geoMercator"
+        style={{ width: '100%', height: 'auto' }}
+        width={800}
+        height={400}
+      >
+        <ZoomableGroup zoom={zoom} center={[0, 0]}>
+          <Geographies geography="https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json">
+            {({ geographies }) =>
+              geographies.map((geo) => (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  onMouseEnter={handleCountryHover}
+                  onMouseLeave={handleCountryLeave}
+                  style={{
+                    default: {
+                      fill: defaultColor,
+                      stroke: '#607D8B',
+                      strokeWidth: 0.75,
+                      outline: 'none',
+                    },
+                    hover: {
+                      fill: hoverColor,
+                      stroke: '#607D8B',
+                      strokeWidth: 0.75,
+                      outline: 'none',
+                    },
+                    pressed: {
+                      fill: hoverColor,
+                      stroke: '#607D8B',
+                      strokeWidth: 0.75,
+                      outline: 'none',
+                    },
+                  }}
+                />
+              ))
+            }
+          </Geographies>
+        </ZoomableGroup>
+      </ComposableMap>
+    </div>
   );
 };
 
