@@ -5,12 +5,18 @@ const WorldMap = () => {
   const [zoom, setZoom] = useState(1);
   const defaultColor = '#ECEFF1';
   const hoverColor = '#c4ced4';
+  const [hoveredCountry, setHoveredCountry] = useState(null);
 
-  const handleCountryHover = (event) => {
+
+  const handleCountryHover = (event, geography) => {
+    if (geography && geography.properties) {
+      setHoveredCountry(geography.properties.name);
+    } 
     event.target.setAttribute('fill', hoverColor);
   };
 
   const handleCountryLeave = (event) => {
+    setHoveredCountry(null)
     event.target.setAttribute('fill', defaultColor);
   };
 
@@ -33,7 +39,7 @@ const WorldMap = () => {
         height={400}
       >
         <ZoomableGroup zoom={zoom} center={[0, 0]}>
-          <Geographies geography="https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json">
+          <Geographies geography="/world-countries.json">
             {({ geographies }) =>
               geographies.map((geo) => (
                 <Geography
@@ -67,6 +73,7 @@ const WorldMap = () => {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
+      {hoveredCountry && <div>{hoveredCountry}</div>}
     </div>
   );
 };
