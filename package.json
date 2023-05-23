@@ -1,26 +1,14 @@
 {
   "name": "taro-map",
-  "version": "1.0.0",
+  "version": "0.0.1",
+  "description": "A simple React app with a world map component",
   "scripts": {
     "start": "react-scripts start"
   },
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "^4.0.0",
-    "react-leaflet": "^4.0.0",
-    "leaflet": "^1.7.1"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "react-scripts": "^4.0.3",
+    "react-simple-maps": "^2.0.0"
   }
 }
