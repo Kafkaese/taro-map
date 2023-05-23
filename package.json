@@ -1,14 +1,26 @@
 {
-    "name": "world-map-app",
-    "version": "1.0.0",
-    "scripts": {
-      "start": "react-scripts start"
-    },
-    "dependencies": {
-      "react": "^17.0.2",
-      "react-dom": "^17.0.2",
-      "react-leaflet": "^3.2.2",
-      "leaflet": "^1.7.1"
-    }
+  "name": "taro-map",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "react-scripts start"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "^4.0.0",
+    "react-leaflet": "^4.0.0",
+    "leaflet": "^1.7.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
-  
+}

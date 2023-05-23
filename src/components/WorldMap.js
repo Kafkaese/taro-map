@@ -1,38 +1,58 @@
-import React, { useState } from 'react';
-import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
+import React from 'react';
+import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 
 const WorldMap = () => {
-  const [highlightedCountry, setHighlightedCountry] = useState(null);
+  // Define the colors for default and hover states
+  const defaultColor = '#ECEFF1';
+  const hoverColor = '#FF5722';
 
+  // Handle the country hover event
   const handleCountryHover = (event) => {
-    const countryName = event.target.feature.properties.name;
-    setHighlightedCountry(countryName);
+    // Update the country color on hover
+    event.target.setAttribute('fill', hoverColor);
   };
 
-  const resetHighlight = () => {
-    setHighlightedCountry(null);
+  // Handle the country mouse leave event
+  const handleCountryLeave = (event) => {
+    // Reset the country color on mouse leave
+    event.target.setAttribute('fill', defaultColor);
   };
 
   return (
-    <MapContainer style={{ height: '500px', width: '100%' }} zoom={2} center={[0, 0]}>
-      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-      <GeoJSON
-        style={(feature) => ({
-          fillColor: feature.properties.name === highlightedCountry ? 'blue' : 'gray',
-          weight: 1,
-          color: 'white',
-          fillOpacity: 0.7,
-        })}
-        onEachFeature={(feature, layer) => {
-          layer.on({
-            mouseover: handleCountryHover,
-            mouseout: resetHighlight,
-          });
-        }}
-        data="https://raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json"
-      />
-    </MapContainer>
+    <ComposableMap projection="geoMercator">
+      <Geographies geography="https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json">
+        {({ geographies }) =>
+          geographies.map((geo) => (
+            <Geography
+              key={geo.rsmKey}
+              geography={geo}
+              onMouseEnter={handleCountryHover}
+              onMouseLeave={handleCountryLeave}
+              style={{
+                default: {
+                  fill: defaultColor,
+                  stroke: '#607D8B',
+                  strokeWidth: 0.75,
+                  outline: 'none',
+                },
+                hover: {
+                  fill: hoverColor,
+                  stroke: '#607D8B',
+                  strokeWidth: 0.75,
+                  outline: 'none',
+                },
+                pressed: {
+                  fill: hoverColor,
+                  stroke: '#607D8B',
+                  strokeWidth: 0.75,
+                  outline: 'none',
+                },
+              }}
+            />
+          ))
+        }
+      </Geographies>
+    </ComposableMap>
   );
 };
 
