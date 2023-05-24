@@ -7,9 +7,16 @@ const WorldMap = () => {
   const hoverColor = '#c4ced4';
   const [hoveredCountry, setHoveredCountry] = useState(null);
 
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (event) => {
+    const { clientX, clientY } = event;
+    setMousePosition({ x: clientX, y: clientY });
+  };
+  
 
   const handleCountryHover = (name, geography) => {
-      setHoveredCountry(name);
+      setHoveredCountry({ name, position: mousePosition });
   };
 
   const handleCountryLeave = (event) => {
@@ -34,6 +41,7 @@ const WorldMap = () => {
         style={{ width: '100%', height: 'auto' }}
         width={800}
         height={400}
+        onMouseMove={handleMouseMove}
       >
         <ZoomableGroup zoom={zoom} center={[0, 0]}>
           <Geographies geography="/world-countries-topo.json">
@@ -74,7 +82,21 @@ const WorldMap = () => {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      {hoveredCountry && <div>{hoveredCountry}</div>}
+      {hoveredCountry && (
+  <div
+    style={{
+      position: 'fixed',
+      top: hoveredCountry.position.y,
+      left: hoveredCountry.position.x,
+      backgroundColor: '#fff',
+      padding: '4px 8px',
+      border: '1px solid #ccc',
+    }}
+  >
+    {hoveredCountry.name}
+  </div>
+)}
+
     </div>
   );
 };
