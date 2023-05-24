@@ -8,12 +8,8 @@ const WorldMap = () => {
   const [hoveredCountry, setHoveredCountry] = useState(null);
 
 
-  const handleCountryHover = (event, geography) => {
-    console.log(geography)
-    if (geography && geography.properties) {
-      setHoveredCountry(geography.properties.name);
-    } 
-    event.target.setAttribute('fill', hoverColor);
+  const handleCountryHover = (name, geography) => {
+      setHoveredCountry(name);
   };
 
   const handleCountryLeave = (event) => {
