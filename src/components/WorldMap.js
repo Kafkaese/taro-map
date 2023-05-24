@@ -105,7 +105,7 @@ const WorldMap = () => {
     }}
   >
     <h3>{hoveredCountry.name}</h3>
-    {countryData.value && <p>Total Exports since 1998: {countryData.value}</p>}
+    {countryData.value && <p>Total Exports since 1998: {(countryData.value/1000000).toFixed(2)} million €</p>}
     {countryData.gdp && <p>GDP: {countryData.gdp}</p>}
     {/* Add additional data fields as needed */}
   </div>
