@@ -9,6 +9,7 @@ const WorldMap = () => {
 
 
   const handleCountryHover = (event, geography) => {
+    console.log(geography)
     if (geography && geography.properties) {
       setHoveredCountry(geography.properties.name);
     } 
@@ -39,36 +40,40 @@ const WorldMap = () => {
         height={400}
       >
         <ZoomableGroup zoom={zoom} center={[0, 0]}>
-          <Geographies geography="/world-countries.json">
+          <Geographies geography="/world-countries-topo.json">
             {({ geographies }) =>
-              geographies.map((geo) => (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  onMouseEnter={handleCountryHover}
-                  onMouseLeave={handleCountryLeave}
-                  style={{
-                    default: {
-                      fill: defaultColor,
-                      stroke: '#607D8B',
-                      strokeWidth: 0.75,
-                      outline: 'none',
-                    },
-                    hover: {
-                      fill: hoverColor,
-                      stroke: '#607D8B',
-                      strokeWidth: 0.75,
-                      outline: 'none',
-                    },
-                    pressed: {
-                      fill: hoverColor,
-                      stroke: '#607D8B',
-                      strokeWidth: 0.75,
-                      outline: 'none',
-                    },
-                  }}
-                />
-              ))
+              geographies.map((geo) => {
+                const { name } = geo.properties;
+
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    onMouseEnter={() => handleCountryHover(name, geo)}
+                    onMouseLeave={handleCountryLeave}
+                    style={{
+                      default: {
+                        fill: defaultColor,
+                        stroke: '#607D8B',
+                        strokeWidth: 0.75,
+                        outline: 'none',
+                      },
+                      hover: {
+                        fill: hoverColor,
+                        stroke: '#607D8B',
+                        strokeWidth: 0.75,
+                        outline: 'none',
+                      },
+                      pressed: {
+                        fill: hoverColor,
+                        stroke: '#607D8B',
+                        strokeWidth: 0.75,
+                        outline: 'none',
+                      },
+                    }}
+                  />
+                );
+              })
             }
           </Geographies>
         </ZoomableGroup>
