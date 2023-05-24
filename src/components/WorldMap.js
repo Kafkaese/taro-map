@@ -7,6 +7,9 @@ const WorldMap = () => {
   const hoverColor = '#c4ced4';
   const [hoveredCountry, setHoveredCountry] = useState(null);
 
+  const [countryData, setCountryData] = useState({});
+
+
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (event) => {
@@ -15,9 +18,17 @@ const WorldMap = () => {
   };
   
 
-  const handleCountryHover = (name, geography) => {
+  const handleCountryHover = async (name, geography) => {
+    try {
+      const response = await fetch(`http://localhost:8000/total?country_name=${name}`); 
+      const data = await response.json();
+      setCountryData(data);
       setHoveredCountry({ name, position: mousePosition });
+    } catch (error) {
+      console.error('Error fetching country data:', error);
+    }
   };
+  
 
   const handleCountryLeave = (event) => {
     setHoveredCountry(null)
@@ -93,9 +104,13 @@ const WorldMap = () => {
       border: '1px solid #ccc',
     }}
   >
-    {hoveredCountry.name}
+    <h3>{hoveredCountry.name}</h3>
+    {countryData.value && <p>Total Exports since 1998: {countryData.value}</p>}
+    {countryData.gdp && <p>GDP: {countryData.gdp}</p>}
+    {/* Add additional data fields as needed */}
   </div>
 )}
+
 
     </div>
   );
