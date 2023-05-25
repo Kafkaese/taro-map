@@ -20,7 +20,7 @@ const ImportMap = () => {
 
   const handleCountryHover = async (name, geography) => {
     try {
-      const response = await fetch(`http://localhost:8000/total?country_name=${name}`); 
+      const response = await fetch(`http://localhost:8000/total?country_name=${name}&year=2021`); 
       const data = await response.json();
       setCountryData(data);
       setHoveredCountry({ name, position: mousePosition });
