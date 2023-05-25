@@ -47,7 +47,14 @@ const ImportMap = () => {
   };
 
   const getColor = (value) => {
-    return '#008000'
+    if (value >= 9.0) {
+      return '#008000'
+    } else if (value >= 7.0) {
+      return '#98fb98'
+    } else if (value >= 4.0) {
+      return '#ffae42'
+    } else {
+      return '#8b0000'}
   }
 
   return (
