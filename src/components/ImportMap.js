@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 
+import './HoverBox.css';
+
+
 const ImportMap = () => {
   const [zoom, setZoom] = useState(1);
   const defaultColor = '#c4ced4';
@@ -42,6 +45,10 @@ const ImportMap = () => {
   const handleZoomOut = () => {
     setZoom((prevZoom) => prevZoom / 1.2); // Decrease the zoom level
   };
+
+  const getColor = (value) => {
+    return '#008000'
+  }
 
   return (
     <div>
@@ -94,94 +101,23 @@ const ImportMap = () => {
         </ZoomableGroup>
       </ComposableMap>
       {hoveredCountry && (
-        <div
-  style={{
-    position: 'fixed',
-    top: hoveredCountry.position.y,
-    left: hoveredCountry.position.x,
-    backgroundColor: '#fff',
-    padding: '4px 8px',
-    border: '1px solid #ccc',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  }}
->
-  <h3>{hoveredCountry.name}</h3>
+        <div className="hover-box-container" style={{top: hoveredCountry.position.y, left: hoveredCountry.position.x,}}>
+        <h3>{hoveredCountry.name}</h3>
 
-  <div style={{ display: 'flex', justifyContent: 'center' }}>
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: '8px',
-      }}
-    >
-      <div
-        style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          backgroundColor: '#008000',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#fff',
-        }}
-      >
-        {countryData.value}
-      </div>
-    </div>
+        <div className="circle-container">
+          <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
+            {countryData.value}
+          </div>
 
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginRight: '8px',
-      }}
-    >
-      <div
-        style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          backgroundColor: '#008000',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#fff',
-        }}
-      >
-        {countryData.value}
-      </div>
-    </div>
+          <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
+            {countryData.value}
+          </div>
 
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <div
-        style={{
-          width: '40px',
-          height: '40px',
-          borderRadius: '50%',
-          backgroundColor: '#008000',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#fff',
-        }}
-      >
-        {countryData.value}
+          <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
+            {countryData.value}
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
 
 )}
 
