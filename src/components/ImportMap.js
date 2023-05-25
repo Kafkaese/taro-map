@@ -23,10 +23,16 @@ const ImportMap = () => {
 
   const handleCountryHover = async (name, geography) => {
     try {
-      const response = await fetch(`http://localhost:8000/index?country_name=${name}&year=2021`); 
-      const data = await response.json();
-      setCountryData(data);
+      const democracy_index = await fetch(`http://localhost:8000/democracy_index?country_name=${name}&year=2021`);
+      const total_imports = await fetch(`http://localhost:8000/total_imports?country_name=${name}`);
+      
+      const democracy_index_data = await democracy_index.json();
+      const total_imports_data = await total_imports.json();
+     
+      setCountryData({ democracy_index: democracy_index_data, total_imports: total_imports_data});
+
       setHoveredCountry({ name, position: mousePosition });
+
     } catch (error) {
       console.error('Error fetching country data:', error);
     }
@@ -55,6 +61,15 @@ const ImportMap = () => {
       return '#ffae42'
     } else {
       return '#8b0000'}
+  }
+
+  const getUSDColor = (value) => {
+    if (value >= 4713.75) {
+      return '#8b0000'
+    } else if (value >= 342.5) {
+      return '#ffae42'
+    } else {
+      return '#008000'}
   }
 
   return (
@@ -112,12 +127,12 @@ const ImportMap = () => {
         <h3>{hoveredCountry.name}</h3>
 
         <div className="circle-container">
-          <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
-            {countryData.value}
+          <div className="circle" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
+            {countryData.total_imports.value}
           </div>
 
-          <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
-            {countryData.value}
+          <div className="circle" style={{ backgroundColor: getColor(countryData.democracy_index.value) }}>
+            {countryData.democracy_index.value}
           </div>
 
           <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
