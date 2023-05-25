@@ -1,0 +1,36 @@
+# Dependency directories
+node_modules/
+.pnp/
+.pnp.js
+
+# Built output
+build/
+dist/
+*.zip
+
+package-lock.json
+
+# Testing
+coverage/
+
+# Environment files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+
+# Miscellaneous
+.DS_Store
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
