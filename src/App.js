@@ -1,11 +1,21 @@
-import React from 'react';
-import WorldMap from './components/WorldMap';
+import React, { useState } from 'react';
+import ExportMap from './components/ExportMap';
+import ImportMap from './components/ImportMap';
 
 const App = () => {
+
+const [showExports, setShowExports] = useState(true) 
+
+const toggleComponent = () => {
+  setShowExports(!showExports);
+};
+
   return (
     <div className="App">
-      <WorldMap />
-    </div>
+      <button onClick={toggleComponent}>Toggle</button>
+
+      {showExports ? <ExportMap /> : <ImportMap />}
+   </div>
   );
 };
 
