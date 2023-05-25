@@ -20,7 +20,7 @@ const ImportMap = () => {
 
   const handleCountryHover = async (name, geography) => {
     try {
-      const response = await fetch(`http://localhost:8000/total?country_name=${name}&year=2021`); 
+      const response = await fetch(`http://localhost:8000/index?country_name=${name}&year=2021`); 
       const data = await response.json();
       setCountryData(data);
       setHoveredCountry({ name, position: mousePosition });
@@ -94,22 +94,95 @@ const ImportMap = () => {
         </ZoomableGroup>
       </ComposableMap>
       {hoveredCountry && (
-  <div
-    style={{
-      position: 'fixed',
-      top: hoveredCountry.position.y,
-      left: hoveredCountry.position.x,
-      backgroundColor: '#fff',
-      padding: '4px 8px',
-      border: '1px solid #ccc',
-    }}
-  >
-    <h3>{hoveredCountry.name}</h3>
-    {countryData.value && countryData.value !== 'no data' && <p>Total Exports since 1998: {(countryData.value/1000000).toFixed(2)} million €</p>}
-    {countryData.value && countryData.value === 'no data' && "No data available"}
-    {countryData.gdp && <p>GDP: {countryData.gdp}</p>}
-    {/* Add additional data fields as needed */}
+        <div
+  style={{
+    position: 'fixed',
+    top: hoveredCountry.position.y,
+    left: hoveredCountry.position.x,
+    backgroundColor: '#fff',
+    padding: '4px 8px',
+    border: '1px solid #ccc',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  }}
+>
+  <h3>{hoveredCountry.name}</h3>
+
+  <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: '8px',
+      }}
+    >
+      <div
+        style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%',
+          backgroundColor: '#008000',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#fff',
+        }}
+      >
+        {countryData.value}
+      </div>
+    </div>
+
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: '8px',
+      }}
+    >
+      <div
+        style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%',
+          backgroundColor: '#008000',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#fff',
+        }}
+      >
+        {countryData.value}
+      </div>
+    </div>
+
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div
+        style={{
+          width: '40px',
+          height: '40px',
+          borderRadius: '50%',
+          backgroundColor: '#008000',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#fff',
+        }}
+      >
+        {countryData.value}
+      </div>
+    </div>
   </div>
+</div>
+
 )}
 
 
