@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 
-const WorldMap = () => {
+const ImportMap = () => {
   const [zoom, setZoom] = useState(1);
-  const defaultColor = '#ECEFF1';
-  const hoverColor = '#c4ced4';
+  const defaultColor = '#c4ced4';
+  const hoverColor = '#ECEFF1';
   const [hoveredCountry, setHoveredCountry] = useState(null);
 
   const [countryData, setCountryData] = useState({});
@@ -117,4 +117,4 @@ const WorldMap = () => {
   );
 };
 
-export default WorldMap;
+export default ImportMap;
