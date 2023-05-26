@@ -32,13 +32,16 @@
 }
 
 .hover-box-container .circle-wrapper .circle {
-  width: 40px;
-  height: 40px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  margin: 0 4px; /* Add margin property to create spacing */
+  margin: 0 4px;
+  color: #000;
+  font-weight: bold;
+  font-size: 16px;
 }
 
