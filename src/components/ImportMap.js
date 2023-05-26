@@ -18,10 +18,18 @@ const ImportMap = () => {
   const handleMouseMove = (event) => {
     const { clientX, clientY } = event;
     setMousePosition({ x: clientX, y: clientY });
+    if (hoveredCountry) {
+      setHoveredCountry({...hoveredCountry, position: mousePosition})
+    }
   };
   
+  const handleMouseEnterBox = (event) => {
+    console.log('MOUSE ENTER BOX')
+    setHoveredCountry(null)
+  }
 
   const handleCountryHover = async (alpha2, name, geography) => {
+    console.log('Mouse Enter')
     try {
       const democracy_index = await fetch(`http://localhost:8000/metadata/democracy_index?country_code=${alpha2}&year=2021`);
       const total_imports = await fetch(`http://localhost:8000/imports/total?country_code=${alpha2}`);
@@ -40,6 +48,7 @@ const ImportMap = () => {
   
 
   const handleCountryLeave = (event) => {
+    console.log('Mouse Leave')
     setHoveredCountry(null)
     event.target.setAttribute('fill', defaultColor);
   };
@@ -94,7 +103,7 @@ const ImportMap = () => {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onMouseEnter={() => handleCountryHover(alpha2, name, geo)}
+                    onMouseOver={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
                     style={{
                       default: {
@@ -124,7 +133,8 @@ const ImportMap = () => {
         </ZoomableGroup>
       </ComposableMap>
       {hoveredCountry && (
-      <div className="hover-box-container" style={{top: hoveredCountry.position.y, left: hoveredCountry.position.x,}}>
+      <div className="hover-box-container" style={{top: hoveredCountry.position.y +5, left: hoveredCountry.position.x +10,}}
+      onMouseEnter={handleMouseEnterBox}>
         <h3>{hoveredCountry.name}</h3>
 
         
