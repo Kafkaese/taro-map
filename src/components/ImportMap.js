@@ -68,8 +68,12 @@ const ImportMap = () => {
       return '#98fb98'
     } else if (value >= 4.0) {
       return '#ffae42'
+    } else if (value >= 0.0) {
+      return '#8b0000'
     } else {
-      return '#8b0000'}
+      return '#383838'
+    }
+      
   }
 
   const getUSDColor = (value) => {
@@ -77,8 +81,10 @@ const ImportMap = () => {
       return '#8b0000'
     } else if (value >= 342.5) {
       return '#ffae42'
+    } else if (value >= 0) {
+      return '#008000'
     } else {
-      return '#008000'}
+      return '#383838'}
   }
 
   return (
@@ -151,14 +157,14 @@ const ImportMap = () => {
             <div className="circle" style={{ backgroundColor: getColor(countryData.democracy_index.value) }}>
               {countryData.democracy_index.value}
             </div>
-            <span className='circle-label'>Democracy Index</span>
+            <span className='circle-label'>Democracy Index<sup>[1]</sup></span>
           </div>
 
           <div className='circle-wrapper'>
             <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
               {countryData.value}
             </div>
-            <span className='circle-label'>Peace Index</span>
+            <span className='circle-label'>Peace Index <sup>[2]</sup></span>
           </div>
           
         </div>
