@@ -21,10 +21,10 @@ const ImportMap = () => {
   };
   
 
-  const handleCountryHover = async (name, geography) => {
+  const handleCountryHover = async (alpha2, name, geography) => {
     try {
-      const democracy_index = await fetch(`http://localhost:8000/democracy_index?country_name=${name}&year=2021`);
-      const total_imports = await fetch(`http://localhost:8000/total_imports?country_name=${name}`);
+      const democracy_index = await fetch(`http://localhost:8000/metadata/democracy_index?country_code=${alpha2}&year=2021`);
+      const total_imports = await fetch(`http://localhost:8000/imports/total?country_code=${alpha2}`);
       
       const democracy_index_data = await democracy_index.json();
       const total_imports_data = await total_imports.json();
@@ -88,12 +88,13 @@ const ImportMap = () => {
             {({ geographies }) =>
               geographies.map((geo) => {
                 const { name } = geo.properties;
+                const { 'Alpha-2': alpha2 } = geo.properties;
 
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onMouseEnter={() => handleCountryHover(name, geo)}
+                    onMouseEnter={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
                     style={{
                       default: {
