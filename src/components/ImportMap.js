@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 
+import './HoverBox.css';
+
+
 const ImportMap = () => {
   const [zoom, setZoom] = useState(1);
   const defaultColor = '#c4ced4';
@@ -18,12 +21,18 @@ const ImportMap = () => {
   };
   
 
-  const handleCountryHover = async (name, geography) => {
+  const handleCountryHover = async (alpha2, name, geography) => {
     try {
-      const response = await fetch(`http://localhost:8000/total?country_name=${name}`); 
-      const data = await response.json();
-      setCountryData(data);
+      const democracy_index = await fetch(`http://localhost:8000/metadata/democracy_index?country_code=${alpha2}&year=2021`);
+      const total_imports = await fetch(`http://localhost:8000/imports/total?country_code=${alpha2}`);
+      
+      const democracy_index_data = await democracy_index.json();
+      const total_imports_data = await total_imports.json();
+     
+      setCountryData({ democracy_index: democracy_index_data, total_imports: total_imports_data});
+
       setHoveredCountry({ name, position: mousePosition });
+
     } catch (error) {
       console.error('Error fetching country data:', error);
     }
@@ -43,6 +52,26 @@ const ImportMap = () => {
     setZoom((prevZoom) => prevZoom / 1.2); // Decrease the zoom level
   };
 
+  const getColor = (value) => {
+    if (value >= 9.0) {
+      return '#008000'
+    } else if (value >= 7.0) {
+      return '#98fb98'
+    } else if (value >= 4.0) {
+      return '#ffae42'
+    } else {
+      return '#8b0000'}
+  }
+
+  const getUSDColor = (value) => {
+    if (value >= 4713.75) {
+      return '#8b0000'
+    } else if (value >= 342.5) {
+      return '#ffae42'
+    } else {
+      return '#008000'}
+  }
+
   return (
     <div>
       <button onClick={handleZoomIn}>Zoom In</button>
@@ -59,12 +88,13 @@ const ImportMap = () => {
             {({ geographies }) =>
               geographies.map((geo) => {
                 const { name } = geo.properties;
+                const { 'Alpha-2': alpha2 } = geo.properties;
 
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onMouseEnter={() => handleCountryHover(name, geo)}
+                    onMouseEnter={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
                     style={{
                       default: {
@@ -94,22 +124,36 @@ const ImportMap = () => {
         </ZoomableGroup>
       </ComposableMap>
       {hoveredCountry && (
-  <div
-    style={{
-      position: 'fixed',
-      top: hoveredCountry.position.y,
-      left: hoveredCountry.position.x,
-      backgroundColor: '#fff',
-      padding: '4px 8px',
-      border: '1px solid #ccc',
-    }}
-  >
-    <h3>{hoveredCountry.name}</h3>
-    {countryData.value && countryData.value !== 'no data' && <p>Total Exports since 1998: {(countryData.value/1000000).toFixed(2)} million €</p>}
-    {countryData.value && countryData.value === 'no data' && "No data available"}
-    {countryData.gdp && <p>GDP: {countryData.gdp}</p>}
-    {/* Add additional data fields as needed */}
-  </div>
+      <div className="hover-box-container" style={{top: hoveredCountry.position.y, left: hoveredCountry.position.x,}}>
+        <h3>{hoveredCountry.name}</h3>
+
+        
+        <div className="circle-container">
+          
+          <div className="circle-wrapper">
+            <div className="circle" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
+              {countryData.total_imports.value}
+            </div>
+            <span className='circle-label'>Imports</span>
+          </div>
+
+          <div className='circle-wrapper'>
+            <div className="circle" style={{ backgroundColor: getColor(countryData.democracy_index.value) }}>
+              {countryData.democracy_index.value}
+            </div>
+            <span className='circle-label'>Democracy Index</span>
+          </div>
+
+          <div className='circle-wrapper'>
+            <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
+              {countryData.value}
+            </div>
+            <span className='circle-label'>Peace Index</span>
+          </div>
+          
+        </div>
+      </div>
+
 )}
 
 

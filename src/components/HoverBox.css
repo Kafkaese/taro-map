@@ -1,0 +1,47 @@
+.hover-box-container {
+  position: fixed;
+  background-color: #fff;
+  padding: 4px 8px;
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.hover-box-container h3 {
+  font-family: verdana;
+}
+
+.hover-box-container .circle-container {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 10px;
+}
+
+.hover-box-container .circle-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hover-box-container .circle-wrapper .circle-label {
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.hover-box-container .circle-wrapper .circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin: 0 4px;
+  color: #000;
+  font-weight: bold;
+  font-size: 16px;
+}
+
