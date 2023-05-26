@@ -19,7 +19,19 @@
   margin-top: 10px;
 }
 
-.hover-box-container .circle-container .circle {
+.hover-box-container .circle-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hover-box-container .circle-wrapper .circle-label {
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: center;
+}
+
+.hover-box-container .circle-wrapper .circle {
   width: 40px;
   height: 40px;
   border-radius: 50%;

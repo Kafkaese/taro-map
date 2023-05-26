@@ -124,21 +124,33 @@ const ImportMap = () => {
         </ZoomableGroup>
       </ComposableMap>
       {hoveredCountry && (
-        <div className="hover-box-container" style={{top: hoveredCountry.position.y, left: hoveredCountry.position.x,}}>
+      <div className="hover-box-container" style={{top: hoveredCountry.position.y, left: hoveredCountry.position.x,}}>
         <h3>{hoveredCountry.name}</h3>
 
+        
         <div className="circle-container">
-          <div className="circle" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
-            {countryData.total_imports.value}
+          
+          <div className="circle-wrapper">
+            <div className="circle" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
+              {countryData.total_imports.value}
+            </div>
+            <span className='circle-label'>Imports</span>
           </div>
 
-          <div className="circle" style={{ backgroundColor: getColor(countryData.democracy_index.value) }}>
-            {countryData.democracy_index.value}
+          <div className='circle-wrapper'>
+            <div className="circle" style={{ backgroundColor: getColor(countryData.democracy_index.value) }}>
+              {countryData.democracy_index.value}
+            </div>
+            <span className='circle-label'>Democracy Index</span>
           </div>
 
-          <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
-            {countryData.value}
+          <div className='circle-wrapper'>
+            <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
+              {countryData.value}
+            </div>
+            <span className='circle-label'>Peace Index</span>
           </div>
+          
         </div>
       </div>
 
