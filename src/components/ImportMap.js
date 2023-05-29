@@ -33,11 +33,13 @@ const ImportMap = () => {
     try {
       const democracy_index = await fetch(`http://localhost:8000/metadata/democracy_index?country_code=${alpha2}&year=2021`);
       const total_imports = await fetch(`http://localhost:8000/imports/total?country_code=${alpha2}`);
+      const peace_index = await fetch(`http://localhost:8000/metadata/peace_index?country_code=${alpha2}&year=2021`);
       
       const democracy_index_data = await democracy_index.json();
+      const peace_index_data = await peace_index.json();
       const total_imports_data = await total_imports.json();
      
-      setCountryData({ democracy_index: democracy_index_data, total_imports: total_imports_data});
+      setCountryData({ democracy_index: democracy_index_data, peace_index: peace_index_data,total_imports: total_imports_data});
 
       setHoveredCountry({ name, position: mousePosition });
 
@@ -76,6 +78,21 @@ const ImportMap = () => {
       
   }
 
+  const getPeaceColor = (value) => {
+    if (value < 1.0) {
+      return '#00E676' // green
+    } else if (value < 2.0) {
+      return '#C6FF00' // green-yellow
+    } else if (value < 3.0) {
+      return '#FFFF00' // yellow
+    } else if (value < 4.0) {
+      return '#FFD600' // orange
+    } else {
+      return '#383838' // red
+    }
+      
+  }
+
   const getUSDColor = (value) => {
     if (value >= 4713.75) {
       return '#8b0000'
@@ -85,6 +102,19 @@ const ImportMap = () => {
       return '#008000'
     } else {
       return '#383838'}
+  }
+
+  const formatUSD = (value) => {
+    console.log(value)
+    if (value > 1000000000) {
+      return `${(value / 1000000000).toFixed(2)} bn`
+    } else if (value > 1000000) {
+      return `${(value / 1000000).toFixed(2)} mn`
+    } else if (value > 1000) {
+      return `${(value / 1000).toFixed(2)} k`
+    }else {
+      return value
+    }
   }
 
   return (
@@ -148,7 +178,7 @@ const ImportMap = () => {
           
           <div className="circle-wrapper">
             <div className="circle" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
-              {countryData.total_imports.value}
+              {formatUSD(countryData.total_imports.value)}
             </div>
             <span className='circle-label'>Imports</span>
           </div>
@@ -161,8 +191,8 @@ const ImportMap = () => {
           </div>
 
           <div className='circle-wrapper'>
-            <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
-              {countryData.value}
+            <div className="circle" style={{ backgroundColor: getPeaceColor(countryData.peace_index.value) }}>
+              {countryData.peace_index.value}
             </div>
             <span className='circle-label'>Peace Index <sup>[2]</sup></span>
           </div>
