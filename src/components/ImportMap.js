@@ -18,10 +18,18 @@ const ImportMap = () => {
   const handleMouseMove = (event) => {
     const { clientX, clientY } = event;
     setMousePosition({ x: clientX, y: clientY });
+    if (hoveredCountry) {
+      setHoveredCountry({...hoveredCountry, position: mousePosition})
+    }
   };
   
+  const handleMouseEnterBox = (event) => {
+    console.log('MOUSE ENTER BOX')
+    setHoveredCountry(null)
+  }
 
   const handleCountryHover = async (alpha2, name, geography) => {
+    console.log('Mouse Enter')
     try {
       const democracy_index = await fetch(`http://localhost:8000/metadata/democracy_index?country_code=${alpha2}&year=2021`);
       const total_imports = await fetch(`http://localhost:8000/imports/total?country_code=${alpha2}`);
@@ -42,6 +50,7 @@ const ImportMap = () => {
   
 
   const handleCountryLeave = (event) => {
+    console.log('Mouse Leave')
     setHoveredCountry(null)
     event.target.setAttribute('fill', defaultColor);
   };
@@ -61,8 +70,12 @@ const ImportMap = () => {
       return '#98fb98'
     } else if (value >= 4.0) {
       return '#ffae42'
+    } else if (value >= 0.0) {
+      return '#8b0000'
     } else {
-      return '#8b0000'}
+      return '#383838'
+    }
+      
   }
 
   const getPeaceColor = (value) => {
@@ -85,8 +98,10 @@ const ImportMap = () => {
       return '#8b0000'
     } else if (value >= 342.5) {
       return '#ffae42'
+    } else if (value >= 0) {
+      return '#008000'
     } else {
-      return '#008000'}
+      return '#383838'}
   }
 
   return (
@@ -111,7 +126,7 @@ const ImportMap = () => {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onMouseEnter={() => handleCountryHover(alpha2, name, geo)}
+                    onMouseOver={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
                     style={{
                       default: {
@@ -141,7 +156,8 @@ const ImportMap = () => {
         </ZoomableGroup>
       </ComposableMap>
       {hoveredCountry && (
-      <div className="hover-box-container" style={{top: hoveredCountry.position.y, left: hoveredCountry.position.x,}}>
+      <div className="hover-box-container" style={{top: hoveredCountry.position.y +5, left: hoveredCountry.position.x +10,}}
+      onMouseEnter={handleMouseEnterBox}>
         <h3>{hoveredCountry.name}</h3>
 
         
@@ -158,14 +174,14 @@ const ImportMap = () => {
             <div className="circle" style={{ backgroundColor: getColor(countryData.democracy_index.value) }}>
               {countryData.democracy_index.value}
             </div>
-            <span className='circle-label'>Democracy Index</span>
+            <span className='circle-label'>Democracy Index<sup>[1]</sup></span>
           </div>
 
           <div className='circle-wrapper'>
             <div className="circle" style={{ backgroundColor: getPeaceColor(countryData.peace_index.value) }}>
               {countryData.peace_index.value}
             </div>
-            <span className='circle-label'>Peace Index</span>
+            <span className='circle-label'>Peace Index <sup>[2]</sup></span>
           </div>
           
         </div>
