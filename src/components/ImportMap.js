@@ -104,6 +104,19 @@ const ImportMap = () => {
       return '#383838'}
   }
 
+  const formatUSD = (value) => {
+    console.log(value)
+    if (value > 1000000000) {
+      return `${(value / 1000000000).toFixed(2)} bn`
+    } else if (value > 1000000) {
+      return `${(value / 1000000).toFixed(2)} mn`
+    } else if (value > 1000) {
+      return `${(value / 1000).toFixed(2)} k`
+    }else {
+      return value
+    }
+  }
+
   return (
     <div>
       <button onClick={handleZoomIn}>Zoom In</button>
@@ -165,7 +178,7 @@ const ImportMap = () => {
           
           <div className="circle-wrapper">
             <div className="circle" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
-              {countryData.total_imports.value}
+              {formatUSD(countryData.total_imports.value)}
             </div>
             <span className='circle-label'>Imports</span>
           </div>
