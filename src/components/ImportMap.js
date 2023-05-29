@@ -25,11 +25,13 @@ const ImportMap = () => {
     try {
       const democracy_index = await fetch(`http://localhost:8000/metadata/democracy_index?country_code=${alpha2}&year=2021`);
       const total_imports = await fetch(`http://localhost:8000/imports/total?country_code=${alpha2}`);
+      const peace_index = await fetch(`http://localhost:8000/metadata/peace_index?country_code=${alpha2}&year=2021`);
       
       const democracy_index_data = await democracy_index.json();
+      const peace_index_data = await peace_index.json();
       const total_imports_data = await total_imports.json();
      
-      setCountryData({ democracy_index: democracy_index_data, total_imports: total_imports_data});
+      setCountryData({ democracy_index: democracy_index_data, peace_index: peace_index_data,total_imports: total_imports_data});
 
       setHoveredCountry({ name, position: mousePosition });
 
@@ -61,6 +63,21 @@ const ImportMap = () => {
       return '#ffae42'
     } else {
       return '#8b0000'}
+  }
+
+  const getPeaceColor = (value) => {
+    if (value < 1.0) {
+      return '#00E676' // green
+    } else if (value < 2.0) {
+      return '#C6FF00' // green-yellow
+    } else if (value < 3.0) {
+      return '#FFFF00' // yellow
+    } else if (value < 4.0) {
+      return '#FFD600' // orange
+    } else {
+      return '#383838' // red
+    }
+      
   }
 
   const getUSDColor = (value) => {
@@ -145,8 +162,8 @@ const ImportMap = () => {
           </div>
 
           <div className='circle-wrapper'>
-            <div className="circle" style={{ backgroundColor: getColor(countryData.value) }}>
-              {countryData.value}
+            <div className="circle" style={{ backgroundColor: getPeaceColor(countryData.peace_index.value) }}>
+              {countryData.peace_index.value}
             </div>
             <span className='circle-label'>Peace Index</span>
           </div>
