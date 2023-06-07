@@ -5,6 +5,10 @@ import './HoverBox.css';
 
 
 const ImportMap = () => {
+
+  const HOST = 'localhost'
+  const API_PORT = '8080'
+
   const [zoom, setZoom] = useState(1);
   const defaultColor = '#c4ced4';
   const hoverColor = '#ECEFF1';
@@ -31,9 +35,9 @@ const ImportMap = () => {
   const handleCountryHover = async (alpha2, name, geography) => {
     console.log('Mouse Enter')
     try {
-      const democracy_index = await fetch(`http://localhost:8000/metadata/democracy_index?country_code=${alpha2}&year=2021`);
-      const total_imports = await fetch(`http://localhost:8000/imports/total?country_code=${alpha2}`);
-      const peace_index = await fetch(`http://localhost:8000/metadata/peace_index?country_code=${alpha2}&year=2021`);
+      const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=2021`);
+      const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/total?country_code=${alpha2}`);
+      const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=2021`);
       
       const democracy_index_data = await democracy_index.json();
       const peace_index_data = await peace_index.json();

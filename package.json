@@ -3,12 +3,13 @@
   "version": "0.0.1",
   "description": "A simple React app with a world map component",
   "scripts": {
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "dependencies": {
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^2.1.3",
     "react-simple-maps": "^2.0.0"
   },
   "browserslist": {

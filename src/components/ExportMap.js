@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 
 const ExportMap = () => {
+
+  const HOST = 'localhost'
+  const API_PORT = '8080'
+
   const [zoom, setZoom] = useState(1);
   const defaultColor = '#ECEFF1';
   const hoverColor = '#c4ced4';
@@ -20,7 +24,7 @@ const ExportMap = () => {
 
   const handleCountryHover = async (name, geography) => {
     try {
-      const response = await fetch(`http://localhost:8000/total?country_name=${name}`); 
+      const response = await fetch(`http://${HOST}:${API_PORT}/total?country_name=${name}`); 
       const data = await response.json();
       setCountryData(data);
       setHoveredCountry({ name, position: mousePosition });
