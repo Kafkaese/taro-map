@@ -55,10 +55,18 @@
   .slider-year-info-box {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     border: 1px solid black;
-    padding: 10px;
+    padding: 10px 50px;
   }
 
-  .slider-year-info-box-elements {
+  .slider-year-info-box-element1 {
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+
+  .slider-year-info-box-element1 {
     margin-bottom: 10px;
   }
