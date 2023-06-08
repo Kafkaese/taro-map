@@ -1,0 +1,81 @@
+  .horizontal-slider {
+    width: 100%;
+    max-width: 800px;
+    height: 4vh;
+    margin: auto;
+  }
+  .example-thumb {
+    top: 10px;
+    cursor: pointer;
+    position: absolute;
+    z-index: 100;
+    background: #ffffff;
+    border: 10px solid #48546e;
+    border-radius: 100%;
+    display: block;
+    box-shadow: 0 0 2px 0 rgb(0 0 0 / 44%);
+  }
+  .example-thumb.active {
+    background-color: grey;
+  }
+  .example-track {
+    position: relative;
+    background: #ddd;
+  }
+  .horizontal-slider .example-track {
+    position: absolute;
+    top: 19px;
+    height: 15px;
+    background: #f0f4ff;
+    border-radius: 3px;
+  }
+  .horizontal-slider .example-thumb {
+    top: 12px;
+    width: 10px;
+    outline: none;
+    height: 10px;
+    line-height: 38px;
+  }
+  .example-mark {
+    width: 8px;
+    height: 8px;
+    border: 2px solid rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+    cursor: pointer;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin: 0px calc(19px);
+    bottom: calc(50% - 6px);
+  }
+  .example-mark.example-mark-active {
+    border: 2px solid #00d4ff;
+    background-color: rgb(255, 255, 255);
+  }
+  .example-mark.example-mark-completed {
+    border: 2px solid rgb(255, 255, 255);
+    background-color: #00d4ff;
+  } 
+
+  .slider-year-info-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* border: 1px solid black; */
+    padding: 0px 50px;
+  }
+
+  .slider-year-info-box-element1 {
+    font-weight: bold;
+    color: #ffffff;
+    font-size: 32px;
+  }
+
+
+  .slider-year-info-box-element2 {
+    padding: 5px 15px;
+    font-size: 24px;
+    color: #ffffff;
+    border: 1px solid #374151;
+    background: #374151;
+    border-radius: 25px;
+  }
