@@ -2,16 +2,17 @@ import React, { useState } from 'react';
 import ReactSlider from 'react-slider';
 import './YearSlider.css';
 
-const YearSlider = ({ onChange }) => {
+const YearSlider = ({ onYearChange }) => {
     const [year, setYear] = useState(2022);
   
     const handleChange = (newYear, index) => {
       setYear(newYear);
+      onYearChange(newYear)
       // Call the onChange prop with the updated value
     };
   
     return (
-      <div>
+      <div className='slider-container'>
         <p>Current year: {year}</p>
         <ReactSlider
             className="horizontal-slider"

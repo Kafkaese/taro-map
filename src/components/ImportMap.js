@@ -4,7 +4,7 @@ import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simp
 import './HoverBox.css';
 
 
-const ImportMap = () => {
+const ImportMap = ({year}) => {
 
   // API url 
   const HOST = 'localhost'
@@ -39,9 +39,9 @@ const ImportMap = () => {
   const handleCountryHover = async (alpha2, name, geography) => {
     console.log('Mouse Enter')
     try {
-      const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=2021`);
+      const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
       const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/total?country_code=${alpha2}`);
-      const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=2021`);
+      const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
       
       const democracy_index_data = await democracy_index.json();
       const peace_index_data = await peace_index.json();
