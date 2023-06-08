@@ -1,6 +1,6 @@
   .horizontal-slider {
     width: 100%;
-    max-width: 500px;
+    max-width: 800px;
     height: 4vh;
     margin: auto;
   }
@@ -51,3 +51,14 @@
     border: 2px solid rgb(255, 255, 255);
     background-color: #00d4ff;
   } 
+
+  .slider-year-info-box {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+    padding: 10px;
+  }
+
+  .slider-year-info-box-elements {
+    margin-bottom: 10px;
+  }
