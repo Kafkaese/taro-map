@@ -3,7 +3,7 @@ import ReactSlider from 'react-slider';
 import './YearSlider.css';
 
 const YearSlider = ({ onChange }) => {
-    const [year, setYear] = useState(50);
+    const [year, setYear] = useState(2022);
   
     const handleChange = (newYear, index) => {
       setYear(newYear);
@@ -17,6 +17,7 @@ const YearSlider = ({ onChange }) => {
             className="horizontal-slider"
             thumbClassName="example-thumb"
             trackClassName="example-track"
+            defaultValue={2022}
             max={2022}
             min={1996}
             onChange={handleChange}
