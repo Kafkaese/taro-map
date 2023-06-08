@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
-import Slider from 'react-slider';
+import ReactSlider from 'react-slider';
+import './YearSlider.css';
 
-function YearSlider({ onChange }) {
+const YearSlider = ({ onChange }) => {
     const [year, setYear] = useState(50);
   
     const handleChange = (newYear) => {
-      setValue(newYear);
+      setYear(newYear);
       onChange(newYear); // Call the onChange prop with the updated value
     };
   
     return (
       <div>
-        <Slider
-          value={value}
-          min={0}
-          max={100}
-          onChange={handleChange}
+        <ReactSlider
+            className="horizontal-slider"
+            thumbClassName="example-thumb"
+            trackClassName="example-track"
         />
         <p>Current year: {year}</p>
       </div>
     );
   }
   
-  export default MySlider;
+  export default YearSlider;
   
