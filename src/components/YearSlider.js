@@ -20,7 +20,7 @@ const YearSlider = ({ onYearChange }) => {
         <ReactSlider
             className="horizontal-slider"
             thumbClassName="example-thumb"
-            marks={[1996, 2001, 2006, 2011, 2016, 2021]}
+            //marks={[1996, 2001, 2006, 2011, 2016, 2021]}
             markClassName="example-mark"
             trackClassName="example-track"
             defaultValue={2022}
