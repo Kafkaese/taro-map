@@ -6,19 +6,21 @@ import './HoverBox.css';
 
 const ImportMap = () => {
 
+  // API url 
   const HOST = 'localhost'
   const API_PORT = '8080'
 
-  const [zoom, setZoom] = useState(1);
+  // map defaulo colors
   const defaultColor = '#c4ced4';
   const hoverColor = '#ECEFF1';
+  
+  // Map states
+  const [zoom, setZoom] = useState(1);
   const [hoveredCountry, setHoveredCountry] = useState(null);
-
   const [countryData, setCountryData] = useState({});
-
-
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
+  // Track mouse and hover tool follow
   const handleMouseMove = (event) => {
     const { clientX, clientY } = event;
     setMousePosition({ x: clientX, y: clientY });
@@ -27,11 +29,13 @@ const ImportMap = () => {
     }
   };
   
+  // Mouse enter  for hover tool
   const handleMouseEnterBox = (event) => {
     console.log('MOUSE ENTER BOX')
     setHoveredCountry(null)
   }
 
+  // Actual hover tool logic with API calls
   const handleCountryHover = async (alpha2, name, geography) => {
     console.log('Mouse Enter')
     try {
@@ -52,22 +56,23 @@ const ImportMap = () => {
     }
   };
   
-
+  // Remove hover tool whne leaving geometry
   const handleCountryLeave = (event) => {
     console.log('Mouse Leave')
     setHoveredCountry(null)
     event.target.setAttribute('fill', defaultColor);
   };
 
+  // Zoom
   const handleZoomIn = () => {
     setZoom((prevZoom) => prevZoom * 1.2); // Increase the zoom level
   };
-
   const handleZoomOut = () => {
     setZoom((prevZoom) => prevZoom / 1.2); // Decrease the zoom level
   };
 
-  const getColor = (value) => {
+  // Color coding for democracy index
+  const getDemocracyColor = (value) => {
     if (value >= 9.0) {
       return '#008000'
     } else if (value >= 7.0) {
@@ -82,6 +87,7 @@ const ImportMap = () => {
       
   }
 
+  // Color coding for peace index
   const getPeaceColor = (value) => {
     if (value < 1.0) {
       return '#00E676' // green
@@ -97,6 +103,7 @@ const ImportMap = () => {
       
   }
 
+  // Color coding for USD import values
   const getUSDColor = (value) => {
     if (value >= 4713.75) {
       return '#8b0000'
@@ -108,6 +115,7 @@ const ImportMap = () => {
       return '#383838'}
   }
 
+  // Formatting for USD import values to k, mn or bn
   const formatUSD = (value) => {
     console.log(value)
     if (value > 1000000000) {
@@ -188,7 +196,7 @@ const ImportMap = () => {
           </div>
 
           <div className='circle-wrapper'>
-            <div className="circle" style={{ backgroundColor: getColor(countryData.democracy_index.value) }}>
+            <div className="circle" style={{ backgroundColor: getDemocracyColor(countryData.democracy_index.value) }}>
               {countryData.democracy_index.value}
             </div>
             <span className='circle-label'>Democracy Index<sup>[1]</sup></span>
