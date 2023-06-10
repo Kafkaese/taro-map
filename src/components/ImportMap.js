@@ -40,7 +40,7 @@ const ImportMap = ({year}) => {
     console.log('Mouse Enter')
     try {
       const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
-      const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/total?country_code=${alpha2}`);
+      const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
       const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
       
       const democracy_index_data = await democracy_index.json();
