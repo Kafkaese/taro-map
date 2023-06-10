@@ -40,7 +40,7 @@ const PercentageCircle = ({percentage}) => {
                 <Label 
                     position="center"
                     >
-                    {`${Math.round(percentage)}%`}
+                    {!Number.isNaN(percentage) ? (Math.round(percentage) > 0 ?`${Math.round(percentage)}%` : "<1%") : "?%"}
                     </Label>
                 </Pie>
 
