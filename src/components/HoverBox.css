@@ -44,20 +44,3 @@
   font-weight: bold;
   font-size: 16px;
 }
-
-.hover-box-container .circle-wrapper .percentage-circle {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  margin: 0 4px;
-  color: #000;
-  font-weight: bold;
-  font-size: 16px;
-  border-width: 10px;
-  border-style: solid;
-  border-color:chartreuse;
-}
