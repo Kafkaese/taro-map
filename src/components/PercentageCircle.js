@@ -10,6 +10,7 @@ const PercentageCircle = ({percentage}) => {
 
     return (
         <PieChart width={70} height={70}>
+                {/* background circle full (100%)*/}
                 <Pie
                 dataKey="value"
                 isAnimationActive={false}
@@ -22,6 +23,7 @@ const PercentageCircle = ({percentage}) => {
                 outerRadius={"100%"}
                 fill="#808080"
                 />
+                {/* colored circle based on percenag*/}
                 <Pie
                 dataKey="value"
                 isAnimationActive={false}
@@ -34,6 +36,7 @@ const PercentageCircle = ({percentage}) => {
                 outerRadius={"100%"}
                 fill="#8884d8"
                 >
+                {/* Label at center of circle*/}
                 <Label 
                     position="center"
                     >
