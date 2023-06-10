@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
+import { PieChart, Pie} from 'recharts';
+
 
 const ExportMap = ({year}) => {
 
@@ -65,15 +67,37 @@ const ExportMap = ({year}) => {
     }
   }
 
+  const translateAngle = (value) => {
+    console.log('VALUE:')
+    console.log(value)
+    return value * -360 +90;
+
+
+  }
+  /*
+  const getPercentageColor = (value) => {
+    switch(value) {
+      case :
+        // code block
+        break;
+      case y:
+        // code block
+        break;
+      default:
+        // code block
+    } 
+  }
+*/
+
   // Mouse enter  for hover tool
   const handleMouseEnterBox = (event) => {
-    console.log('MOUSE ENTER BOX')
+    //console.log('MOUSE ENTER BOX')
     setHoveredCountry(null)
   }
 
   // Remove hover tool whne leaving geometry
   const handleCountryLeave = (event) => {
-    console.log('Mouse Leave')
+    //console.log('Mouse Leave')
     setHoveredCountry(null)
     event.target.setAttribute('fill', defaultColor);
   };
@@ -153,9 +177,20 @@ const ExportMap = ({year}) => {
           </div>
 
           <div className='circle-wrapper'>
-            <div className="percentage-circle">
-              {countryData.merch_exports.value}
-            </div>
+            <PieChart width={400} height={400}>
+              <Pie
+              dataKey="value"
+              isAnimationActive={false}
+              startAngle={90}
+              endAngle={translateAngle((countryData.arms_exports.value/1000000) / countryData.merch_exports.value)}
+              data={[{value: 1}]}
+              cx="50%"
+              cy="50%"
+              innerRadius={40}
+              outerRadius={80}
+              fill="#8884d8"
+              />
+            </PieChart>
             <span className='circle-label'>Percentage of Exports<sup>[1]</sup></span>
           </div>
           
