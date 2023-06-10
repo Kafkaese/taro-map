@@ -1,5 +1,7 @@
 .app {
   background-color: #93B6C9;
+  height: 100vh;
+  width: 100vw;
 }
 
 .slider-container {
@@ -13,6 +15,22 @@
   flex-direction: column;
   align-items: stretch;
   border-radius: 8px;
+}
+
+.toggle {
+  display: flex;
+  align-items: stretch;
+  width: 5%;
+  height: 5%;
+  top:1%;
+  left: 95%;
+  position: absolute;
+  border: 5px solid #101827;
+}
+
+.toggle .slider {
+  color: #ffffff;
+  flex: 1
 }
 .footer {
     position: fixed;

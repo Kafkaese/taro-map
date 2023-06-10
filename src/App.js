@@ -24,13 +24,26 @@ const handleYearChange = (newYear) => {
 
   return (
     <div className="app">
-      <ToggleButton 
-        value={ showExports }
-        onToggle={toggleComponent}>
+      <div className='toggle'>
+        <ToggleButton 
+          value={ showExports }
+          onToggle={toggleComponent}
+          activeLabel={"Exports"}
+          inactiveLabel={'Imports'}
+          className='slider'
+          thumbStyle={{
+            height: "100%",
+            with: "100%",
+            borderRadius: 5,
+          }}
+          trackStyle={{
+            height: "100%",
+            width: "100%",
+            borderRadius: 5
+            }}>
+        </ToggleButton>
+      </div>
 
-      </ToggleButton>
-      <button  className="toggle" onClick={toggleComponent}><h3 className='text'>Toggle</h3></button>
-      
       {showExports ? <ExportMap year={year}/> : <ImportMap year={year}/>}
       <div className='slider-container'>
         <YearSlider onYearChange={handleYearChange}></YearSlider>
