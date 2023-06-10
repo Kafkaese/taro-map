@@ -25,7 +25,7 @@ const handleYearChange = (newYear) => {
     <div className="App">
       <button onClick={toggleComponent}>Toggle</button>
       
-      {showExports ? <ExportMap /> : <ImportMap year={year}/>}
+      {showExports ? <ExportMap year={year}/> : <ImportMap year={year}/>}
       <div className='slider-container'>
         <YearSlider onYearChange={handleYearChange}></YearSlider>
       </div>
