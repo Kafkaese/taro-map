@@ -15,7 +15,7 @@ const toggleComponent = () => {
 
 
 // Displayed year
-const [year, setYear] = useState(2022)
+const [year, setYear] = useState(2020)
 const handleYearChange = (newYear) => {
   setYear(newYear);
   console.log(year)
@@ -25,7 +25,7 @@ const handleYearChange = (newYear) => {
     <div className="App">
       <button onClick={toggleComponent}>Toggle</button>
       
-      {showExports ? <ExportMap /> : <ImportMap year={year}/>}
+      {showExports ? <ExportMap year={year}/> : <ImportMap year={year}/>}
       <div className='slider-container'>
         <YearSlider onYearChange={handleYearChange}></YearSlider>
       </div>

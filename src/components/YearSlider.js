@@ -3,7 +3,7 @@ import ReactSlider from 'react-slider';
 import './YearSlider.css';
 
 const YearSlider = ({ onYearChange }) => {
-    const [year, setYear] = useState(2022);
+    const [year, setYear] = useState(2020);
   
     const handleChange = (newYear, index) => {
       setYear(newYear);
