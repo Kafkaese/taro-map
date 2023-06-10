@@ -5,8 +5,8 @@ const ToggleButton = () => {
 
     return (
         <div className="wrapper">
-            <div>Export</div>
-            <div>Import</div>
+            <div className="text">Export</div>
+            <div className="text">Import</div>
         </div>
     );
 }
