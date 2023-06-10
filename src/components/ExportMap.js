@@ -8,9 +8,12 @@ const ExportMap = ({year}) => {
   const HOST = 'localhost'
   const API_PORT = '8080'
 
+  // map default colors
+  const defaultColor = '#84B098';
+  const hoverColor = '#66B087';
+
   const [zoom, setZoom] = useState(1);
-  const defaultColor = '#ECEFF1';
-  const hoverColor = '#c4ced4';
+
   const [hoveredCountry, setHoveredCountry] = useState(null);
 
   const [countryData, setCountryData] = useState({});
