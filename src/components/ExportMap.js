@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
-import { PieChart, Pie, Label} from 'recharts';
+import PercentageCircle from './PercentageCircle';
 
 
 const ExportMap = ({year}) => {
@@ -67,13 +67,7 @@ const ExportMap = ({year}) => {
     }
   }
 
-  const translateAngle = (value) => {
-    console.log('VALUE:')
-    console.log(value)
-    return value * -360 +90;
-
-
-  }
+  
   /*
   const getPercentageColor = (value) => {
     switch(value) {
@@ -177,39 +171,7 @@ const ExportMap = ({year}) => {
           </div>
 
           <div className='circle-wrapper'>
-            <PieChart width={70} height={70}>
-            <Pie
-              dataKey="value"
-              isAnimationActive={false}
-              startAngle={90}
-              endAngle={-270}
-              data={[{value: 1}]}
-              cx="50%"
-              cy="50%"
-              innerRadius={"60%"}
-              outerRadius={"100%"}
-              fill="#808080"
-              />
-              <Pie
-              dataKey="value"
-              isAnimationActive={false}
-              startAngle={90}
-              endAngle={translateAngle((countryData.arms_exports.value/1000000) / countryData.merch_exports.value)}
-              data={[{value: 1}]}
-              cx="50%"
-              cy="50%"
-              innerRadius={"60%"}
-              outerRadius={"100%"}
-              fill="#8884d8"
-              >
-              <Label 
-                position="center"
-                >
-                  {`${Math.round(((countryData.arms_exports.value/1000000) / countryData.merch_exports.value) * 100)}%`}
-                </Label>
-              </Pie>
-
-            </PieChart>
+            <PercentageCircle percentage={((countryData.arms_exports.value/1000000) / countryData.merch_exports.value) * 100}/>
             <span className='circle-label'>Percentage of Exports<sup>[1]</sup></span>
           </div>
           
