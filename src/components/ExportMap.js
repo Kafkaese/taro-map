@@ -177,7 +177,7 @@ const ExportMap = ({year}) => {
           </div>
 
           <div className='circle-wrapper'>
-            <PieChart width={400} height={400}>
+            <PieChart width={70} height={70}>
               <Pie
               dataKey="value"
               isAnimationActive={false}
@@ -186,8 +186,8 @@ const ExportMap = ({year}) => {
               data={[{value: 1}]}
               cx="50%"
               cy="50%"
-              innerRadius={40}
-              outerRadius={80}
+              innerRadius={"60%"}
+              outerRadius={"100%"}
               fill="#8884d8"
               >
               <Label 
