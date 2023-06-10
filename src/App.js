@@ -15,7 +15,7 @@ const toggleComponent = () => {
 
 
 // Displayed year
-const [year, setYear] = useState(2022)
+const [year, setYear] = useState(2020)
 const handleYearChange = (newYear) => {
   setYear(newYear);
   console.log(year)
