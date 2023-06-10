@@ -24,10 +24,15 @@ const ExportMap = ({year}) => {
 
   const handleCountryHover = async (alpha2, name, geography) => {
     try {
-      const response = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year?country_code=${alpha2}&year=${year}`); 
-      const data = await response.json();
-      setCountryData(data);
+      const arms_export_response = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year?country_code=${alpha2}&year=${year}`); 
+      const arms_export_data = await arms_export_response.json();
+      
+      const merch_export_response = await fetch(`http://${HOST}:${API_PORT}/exports/merchandise/year?country_code=${alpha2}&year=${year}`)
+      const merch_export_data = await merch_export_response.json()
+
+      setCountryData({arms_exports: arms_export_data, merch_exports : merch_export_data});
       setHoveredCountry({ name, position: mousePosition });
+
     } catch (error) {
       console.error('Error fetching country data:', error);
     }
