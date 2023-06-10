@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
-import { PieChart, Pie} from 'recharts';
+import { PieChart, Pie, Label} from 'recharts';
 
 
 const ExportMap = ({year}) => {
@@ -189,7 +189,14 @@ const ExportMap = ({year}) => {
               innerRadius={40}
               outerRadius={80}
               fill="#8884d8"
-              />
+              >
+              <Label 
+                position="center"
+                >
+                  {`${Math.round(((countryData.arms_exports.value/1000000) / countryData.merch_exports.value) * 100)}%`}
+                </Label>
+              </Pie>
+
             </PieChart>
             <span className='circle-label'>Percentage of Exports<sup>[1]</sup></span>
           </div>
