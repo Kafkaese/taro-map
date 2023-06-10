@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 
-const ExportMap = () => {
+const ExportMap = ({year}) => {
 
   const HOST = 'localhost'
   const API_PORT = '8080'
@@ -22,9 +22,9 @@ const ExportMap = () => {
   };
   
 
-  const handleCountryHover = async (name, geography) => {
+  const handleCountryHover = async (alpha2, name, geography) => {
     try {
-      const response = await fetch(`http://${HOST}:${API_PORT}/total?country_name=${name}`); 
+      const response = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year?country_code=${alpha2}&year=${year}`); 
       const data = await response.json();
       setCountryData(data);
       setHoveredCountry({ name, position: mousePosition });
@@ -63,12 +63,13 @@ const ExportMap = () => {
             {({ geographies }) =>
               geographies.map((geo) => {
                 const { name } = geo.properties;
+                const { 'Alpha-2': alpha2 } = geo.properties;
 
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onMouseEnter={() => handleCountryHover(name, geo)}
+                    onMouseEnter={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
                     style={{
                       default: {
