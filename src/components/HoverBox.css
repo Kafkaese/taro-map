@@ -1,6 +1,6 @@
 .hover-box-container {
   position: fixed;
-  background-color: #fff;
+  background-color: #101827;
   padding: 4px 8px;
   border: 1px solid #ccc;
   display: flex;
@@ -11,6 +11,7 @@
 
 .hover-box-container h3 {
   font-family: verdana;
+  color: #ffffff;
 }
 
 .hover-box-container .circle-container {
@@ -29,6 +30,7 @@
   font-size: 12px;
   margin-top: 4px;
   text-align: center;
+  color: #ffffff;
 }
 
 .hover-box-container .circle-wrapper .circle {
