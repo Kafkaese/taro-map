@@ -178,6 +178,18 @@ const ExportMap = ({year}) => {
 
           <div className='circle-wrapper'>
             <PieChart width={70} height={70}>
+            <Pie
+              dataKey="value"
+              isAnimationActive={false}
+              startAngle={90}
+              endAngle={-270}
+              data={[{value: 1}]}
+              cx="50%"
+              cy="50%"
+              innerRadius={"60%"}
+              outerRadius={"100%"}
+              fill="#808080"
+              />
               <Pie
               dataKey="value"
               isAnimationActive={false}
