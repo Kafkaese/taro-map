@@ -18,12 +18,10 @@
 }
 
 .toggle {
-  display: flex;
-  align-items: stretch;
-  width: 5%;
+  width: 10%;
   height: 5%;
   top:1%;
-  left: 95%;
+  left: 50%;
   position: absolute;
   border: 5px solid #101827;
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ExportMap from './components/ExportMap';
 import ImportMap from './components/ImportMap';
 import YearSlider from './components/YearSlider';
-import ToggleButton from 'react-toggle-button'
+import ToggleButton from './components/ToggleButton';
 
 import './App.css'
 
@@ -25,22 +25,8 @@ const handleYearChange = (newYear) => {
   return (
     <div className="app">
       <div className='toggle'>
-        <ToggleButton 
-          value={ showExports }
-          onToggle={toggleComponent}
-          activeLabel={"Exports"}
-          inactiveLabel={'Imports'}
-          className='slider'
-          thumbStyle={{
-            height: "100%",
-            with: "100%",
-            borderRadius: 5,
-          }}
-          trackStyle={{
-            height: "100%",
-            width: "100%",
-            borderRadius: 5
-            }}>
+        <ToggleButton> 
+          
         </ToggleButton>
       </div>
 
