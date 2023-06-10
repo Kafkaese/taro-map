@@ -37,9 +37,43 @@ const ExportMap = ({year}) => {
       console.error('Error fetching country data:', error);
     }
   };
-  
 
+
+  // Color coding for USD import values
+  const getUSDColor = (value) => {
+    if (value >= 4713.75) {
+      return '#8b0000'
+    } else if (value >= 342.5) {
+      return '#ffae42'
+    } else if (value >= 0) {
+      return '#008000'
+    } else {
+      return '#383838'}
+  }
+
+  // Formatting for USD import values to k, mn or bn
+  const formatUSD = (value) => {
+    console.log(value)
+    if (value > 1000000000) {
+      return `${(value / 1000000000).toFixed(2)} bn`
+    } else if (value > 1000000) {
+      return `${(value / 1000000).toFixed(2)} mn`
+    } else if (value > 1000) {
+      return `${(value / 1000).toFixed(2)} k`
+    }else {
+      return value
+    }
+  }
+
+  // Mouse enter  for hover tool
+  const handleMouseEnterBox = (event) => {
+    console.log('MOUSE ENTER BOX')
+    setHoveredCountry(null)
+  }
+
+  // Remove hover tool whne leaving geometry
   const handleCountryLeave = (event) => {
+    console.log('Mouse Leave')
     setHoveredCountry(null)
     event.target.setAttribute('fill', defaultColor);
   };
@@ -74,7 +108,7 @@ const ExportMap = ({year}) => {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onMouseEnter={() => handleCountryHover(alpha2, name, geo)}
+                    onMouseOver={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
                     style={{
                       default: {
@@ -104,22 +138,30 @@ const ExportMap = ({year}) => {
         </ZoomableGroup>
       </ComposableMap>
       {hoveredCountry && (
-  <div
-    style={{
-      position: 'fixed',
-      top: hoveredCountry.position.y,
-      left: hoveredCountry.position.x,
-      backgroundColor: '#fff',
-      padding: '4px 8px',
-      border: '1px solid #ccc',
-    }}
-  >
-    <h3>{hoveredCountry.name}</h3>
-    {countryData.value && countryData.value !== 'no data' && <p>Total Exports since 1998: {(countryData.value/1000000).toFixed(2)} million €</p>}
-    {countryData.value && countryData.value === 'no data' && "No data available"}
-    {countryData.gdp && <p>GDP: {countryData.gdp}</p>}
-    {/* Add additional data fields as needed */}
-  </div>
+      <div className="hover-box-container" style={{top: hoveredCountry.position.y +5, left: hoveredCountry.position.x +10,}}
+      onMouseEnter={handleMouseEnterBox}>
+        <h3>{hoveredCountry.name}</h3>
+
+        
+        <div className="circle-container">
+          
+          <div className="circle-wrapper">
+            <div className="circle" style={{ backgroundColor: getUSDColor(countryData.arms_exports.value) }}>
+              {formatUSD(countryData.arms_exports.value)}
+            </div>
+            <span className='circle-label'>Exports</span>
+          </div>
+
+          <div className='circle-wrapper'>
+            <div className="percentage-circle">
+              {countryData.merch_exports.value}
+            </div>
+            <span className='circle-label'>Percentage of Exports<sup>[1]</sup></span>
+          </div>
+          
+        </div>
+      </div>
+
 )}
 
 
