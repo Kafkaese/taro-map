@@ -117,16 +117,26 @@ const ImportMap = ({year}) => {
   }
 
   // Formatting for USD import values to k, mn or bn
-  const formatUSD = (value) => {
-    console.log(value)
+  const formatUSDvalue = (value) => {
     if (value > 1000000000) {
-      return `${(value / 1000000000).toFixed(2)} bn`
+      return `${(value / 1000000000).toFixed(2)}`
     } else if (value > 1000000) {
-      return `${(value / 1000000).toFixed(2)} mn`
+      return `${(value / 1000000).toFixed(2)}`
     } else if (value > 1000) {
-      return `${(value / 1000).toFixed(2)} k`
+      return `${(value / 1000).toFixed(2)}`
     }else {
       return value
+    }
+  }
+  const formatUSDorder = (value) => {
+    if (value > 1000000000) {
+      return "billion"
+    } else if (value > 1000000) {
+      return "million"
+    } else if (value > 1000) {
+      return "thousand"
+    }else {
+      return ""
     }
   }
 
@@ -193,9 +203,9 @@ const ImportMap = ({year}) => {
           
           <div className="money-wrapper">
             <div className="money" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
-              {formatUSD(countryData.total_imports.value)}
+              {formatUSDvalue(countryData.total_imports.value)}
             </div>
-            <div className='annotate'><div className='text'>billion</div></div>
+            <div className='annotate'><div className='text'>{formatUSDorder(countryData.total_imports.value)}</div></div>
             <span className='money-label'>Imports</span>
           </div>
 
