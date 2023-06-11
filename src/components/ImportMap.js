@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 
 import './HoverBox.css';
+import './Zoom.css';
 
 
 const ImportMap = ({year}) => {
@@ -131,8 +132,10 @@ const ImportMap = ({year}) => {
 
   return (
     <div>
-      <button onClick={handleZoomIn}>Zoom In</button>
-      <button onClick={handleZoomOut}>Zoom Out</button>
+      <div className='zoom'>
+        <button className='button' onClick={handleZoomIn}>+</button>
+        <button className='button' onClick={handleZoomOut}>-</button>
+      </div>
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: 'auto' }}
