@@ -25,7 +25,7 @@ const handleYearChange = (newYear) => {
   return (
     <div className="app">
       <div className='toggle'>
-        <ToggleButton> 
+        <ToggleButton left={"Imports"} right={"Exports"}> 
           
         </ToggleButton>
       </div>
