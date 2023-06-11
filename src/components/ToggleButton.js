@@ -5,12 +5,22 @@ import './ToggleButton.css'
 
 const ToggleButton = ({left, right}) => {
 
+    const [leftActive, setLeftActive] = useState(true)
 
+    const handleLeftClick = () => {
+        setLeftActive(true)
+        console.log(leftActive)
+    }
+
+    const handleRightClick = () => {
+        setLeftActive(false)
+        console.log(leftActive)
+    }
 
     return (
         <div className="wrapper">
-            <div className="text-box"><text className="text">{left}</text></div>
-            <div className="text-box"><text className="text">{right}</text></div>
+            <div className= {leftActive ? "text-box-active" : "text-box"} onClick={handleLeftClick}><text className="text">{left}</text></div>
+            <div className={!leftActive ? "text-box-active" : "text-box"} onClick={handleRightClick}><text className="text">{right}</text></div>
         </div>
     );
 }

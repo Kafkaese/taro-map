@@ -16,7 +16,21 @@
     align-items: center;
 }
 
+.wrapper .text-box-active {
+    flex: 1;
+    color: white;
+    background-color: darkgrey;
+    border: 1px solid white;
+    text-align: center; /* This aligns the text horizontally*/
+    display: flex;
+    align-items: center;
+}
 
 .wrapper .text-box .text{
+    flex: auto;
+}
+
+
+.wrapper .text-box-active .text{
     flex: auto;
 }
