@@ -31,8 +31,8 @@ const ToggleButton = ({left, right, onToggleChange}) => {
 
     return (
         <div className="wrapper">
-            <div className= {leftActive ? "text-box-active" : "text-box"} onClick={handleLeftClick}><text className="text">{left}</text></div>
-            <div className={!leftActive ? "text-box-active" : "text-box"} onClick={handleRightClick}><text className="text">{right}</text></div>
+            <div className= {leftActive ? "text-box-active" : "text-box"} onClick={handleLeftClick}><div className="text">{left}</div></div>
+            <div className={!leftActive ? "text-box-active" : "text-box"} onClick={handleRightClick}><div className="text">{right}</div></div>
         </div>
     );
 }
