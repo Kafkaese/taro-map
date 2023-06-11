@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import PercentageCircle from './PercentageCircle';
 
+import './Zoom.css'
 
 const ExportMap = ({year}) => {
 
@@ -109,8 +110,10 @@ const ExportMap = ({year}) => {
 
   return (
     <div>
-      <button onClick={handleZoomIn}>Zoom In</button>
-      <button onClick={handleZoomOut}>Zoom Out</button>
+      <div className='zoom'>
+        <button className='button' onClick={handleZoomIn}>+</button>
+        <button className='button' onClick={handleZoomOut}>-</button>
+      </div>
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: 'auto' }}
