@@ -23,7 +23,9 @@
   top:10%;
   left: 89%;
   position: absolute;
+  background-color: #101827;
   border: 5px solid #101827;
+  border-radius: 25px;
 }
 
 .toggle .slider {
