@@ -52,13 +52,6 @@
   align-items: center;
 }
 
-.hover-box-container .money-wrapper .money-label {
-  font-size: 12px;
-  margin-top: 4px;
-  text-align: center;
-  color: #ffffff;
-}
-
 .hover-box-container .money-wrapper .money {
   width: 70px;
   height: 50px;
@@ -73,15 +66,26 @@
 }
 
 .hover-box-container .money-wrapper .annotate {
-  display: flex;
   width: 70px;
   height: 20px;
+  color: #fff;
+  background-color: #374151;
+  border-radius: 4px;
+  display: flex;
+  font-weight: 100;
+  font-size: small;
+  align-items: center;
 }
 
 .hover-box-container .money-wrapper .annotate .text {
-  flex: 1 ;
-  color: #fff;
-  background-color: #374151;
-  border-radius: 15%;
+  flex: auto;
+  text-align: center;
+}
+
+.hover-box-container .money-wrapper .money-label {
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: center;
+  color: #ffffff;
 }
 
