@@ -20,13 +20,11 @@ const ToggleButton = ({left, right, onToggleChange}) => {
     const handleLeftClick = () => {
         setLeftActive(true)
         onToggleChange(true)
-        console.log(leftActive)
     }
 
     const handleRightClick = () => {
         setLeftActive(false)
         onToggleChange(false)
-        console.log(leftActive)
     }
 
     return (
