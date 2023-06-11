@@ -7,10 +7,16 @@
     background-color: #101827;
 }
 
-.wrapper .text {
+.wrapper .text-box {
     flex: 1;
     color: white;
-    text-align: center;
-    vertical-align: middle;
     border: 1px solid white;
+    text-align: center; /* This aligns the text horizontally*/
+    display: flex;
+    align-items: center;
+}
+
+
+.wrapper .text-box .text{
+    flex: auto;
 }
