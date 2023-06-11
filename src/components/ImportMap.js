@@ -191,11 +191,11 @@ const ImportMap = ({year}) => {
         
         <div className="circle-container">
           
-          <div className="circle-wrapper">
-            <div className="circle" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
+          <div className="money-wrapper">
+            <div className="money" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
               {formatUSD(countryData.total_imports.value)}
             </div>
-            <span className='circle-label'>Imports</span>
+            <span className='money-label'>Imports</span>
           </div>
 
           <div className='circle-wrapper'>
