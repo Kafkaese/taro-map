@@ -195,6 +195,10 @@ const ImportMap = ({year}) => {
             <div className="money" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
               {formatUSD(countryData.total_imports.value)}
             </div>
+            <div className='annotate'>
+              <div className='text'>bln</div>
+              <div className='text'>USD</div>
+            </div>
             <span className='money-label'>Imports</span>
           </div>
 
