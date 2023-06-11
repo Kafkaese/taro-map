@@ -3,6 +3,16 @@ import { useState } from "react";
 
 import './ToggleButton.css'
 
+/**
+ * A toggle button with two text options. Selected option will be highlighted and state 
+ * will be passed up.
+ * 
+ * @param {string} left Text on the left option
+ * @param {string} right Text on right option
+ * @param {function} onToggleChangeg Function to pass state up
+ * 
+ * @returns 
+ */
 const ToggleButton = ({left, right, onToggleChange}) => {
 
     const [leftActive, setLeftActive] = useState(true)
