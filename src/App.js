@@ -10,8 +10,9 @@ const App = () => {
 
 const [showExports, setShowExports] = useState(true) 
 
-const toggleComponent = () => {
-  setShowExports(!showExports);
+const toggleComponent = (leftActive) => {
+  
+  leftActive ? setShowExports(false) : setShowExports(true);
 };
 
 
@@ -25,7 +26,7 @@ const handleYearChange = (newYear) => {
   return (
     <div className="app">
       <div className='toggle'>
-        <ToggleButton> 
+        <ToggleButton left={"Imports"} right={"Exports"} onToggleChange={toggleComponent}> 
           
         </ToggleButton>
       </div>
