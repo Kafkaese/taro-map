@@ -1,0 +1,19 @@
+.zoom {
+    display: flex;
+    position: absolute;
+    top: 20%;
+    left: 95%;
+    height: 4%;
+    width: 4.5%;
+    background-color: #101827;
+    border-radius: 10px;
+}
+
+.zoom .button {
+    flex: 1;
+    margin: 5%;
+    color: white;
+    font-weight: bolder;
+    background-color: #374151;
+    border-radius: 10px;
+}
