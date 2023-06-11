@@ -4,7 +4,13 @@
   width: 100vw;
 }
 
+.map {
+
+}
+
 .slider-container {
+  position: fixed;
+  top: 84%;
   width: 30%;
   margin-left: 35%;
   height: 80px;
