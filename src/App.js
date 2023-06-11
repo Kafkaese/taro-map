@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ExportMap from './components/ExportMap';
 import ImportMap from './components/ImportMap';
 import YearSlider from './components/YearSlider';
+import ToggleButton from './components/ToggleButton';
 
 import './App.css'
 
@@ -22,9 +23,13 @@ const handleYearChange = (newYear) => {
 }
 
   return (
-    <div className="App">
-      <button onClick={toggleComponent}>Toggle</button>
-      
+    <div className="app">
+      <div className='toggle'>
+        <ToggleButton> 
+          
+        </ToggleButton>
+      </div>
+
       {showExports ? <ExportMap year={year}/> : <ImportMap year={year}/>}
       <div className='slider-container'>
         <YearSlider onYearChange={handleYearChange}></YearSlider>

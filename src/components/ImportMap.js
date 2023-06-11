@@ -11,8 +11,8 @@ const ImportMap = ({year}) => {
   const API_PORT = '8080'
 
   // map defaulo colors
-  const defaultColor = '#c4ced4';
-  const hoverColor = '#ECEFF1';
+  const defaultColor = '#84B098';
+  const hoverColor = '#66B087';
   
   // Map states
   const [zoom, setZoom] = useState(1);
