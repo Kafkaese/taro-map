@@ -3,17 +3,19 @@ import { useState } from "react";
 
 import './ToggleButton.css'
 
-const ToggleButton = ({left, right}) => {
+const ToggleButton = ({left, right, onToggleChange}) => {
 
     const [leftActive, setLeftActive] = useState(true)
 
     const handleLeftClick = () => {
         setLeftActive(true)
+        onToggleChange(true)
         console.log(leftActive)
     }
 
     const handleRightClick = () => {
         setLeftActive(false)
+        onToggleChange(false)
         console.log(leftActive)
     }
 
