@@ -8,7 +8,7 @@ import './App.css'
 
 const App = () => {
 
-const [showExports, setShowExports] = useState(true) 
+const [showExports, setShowExports] = useState(false) 
 
 const toggleComponent = (leftActive) => {
   
