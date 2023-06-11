@@ -46,3 +46,30 @@
   font-weight: bold;
   font-size: 16px;
 }
+
+.hover-box-container .money-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hover-box-container .money-wrapper .money-label {
+  font-size: 12px;
+  margin-top: 4px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.hover-box-container .money-wrapper .money {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  margin: 0 4px;
+  color: #000;
+  font-weight: bold;
+  font-size: 16px;
+}
