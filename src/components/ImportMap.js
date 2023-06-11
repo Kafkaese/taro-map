@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 
 import './HoverBox.css';
+import './Zoom.css';
 
 
 const ImportMap = ({year}) => {
@@ -116,23 +117,35 @@ const ImportMap = ({year}) => {
   }
 
   // Formatting for USD import values to k, mn or bn
-  const formatUSD = (value) => {
-    console.log(value)
+  const formatUSDvalue = (value) => {
     if (value > 1000000000) {
-      return `${(value / 1000000000).toFixed(2)} bn`
+      return `${(value / 1000000000).toFixed(2)}`
     } else if (value > 1000000) {
-      return `${(value / 1000000).toFixed(2)} mn`
+      return `${(value / 1000000).toFixed(2)}`
     } else if (value > 1000) {
-      return `${(value / 1000).toFixed(2)} k`
+      return `${(value / 1000).toFixed(2)}`
     }else {
       return value
+    }
+  }
+  const formatUSDorder = (value) => {
+    if (value > 1000000000) {
+      return "billion"
+    } else if (value > 1000000) {
+      return "million"
+    } else if (value > 1000) {
+      return "thousand"
+    }else {
+      return ""
     }
   }
 
   return (
     <div>
-      <button onClick={handleZoomIn}>Zoom In</button>
-      <button onClick={handleZoomOut}>Zoom Out</button>
+      <div className='zoom'>
+        <button className='button' onClick={handleZoomIn}>+</button>
+        <button className='button' onClick={handleZoomOut}>-</button>
+      </div>
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: 'auto' }}
@@ -188,11 +201,12 @@ const ImportMap = ({year}) => {
         
         <div className="circle-container">
           
-          <div className="circle-wrapper">
-            <div className="circle" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
-              {formatUSD(countryData.total_imports.value)}
+          <div className="money-wrapper">
+            <div className="money" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
+              {formatUSDvalue(countryData.total_imports.value)}
             </div>
-            <span className='circle-label'>Imports</span>
+            <div className='annotate'><div className='text'>{formatUSDorder(countryData.total_imports.value)}</div></div>
+            <span className='money-label'>Imports</span>
           </div>
 
           <div className='circle-wrapper'>
