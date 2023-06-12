@@ -34,6 +34,9 @@ const App = () => {
 
   return (
     <div className="app">
+      <div className='header'>
+
+      </div>
       <div className='toggle'>
         <ToggleButton left={"Imports"} right={"Exports"} onToggleChange={toggleComponent}/> 
       </div>
