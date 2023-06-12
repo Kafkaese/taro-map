@@ -20,7 +20,6 @@ const toggleComponent = (leftActive) => {
 const [year, setYear] = useState(2020)
 const handleYearChange = (newYear) => {
   setYear(newYear);
-  console.log(year)
 }
 
   return (
