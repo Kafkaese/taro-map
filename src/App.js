@@ -35,7 +35,8 @@ const App = () => {
   return (
     <div className="app">
       <div className='header'>
-
+      <img className='logo' src="/favicon.png" alt="Taro"></img>
+        <div className='title'>Map</div>
       </div>
       <div className='toggle'>
         <ToggleButton left={"Imports"} right={"Exports"} onToggleChange={toggleComponent}/> 
