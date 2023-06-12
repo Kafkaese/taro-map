@@ -30,7 +30,6 @@ const ImportMap = ({year, zoom}) => {
   
   // Mouse enter  for hover tool
   const handleMouseEnterBox = (event) => {
-    console.log('MOUSE ENTER BOX')
     setHoveredCountry(null)
   }
 
@@ -57,7 +56,6 @@ const ImportMap = ({year, zoom}) => {
   
   // Remove hover tool whne leaving geometry
   const handleCountryLeave = (event) => {
-    console.log('Mouse Leave')
     setHoveredCountry(null)
     event.target.setAttribute('fill', defaultColor);
   };
