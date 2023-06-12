@@ -77,31 +77,13 @@ const ExportMap = ({year, zoom}) => {
     }
   }
 
-  
-  /*
-  const getPercentageColor = (value) => {
-    switch(value) {
-      case :
-        // code block
-        break;
-      case y:
-        // code block
-        break;
-      default:
-        // code block
-    } 
-  }
-*/
-
   // Mouse enter  for hover tool
   const handleMouseEnterBox = (event) => {
-    //console.log('MOUSE ENTER BOX')
     setHoveredCountry(null)
   }
 
   // Remove hover tool whne leaving geometry
   const handleCountryLeave = (event) => {
-    //console.log('Mouse Leave')
     setHoveredCountry(null)
     event.target.setAttribute('fill', defaultColor);
   };
@@ -115,7 +97,7 @@ const ExportMap = ({year, zoom}) => {
         height={400}
         onMouseMove={handleMouseMove}
       >
-        <ZoomableGroup zoom={zoom} center={[0, 0]}>
+        <ZoomableGroup zoom={zoom} center={[0, 0]} translateExtent={[[-Infinity, -100], [Infinity, 600]]}>
           <Geographies geography="/world-countries-topo.json">
             {({ geographies }) =>
               geographies.map((geo) => {
