@@ -77,31 +77,13 @@ const ExportMap = ({year, zoom}) => {
     }
   }
 
-  
-  /*
-  const getPercentageColor = (value) => {
-    switch(value) {
-      case :
-        // code block
-        break;
-      case y:
-        // code block
-        break;
-      default:
-        // code block
-    } 
-  }
-*/
-
   // Mouse enter  for hover tool
   const handleMouseEnterBox = (event) => {
-    //console.log('MOUSE ENTER BOX')
     setHoveredCountry(null)
   }
 
   // Remove hover tool whne leaving geometry
   const handleCountryLeave = (event) => {
-    //console.log('Mouse Leave')
     setHoveredCountry(null)
     event.target.setAttribute('fill', defaultColor);
   };
