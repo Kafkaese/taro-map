@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import PercentageCircle from './PercentageCircle';
 
-import './Zoom.css'
-
 const ExportMap = ({year, zoom}) => {
 
   const HOST = 'localhost'

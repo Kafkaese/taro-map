@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 
 import './HoverBox.css';
-import './Zoom.css';
-
 
 const ImportMap = ({year, zoom}) => {
 
