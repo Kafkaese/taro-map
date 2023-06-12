@@ -2,9 +2,9 @@
     display: flex;
     position: absolute;
     top: 20%;
-    left: 95%;
-    height: 4%;
-    width: 4.5%;
+    left: 93%;
+    height: 40px;
+    width: 80px;
     background-color: #101827;
     border-radius: 10px;
 }
