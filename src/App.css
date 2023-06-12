@@ -13,9 +13,9 @@
 .slider-container {
   position: fixed;
   top: 84%;
-  width: 30%;
+  width: 500px;
+  height: 60px;
   margin-left: 35%;
-  height: 80px;
   background-color: #101827;
   padding: 4px 8px;
   border: 1px solid #ccc;
