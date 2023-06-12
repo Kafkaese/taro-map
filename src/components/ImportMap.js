@@ -148,9 +148,7 @@ const ImportMap = ({year}) => {
       </div>
       <ComposableMap
         projection="geoMercator"
-        style={{ width: '100%', height: 'auto' }}
-        width={800}
-        height={400}
+        style={{ width: '95vw', height: '95vh' }}
         onMouseMove={handleMouseMove}
       >
         <ZoomableGroup zoom={zoom} center={[0, 0]}>
