@@ -139,7 +139,7 @@ const ImportMap = ({year, zoom}) => {
         style={{ width: '95vw', height: '95vh' }}
         onMouseMove={handleMouseMove}
       >
-        <ZoomableGroup zoom={zoom} center={[0, 0]}>
+        <ZoomableGroup zoom={zoom} center={[0, 0]} translateExtent={[[-Infinity, -100], [Infinity, 600]]}> /* [?,maxup,?, maxdown]*/
           <Geographies geography="/world-countries-topo.json">
             {({ geographies }) =>
               geographies.map((geo) => {
