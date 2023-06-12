@@ -4,7 +4,7 @@ import PercentageCircle from './PercentageCircle';
 
 import './Zoom.css'
 
-const ExportMap = ({year}) => {
+const ExportMap = ({year, zoom}) => {
 
   const HOST = 'localhost'
   const API_PORT = '8080'
@@ -12,8 +12,6 @@ const ExportMap = ({year}) => {
   // map default colors
   const defaultColor = '#84B098';
   const hoverColor = '#66B087';
-
-  const [zoom, setZoom] = useState(1);
 
   const [hoveredCountry, setHoveredCountry] = useState(null);
 
@@ -110,20 +108,8 @@ const ExportMap = ({year}) => {
     event.target.setAttribute('fill', defaultColor);
   };
 
-  const handleZoomIn = () => {
-    setZoom((prevZoom) => prevZoom * 1.2); // Increase the zoom level
-  };
-
-  const handleZoomOut = () => {
-    setZoom((prevZoom) => prevZoom / 1.2); // Decrease the zoom level
-  };
-
   return (
     <div>
-      <div className='zoom'>
-        <button className='button' onClick={handleZoomIn}>+</button>
-        <button className='button' onClick={handleZoomOut}>-</button>
-      </div>
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: 'auto' }}

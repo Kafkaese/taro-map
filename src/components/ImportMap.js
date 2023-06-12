@@ -5,7 +5,7 @@ import './HoverBox.css';
 import './Zoom.css';
 
 
-const ImportMap = ({year}) => {
+const ImportMap = ({year, zoom}) => {
 
   // API url 
   const HOST = 'localhost'
@@ -16,7 +16,7 @@ const ImportMap = ({year}) => {
   const hoverColor = '#66B087';
   
   // Map states
-  const [zoom, setZoom] = useState(1);
+  //const [zoom, setZoom] = useState(1);
   const [hoveredCountry, setHoveredCountry] = useState(null);
   const [countryData, setCountryData] = useState({});
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -64,13 +64,7 @@ const ImportMap = ({year}) => {
     event.target.setAttribute('fill', defaultColor);
   };
 
-  // Zoom
-  const handleZoomIn = () => {
-    setZoom((prevZoom) => prevZoom * 1.2); // Increase the zoom level
-  };
-  const handleZoomOut = () => {
-    setZoom((prevZoom) => prevZoom / 1.2); // Decrease the zoom level
-  };
+
 
   // Color coding for democracy index
   const getDemocracyColor = (value) => {
@@ -142,10 +136,6 @@ const ImportMap = ({year}) => {
 
   return (
     <div>
-      <div className='zoom'>
-        <button className='button' onClick={handleZoomIn}>+</button>
-        <button className='button' onClick={handleZoomOut}>-</button>
-      </div>
       <ComposableMap
         projection="geoMercator"
         style={{ width: '95vw', height: '95vh' }}
