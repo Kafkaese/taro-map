@@ -97,7 +97,7 @@ const ExportMap = ({year, zoom}) => {
         height={400}
         onMouseMove={handleMouseMove}
       >
-        <ZoomableGroup zoom={zoom} center={[0, 0]}>
+        <ZoomableGroup zoom={zoom} center={[0, 0]} translateExtent={[[-Infinity, -100], [Infinity, 600]]}>
           <Geographies geography="/world-countries-topo.json">
             {({ geographies }) =>
               geographies.map((geo) => {
