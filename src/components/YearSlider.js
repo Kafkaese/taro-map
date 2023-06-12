@@ -14,7 +14,7 @@ const YearSlider = ({ onYearChange }) => {
     return (
       <div>
         <div className='slider-year-info-box'>
-          <div className='slider-year-info-box-element1'>Select year: </div>
+          <div className='slider-year-info-box-element1'>select year: </div>
           <div className='slider-year-info-box-element2'>{year}</div>  
         </div>
         <ReactSlider
