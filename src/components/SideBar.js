@@ -13,7 +13,7 @@ const SideBar = ({country}) => {
         <div className="sideBar">
             <div className="panel" style={collapsed ? {width: '0%'} : {width: '30%'}}>
                 <div className="title">
-                {country}
+                {country.value}
                 </div>
             </div>
             <button 

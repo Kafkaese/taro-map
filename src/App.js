@@ -9,7 +9,11 @@ import './App.css'
 
 const App = () => {
 
-  // Controls hich map is shown
+  // API url 
+  const HOST = 'localhost'
+  const API_PORT = '8080'
+
+  // Controls which map is shown
   const [showExports, setShowExports] = useState(false) 
 
   // Sets map active based on state of the button
@@ -19,9 +23,20 @@ const App = () => {
 
 
   // Controls country displayed in side panel
-  const [country, setCountry] = useState("Bahamas")
+  const [country, setCountry] = useState("CA")
+  const [countryData, setCountryData] = useState({})
   const handleCountryChange = (newCountry) => {
     setCountry(newCountry);
+    getCountryData(newCountry);
+  }
+
+  const getCountryData = async (alpha2) => {
+    try {
+      const response = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
+      setCountryData(await response.json());
+    } catch (error) {
+      console.error('Error fetching country data:', error);
+    }
   }
   
   // Displayed year
@@ -62,7 +77,7 @@ const App = () => {
         <button className='button' onClick={handleZoomOut}>-</button>
       </div>
 
-      <SideBar country={country}></SideBar>
+      <SideBar country={countryData}></SideBar>
       {showExports ? <ExportMap className='map' year={year} zoom={zoom} onCountryChange={handleCountryChange}/> : <ImportMap className='map' year={year} zoom={zoom} onCountryChange={handleCountryChange}/>}
       
       <div className='slider-container'>
