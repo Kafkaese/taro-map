@@ -3,7 +3,7 @@ import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simp
 
 import './HoverBox.css';
 
-const ImportMap = ({year, zoom}) => {
+const ImportMap = ({year, zoom, onCountryChange}) => {
 
   // API url 
   const HOST = 'localhost'
@@ -35,7 +35,6 @@ const ImportMap = ({year, zoom}) => {
 
   // Actual hover tool logic with API calls
   const handleCountryHover = async (alpha2, name, geography) => {
-    console.log('Mouse Enter')
     try {
       const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
       const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
@@ -150,6 +149,7 @@ const ImportMap = ({year, zoom}) => {
                     geography={geo}
                     onMouseOver={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
+                    onClick={() => onCountryChange(alpha2)}
                     style={{
                       default: {
                         fill: defaultColor,

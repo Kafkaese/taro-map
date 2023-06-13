@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import PercentageCircle from './PercentageCircle';
 
-const ExportMap = ({year, zoom}) => {
+const ExportMap = ({year, zoom, onCountryChange}) => {
 
   const HOST = 'localhost'
   const API_PORT = '8080'
@@ -108,6 +108,7 @@ const ExportMap = ({year, zoom}) => {
                     geography={geo}
                     onMouseOver={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
+                    onClick={() => onCountryChange(alpha2)}
                     style={{
                       default: {
                         fill: defaultColor,
