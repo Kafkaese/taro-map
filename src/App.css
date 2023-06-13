@@ -6,10 +6,9 @@
 
 .header {
   position: fixed;
-  height: 30px;
+  height: 40px;
   width: 99vw;
   background-color: #101827;
-  padding: 5px 5px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -26,6 +25,7 @@
 .header .logo {
   height: 30px;
   width: 30px;
+  margin: 5px 5px;
 }
 
 .map {
