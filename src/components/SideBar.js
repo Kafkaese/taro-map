@@ -16,7 +16,7 @@ const SideBar = () => {
             </div>
             <button 
                 className="button" 
-                style={collapsed ? {left: '1.5%'} : {left: '30.45%'}}
+                style={collapsed ? {left: '0%'} : {left: '30.45%'}}
                 onClick={collapse}
             >
                 {collapsed ? ">" : "<"} 
