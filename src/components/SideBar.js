@@ -15,6 +15,9 @@ const SideBar = ({country}) => {
                 <div className="title">
                 {country.value}
                 </div>
+                <div className="content">
+                    Some content
+                </div>
             </div>
             <button 
                 className="button" 
