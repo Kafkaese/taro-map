@@ -1,4 +1,4 @@
-.sideBar {
+.sideBar .panel {
     position: absolute;
     height: 90%;
     top: 55px;
@@ -6,4 +6,15 @@
     border: solid 5px black;
     border-left: 0px;
     border-radius: 0px 25px;
+}
+
+.sideBar .button {
+    position: absolute;
+    top: 55%;
+    width: 20px;
+    height: 200px;
+    background: #101827;
+    border-radius: 0px 15px 15px 0px;
+    border: solid 5px black;
+    border-left: 0px;
 }
