@@ -3,6 +3,8 @@
     height: 90%;
     width: 30%;
     top: 55px;
-    background: black;
-    border: solid 1px black;
+    background: #101827;
+    border: solid 5px black;
+    border-left: 0px;
+    border-radius: 0px 25px;
 }
