@@ -9,10 +9,11 @@ import './App.css'
 
 const App = () => {
 
+  // Controls hich map is shown
   const [showExports, setShowExports] = useState(false) 
 
+  // Sets map active based on state of the button
   const toggleComponent = (leftActive) => {
-    
     leftActive ? setShowExports(false) : setShowExports(true);
   };
 
