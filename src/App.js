@@ -34,7 +34,14 @@ const App = () => {
 
 
   return (
-    <div className="app">
+    <div className="app" >
+      <style jsx global>{`
+        body {
+          margin: 0px;
+          padding: 0px;
+        }
+      `}
+      </style>
       <div className='header'>
       <img className='logo' src="/favicon.png" alt="Taro"></img>
         <div className='title'>Arms-Tracker</div>
