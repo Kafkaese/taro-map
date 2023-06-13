@@ -2,16 +2,13 @@
   background-color: #93B6C9;
   height: 97vh;
   width: 99vw;
-  display: flexbox;
 }
 
 .header {
   position: fixed;
   height: 30px;
-  width: 100%;
+  width: 99vw;
   background-color: #101827;
-  padding: 4px 8px;
-  border: 1px solid #38383e;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -69,12 +66,10 @@
 .footer {
   position: fixed;
   background-color: #9db3d0;
-  padding: 4px 8px;
-  border: 1px solid #38383e;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%
+  width: 99vw;
 }
 
 .zoom {
