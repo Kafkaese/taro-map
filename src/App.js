@@ -30,6 +30,7 @@ const App = () => {
     getCountryData(newCountry);
   }
 
+  // Gets country data from API (currenlty only name)
   const getCountryData = async (alpha2) => {
     try {
       const response = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
