@@ -36,7 +36,7 @@ const App = () => {
 
   return (
     <div className="app" >
-      <style jsx global>{`
+      <style jsx="true" global="true">{`
         body {
           margin: 0px;
           padding: 0px;
