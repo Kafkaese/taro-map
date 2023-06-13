@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import './SideBar.css'
 
-const SideBar = () => {
+const SideBar = ({country}) => {
 
     const [collapsed, setCollapsed] = useState(false)
 
@@ -12,7 +12,9 @@ const SideBar = () => {
     return (
         <div className="sideBar">
             <div className="panel" style={collapsed ? {width: '0%'} : {width: '30%'}}>
-
+                <div className="title">
+                {country}
+                </div>
             </div>
             <button 
                 className="button" 

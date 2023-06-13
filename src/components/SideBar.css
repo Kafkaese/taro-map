@@ -6,6 +6,7 @@
     border: solid 5px black;
     border-left: 0px;
     border-radius: 0px 25px;
+    display: flex;
 }
 
 .sideBar .button {
@@ -19,4 +20,10 @@
     border-left: 0px;
     color: white;
     font-weight: bolder;
+}
+
+.sideBar .panel .title {
+    flex: 1;
+    color: white;
+    background-color: aqua;
 }

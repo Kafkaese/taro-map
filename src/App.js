@@ -18,6 +18,12 @@ const App = () => {
   };
 
 
+  // Controls country displayed in side panel
+  const [country, setCountry] = useState("Bahamas")
+  const handleCountryChange = (newCountry) => {
+    setCountry(newCountry);
+  }
+  
   // Displayed year
   const [year, setYear] = useState(2020)
   const handleYearChange = (newYear) => {
@@ -56,8 +62,8 @@ const App = () => {
         <button className='button' onClick={handleZoomOut}>-</button>
       </div>
 
-      <SideBar></SideBar>
-      {showExports ? <ExportMap className='map' year={year} zoom={zoom}/> : <ImportMap className='map' year={year} zoom={zoom}/>}
+      <SideBar country={country}></SideBar>
+      {showExports ? <ExportMap className='map' year={year} zoom={zoom} onCountryChange={handleCountryChange}/> : <ImportMap className='map' year={year} zoom={zoom} onCountryChange={handleCountryChange}/>}
       
       <div className='slider-container'>
         <YearSlider onYearChange={handleYearChange}></YearSlider>
