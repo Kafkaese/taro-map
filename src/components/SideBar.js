@@ -9,7 +9,9 @@ const SideBar = () => {
             <div className="panel" style={collapsed ? {width: '0%'} : {width: '30%'}}>
 
             </div>
-            <button className="button" style={collapsed ? {width: '0%'} : {left: '30.45%'}}></button>
+            <button className="button" style={collapsed ? {width: '0%'} : {left: '30.45%'}}>
+                {collapsed ? ">" : "<"} 
+             </button>
         </div>
     )
 }
