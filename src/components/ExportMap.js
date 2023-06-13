@@ -92,9 +92,7 @@ const ExportMap = ({year, zoom}) => {
     <div>
       <ComposableMap
         projection="geoMercator"
-        style={{ width: '100%', height: 'auto' }}
-        width={800}
-        height={400}
+        style={{ width: '100%', height: '93vh' }}
         onMouseMove={handleMouseMove}
       >
         <ZoomableGroup zoom={zoom} center={[0, 0]} translateExtent={[[-Infinity, -100], [Infinity, 600]]}>
