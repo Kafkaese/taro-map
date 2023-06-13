@@ -3,6 +3,7 @@ import ExportMap from './components/ExportMap';
 import ImportMap from './components/ImportMap';
 import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
+import SideBar from './components/SideBar';
 
 import './App.css'
 
@@ -47,6 +48,7 @@ const App = () => {
         <button className='button' onClick={handleZoomOut}>-</button>
       </div>
 
+      <SideBar></SideBar>
       {showExports ? <ExportMap className='map' year={year} zoom={zoom}/> : <ImportMap className='map' year={year} zoom={zoom}/>}
       
       <div className='slider-container'>
