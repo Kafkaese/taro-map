@@ -130,7 +130,6 @@ const SideBar = ({countryData}) => {
                         <YAxis dataKey="name" type="category"/>
                         <XAxis type="number" domain={[0, countryData.total_imports.value]}/>
                         <Tooltip />
-                        <Legend />
                         <Bar dataKey="value" fill="#8884d8" background={{ fill: '#eee' }} />
                         </BarChart>
                     
