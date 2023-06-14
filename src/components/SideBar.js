@@ -11,6 +11,73 @@ const SideBar = ({countryData}) => {
         console.log(typeof countryData)
     }
 
+      // Color coding for democracy index
+  const getDemocracyColor = (value) => {
+    if (value >= 9.0) {
+      return '#008000'
+    } else if (value >= 7.0) {
+      return '#98fb98'
+    } else if (value >= 4.0) {
+      return '#ffae42'
+    } else if (value >= 0.0) {
+      return '#8b0000'
+    } else {
+      return '#383838'
+    }
+      
+  }
+      // Color coding for peace index
+  const getPeaceColor = (value) => {
+    if (value < 1.0) {
+      return '#00E676' // green
+    } else if (value < 2.0) {
+      return '#C6FF00' // green-yellow
+    } else if (value < 3.0) {
+      return '#FFFF00' // yellow
+    } else if (value < 4.0) {
+      return '#FFD600' // orange
+    } else {
+      return '#383838' // red
+    }
+      
+  }
+
+  // Color coding for USD import values
+  const getUSDColor = (value) => {
+    if (value >= 4713.75) {
+      return '#8b0000'
+    } else if (value >= 342.5) {
+      return '#ffae42'
+    } else if (value >= 0) {
+      return '#008000'
+    } else {
+      return '#383838'}
+  }
+
+  // Formatting for USD import values to k, mn or bn
+  const formatUSDvalue = (value) => {
+    if (value > 1000000000) {
+      return `${(value / 1000000000).toFixed(2)}`
+    } else if (value > 1000000) {
+      return `${(value / 1000000).toFixed(2)}`
+    } else if (value > 1000) {
+      return `${(value / 1000).toFixed(2)}`
+    }else {
+      return value
+    }
+  }
+  const formatUSDorder = (value) => {
+    if (value > 1000000000) {
+      return "billion"
+    } else if (value > 1000000) {
+      return "million"
+    } else if (value > 1000) {
+      return "thousand"
+    }else {
+      return ""
+    }
+  }
+
     return (
         <div className="sideBar">
             <div className="panel" style={collapsed ? {width: '0%'} : {width: '30%'}}>
@@ -20,14 +87,38 @@ const SideBar = ({countryData}) => {
                 <div className="content">
                     Some content
                 </div>
+                <div className="colorcoded-wrapper">
+                    <div className="money-wrapper">
+                        <div className="money" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
+                        {formatUSDvalue(countryData.total_imports.value)}
+                        </div>
+                        <div className='annotate'><div className='text'>{formatUSDorder(countryData.total_imports.value)}</div></div>
+                        <span className='money-label'>Imports</span>
+                    </div>
+
+                    <div className='circle-wrapper'>
+                        <div className="circle" style={{ backgroundColor: getDemocracyColor(countryData.democracy_index.value) }}>
+                        {countryData.democracy_index.value}
+                        </div>
+                        <span className='circle-label'>Democracy Index<sup>[1]</sup></span>
+                    </div>
+
+                    <div className='circle-wrapper'>
+                        <div className="circle" style={{ backgroundColor: getPeaceColor(countryData.peace_index.value) }}>
+                        {countryData.peace_index.value}
+                        </div>
+                        <span className='circle-label'>Peace Index <sup>[2]</sup></span>
+                    </div>
+                </div>
+
+                <button 
+                    className="button" 
+                    style={collapsed ? {left: '0%'} : {left: '30%'}}
+                    onClick={collapse}
+                >
+                    {collapsed ? ">" : "<"} 
+                </button>
             </div>
-            <button 
-                className="button" 
-                style={collapsed ? {left: '0%'} : {left: '30%'}}
-                onClick={collapse}
-            >
-                {collapsed ? ">" : "<"} 
-             </button>
         </div>
     )
 }

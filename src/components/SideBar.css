@@ -33,6 +33,82 @@
     background: aqua;
 }
 
+
+.sideBar .panel .colorcoded-wrapper {
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 10px;
+  }
+  
+  .sideBar .panel .colorcoded-wrapper .circle-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .sideBar .panel .colorcoded-wrapper .circle-wrapper .circle-label {
+    font-size: 12px;
+    margin-top: 4px;
+    text-align: center;
+    color: #ffffff;
+  }
+  
+  .sideBar .panel .colorcoded-wrapper .circle-wrapper .circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    margin: 0 4px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .sideBar .panel .colorcoded-wrapper .money-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .sideBar .panel .colorcoded-wrapper .money-wrapper .money {
+    width: 70px;
+    height: 50px;
+    border-radius: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    margin: 0 4px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .sideBar .panel .colorcoded-wrapper .money-wrapper .annotate {
+    width: 70px;
+    height: 20px;
+    color: #fff;
+    background-color: #374151;
+    border-radius: 4px;
+    display: flex;
+    font-weight: 100;
+    font-size: small;
+    align-items: center;
+  }
+  
+  .sideBar .panel .colorcoded-wrapper .money-wrapper .annotate .text {
+    flex: auto;
+    text-align: center;
+  }
+  
+  .sideBar .panel .colorcoded-wrapper .money-wrapper .money-label {
+    font-size: 12px;
+    margin-top: 4px;
+    text-align: center;
+    color: #ffffff;
+  }
+
 .sideBar .panel .content {
 
 }
