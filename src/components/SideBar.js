@@ -1,4 +1,6 @@
 import React, {useState} from "react";
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
 import './SideBar.css'
 
 const SideBar = ({countryData}) => {
@@ -108,7 +110,26 @@ const SideBar = ({countryData}) => {
                     </div>
                 </div>
                 <div className="barPlot">
-                    rechart bar plot
+                    
+                        <BarChart
+                        width={500}
+                        height={300}
+                        data={countryData.sources}
+                        margin={{
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 5,
+                        }}
+                        >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="value" fill="#8884d8" />
+                        </BarChart>
+                    
                 </div>
 
                 <div className="timeSeries">
