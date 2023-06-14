@@ -112,8 +112,11 @@ const SideBar = ({countryData}) => {
                 <div className="barPlot">
                     
                         <BarChart
+                        barSize={10}
                         width={500}
-                        height={300}
+                        height={500}
+                        barCategoryGap={1}
+                        barGap={1}
                         data={countryData.sources}
                         margin={{
                             top: 5,
@@ -127,7 +130,7 @@ const SideBar = ({countryData}) => {
                         <YAxis />
                         <Tooltip />
                         <Legend />
-                        <Bar dataKey="value" fill="#8884d8" />
+                        <Bar dataKey="value" fill="#8884d8" background={{ fill: '#eee' }} />
                         </BarChart>
                     
                 </div>
