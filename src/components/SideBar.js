@@ -112,6 +112,7 @@ const SideBar = ({countryData}) => {
                 <div className="barPlot">
                     
                         <BarChart
+                        layout="vertical"
                         barSize={10}
                         width={500}
                         height={500}
@@ -126,8 +127,8 @@ const SideBar = ({countryData}) => {
                         }}
                         >
                         <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="name" />
-                        <YAxis />
+                        <YAxis dataKey="name" type="category"/>
+                        <XAxis type="number"/>
                         <Tooltip />
                         <Legend />
                         <Bar dataKey="value" fill="#8884d8" background={{ fill: '#eee' }} />
