@@ -31,7 +31,7 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
     }
   };
   
-  // Actual hover tool logic with API calls
+  // Gets country data for sidebar from APIs
   const handleCountryClick = async (alpha2, name, geography) => {
     try {
       const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
