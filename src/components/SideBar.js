@@ -8,7 +8,7 @@ const SideBar = ({countryData}) => {
 
     const collapse = () => {
         setCollapsed(!collapsed)
-        console.log(typeof countryData)
+        console.log(countryData)
     }
 
       // Color coding for democracy index
@@ -84,9 +84,6 @@ const SideBar = ({countryData}) => {
                 <div className="title">
                     {countryData.name.value}
                 </div>
-                <div className="content">
-                    Some content
-                </div>
                 <div className="colorcoded-wrapper">
                     <div className="money-wrapper">
                         <div className="money" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
@@ -97,18 +94,25 @@ const SideBar = ({countryData}) => {
                     </div>
 
                     <div className='circle-wrapper'>
-                        <div className="circle" style={{ backgroundColor: getDemocracyColor(countryData.democracy_index.value) }}>
+                        <div className="circle" style={{width: collapsed ? '0%' : '70px', backgroundColor: getDemocracyColor(countryData.democracy_index.value) }}>
                         {countryData.democracy_index.value}
                         </div>
                         <span className='circle-label'>Democracy Index<sup>[1]</sup></span>
                     </div>
 
                     <div className='circle-wrapper'>
-                        <div className="circle" style={{ backgroundColor: getPeaceColor(countryData.peace_index.value) }}>
+                        <div className="circle" style={{width: collapsed ? '0%' : '70px', backgroundColor: getPeaceColor(countryData.peace_index.value) }}>
                         {countryData.peace_index.value}
                         </div>
                         <span className='circle-label'>Peace Index <sup>[2]</sup></span>
                     </div>
+                </div>
+                <div className="barPlot">
+                    rechart bar plot
+                </div>
+
+                <div className="timeSeries">
+                    Time Series
                 </div>
 
                 <button 

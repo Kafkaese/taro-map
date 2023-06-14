@@ -34,18 +34,23 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
   
   // Gets country data for sidebar from APIs
   const handleCountryClick = async (alpha2, name, geography) => {
+
     try {
+
+      const name = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
       const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
       const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
       const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
-      const name = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
-      
+      const sources = await fetch(`http://${HOST}:${API_PORT}/imports/arms/year_all?country_code=${alpha2}&year=${year}`)
+
       const name_data = await name.json();
       const democracy_index_data = await democracy_index.json();
       const peace_index_data = await peace_index.json();
       const total_imports_data = await total_imports.json();
-      
-      setActiveCountryData({ name: name_data, democracy_index: democracy_index_data, peace_index: peace_index_data,total_imports: total_imports_data});
+      const sources_data = await sources.json()
+
+      // update object with new data
+      setActiveCountryData({ name: name_data, democracy_index: democracy_index_data, peace_index: peace_index_data, total_imports: total_imports_data, sources: sources_data});
 
 
     } catch (error) {
