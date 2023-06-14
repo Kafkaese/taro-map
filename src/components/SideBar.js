@@ -115,7 +115,7 @@ const SideBar = ({countryData, collapsed, onCollapse}) => {
                         layout="vertical"
                         barSize={10}
                         width={collapsed ? 0 : 500}
-                        height={500}
+                        height={200}
                         barCategoryGap={1}
                         barGap={1}
                         data={countryData.sources}
