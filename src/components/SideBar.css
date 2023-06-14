@@ -109,10 +109,14 @@
     margin-top: 4px;
     text-align: center;
     color: #ffffff;
+    
   }
 
 .sideBar .panel .barPlot {
-    background: purple;
+    text-align: center;
+    color: white;
+    text-decoration: underline;
+    margin-top: 10px;
 }
 
 .sideBar .panel .timeSeries {

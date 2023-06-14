@@ -110,8 +110,8 @@ const SideBar = ({countryData}) => {
                     </div>
                 </div>
                 <div className="barPlot">
-                    
-                        <BarChart
+                    <div>Distribution of Imports</div>
+                    <BarChart
                         layout="vertical"
                         barSize={10}
                         width={500}
@@ -125,13 +125,12 @@ const SideBar = ({countryData}) => {
                             left: 20,
                             bottom: 5,
                         }}
-                        >
-                        
+                    >
                         <YAxis dataKey="name" type="category"/>
                         <XAxis type="number" domain={[0, countryData.total_imports.value]} tick={false}/>
                         <Tooltip />
                         <Bar dataKey="value" fill="#8884d8" background={{ fill: '#eee' }} />
-                        </BarChart>
+                    </BarChart>
                     
                 </div>
 
