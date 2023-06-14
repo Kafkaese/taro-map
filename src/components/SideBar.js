@@ -99,22 +99,22 @@ const SideBar = ({countryData}) => {
                         <div className="circle" style={{width: collapsed ? '0%' : '70px', backgroundColor: getDemocracyColor(countryData.democracy_index.value) }}>
                         {countryData.democracy_index.value}
                         </div>
-                        <span className='circle-label'>Democracy Index<sup>[1]</sup></span>
+                        <span className='circle-label' style={{width: collapsed ? '0%' : '100%'}}>Democracy Index<sup>[1]</sup></span>
                     </div>
 
                     <div className='circle-wrapper'>
                         <div className="circle" style={{width: collapsed ? '0%' : '70px', backgroundColor: getPeaceColor(countryData.peace_index.value) }}>
                         {countryData.peace_index.value}
                         </div>
-                        <span className='circle-label'>Peace Index <sup>[2]</sup></span>
+                        <span className='circle-label' style={{width: collapsed ? '0%' : '100%'}}>Peace Index <sup>[2]</sup></span>
                     </div>
                 </div>
                 <div className="barPlot">
-                    <div>Distribution of Imports</div>
+                    <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>Distribution of Imports</div>
                     <BarChart
                         layout="vertical"
                         barSize={10}
-                        width={500}
+                        width={collapsed ? 0 : 500}
                         height={500}
                         barCategoryGap={1}
                         barGap={1}
