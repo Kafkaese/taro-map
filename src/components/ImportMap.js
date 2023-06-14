@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
+import SideBar from './SideBar';
 
 import './HoverBox.css';
 
@@ -154,6 +155,7 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
 
   return (
     <div>
+      <SideBar country={countryData}></SideBar>
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}

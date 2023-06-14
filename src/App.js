@@ -78,7 +78,6 @@ const App = () => {
         <button className='button' onClick={handleZoomOut}>-</button>
       </div>
 
-      <SideBar country={countryData}></SideBar>
       {showExports ? <ExportMap className='map' year={year} zoom={zoom} onCountryChange={handleCountryChange}/> : <ImportMap className='map' year={year} zoom={zoom} onCountryChange={handleCountryChange}/>}
       
       <div className='slider-container'>
