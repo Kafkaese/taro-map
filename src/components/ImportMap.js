@@ -13,6 +13,9 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
   const defaultColor = '#84B098';
   const hoverColor = '#66B087';
   
+  // Data fot sidebar
+  const [activeCountryData, setActiveCountryData] = useState({});
+
   // Map states
   //const [zoom, setZoom] = useState(1);
   const [hoveredCountry, setHoveredCountry] = useState(null);
@@ -28,6 +31,26 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
     }
   };
   
+  // Actual hover tool logic with API calls
+  const handleCountryClick = async (alpha2, name, geography) => {
+    try {
+      const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
+      const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
+      const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
+      const name = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
+      
+      const name_data = await name.json();
+      const democracy_index_data = await democracy_index.json();
+      const peace_index_data = await peace_index.json();
+      const total_imports_data = await total_imports.json();
+      
+      setActiveCountryData({ name: name_data, democracy_index: democracy_index_data, peace_index: peace_index_data,total_imports: total_imports_data});
+
+
+    } catch (error) {
+      console.error('Error fetching country data:', error);
+    }
+  };
   // Mouse enter  for hover tool
   const handleMouseEnterBox = (event) => {
     setHoveredCountry(null)
@@ -149,7 +172,7 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
                     geography={geo}
                     onMouseOver={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
-                    onClick={() => onCountryChange(alpha2)}
+                    onClick={() => handleCountryClick(alpha2, name, geo)}
                     style={{
                       default: {
                         fill: defaultColor,
