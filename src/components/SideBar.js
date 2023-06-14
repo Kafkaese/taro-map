@@ -3,13 +3,13 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Resp
 
 import './SideBar.css'
 
-const SideBar = ({countryData}) => {
+const SideBar = ({countryData, collapsed, onCollapse}) => {
 
      // Handles collapsebale logic
-    const [collapsed, setCollapsed] = useState(false)
+    //const [collapsed, setCollapsed] = useState(false)
 
     const collapse = () => {
-        setCollapsed(!collapsed)
+        onCollapse(!collapsed)
         console.log(countryData)
     }
 
