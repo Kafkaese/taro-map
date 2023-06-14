@@ -128,7 +128,7 @@ const SideBar = ({countryData}) => {
                         >
                         <CartesianGrid strokeDasharray="3 3" />
                         <YAxis dataKey="name" type="category"/>
-                        <XAxis type="number" domain={[0, countryData.total_imports.value]}/>
+                        <XAxis type="number" domain={[0, countryData.total_imports.value]} tick={false}/>
                         <Tooltip />
                         <Bar dataKey="value" fill="#8884d8" background={{ fill: '#eee' }} />
                         </BarChart>
