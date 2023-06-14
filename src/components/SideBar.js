@@ -113,7 +113,7 @@ const SideBar = ({countryData}) => {
 
                 <button 
                     className="button" 
-                    style={collapsed ? {left: '0%'} : {left: '30%'}}
+                    style={collapsed ? {left: '0%'} : {left: '100%'}}
                     onClick={collapse}
                 >
                     {collapsed ? ">" : "<"} 
