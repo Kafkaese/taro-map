@@ -15,7 +15,7 @@ const SideBar = ({countryData}) => {
         <div className="sideBar">
             <div className="panel" style={collapsed ? {width: '0%'} : {width: '30%'}}>
                 <div className="title">
-                    {typeof countryData.name !== 'undefined' ? countryData.name.value : ""}
+                    {countryData.name.value}
                 </div>
                 <div className="content">
                     Some content
