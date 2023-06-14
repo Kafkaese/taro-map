@@ -35,7 +35,7 @@ const SideBar = ({countryData}) => {
     } else if (value < 2.0) {
       return '#C6FF00' // green-yellow
     } else if (value < 3.0) {
-      return '#FFFF00' // yellow
+      return '#d4d400' // yellow
     } else if (value < 4.0) {
       return '#FFD600' // orange
     } else {
