@@ -55,6 +55,7 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
       // update object with new data
       setActiveCountryData({ name: name_data, democracy_index: democracy_index_data, peace_index: peace_index_data, total_imports: total_imports_data, sources: sources_data});
 
+      setCollapsed(false)
 
     } catch (error) {
       console.error('Error fetching country data:', error);
