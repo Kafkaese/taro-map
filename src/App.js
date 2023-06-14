@@ -3,19 +3,43 @@ import ExportMap from './components/ExportMap';
 import ImportMap from './components/ImportMap';
 import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
+import SideBar from './components/SideBar';
 
 import './App.css'
 
 const App = () => {
 
+  // API url 
+  const HOST = 'localhost'
+  const API_PORT = '8080'
+
+  // Controls which map is shown
   const [showExports, setShowExports] = useState(false) 
 
+  // Sets map active based on state of the button
   const toggleComponent = (leftActive) => {
-    
     leftActive ? setShowExports(false) : setShowExports(true);
   };
 
 
+  // Controls country displayed in side panel
+  const [country, setCountry] = useState("CA")
+  const [countryData, setCountryData] = useState({})
+  const handleCountryChange = (newCountry) => {
+    setCountry(newCountry);
+    getCountryData(newCountry);
+  }
+
+  // Gets country data from API (currenlty only name)
+  const getCountryData = async (alpha2) => {
+    try {
+      const response = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
+      setCountryData(await response.json());
+    } catch (error) {
+      console.error('Error fetching country data:', error);
+    }
+  }
+  
   // Displayed year
   const [year, setYear] = useState(2020)
   const handleYearChange = (newYear) => {
@@ -34,7 +58,7 @@ const App = () => {
 
   return (
     <div className="app" >
-      <style jsx global>{`
+      <style jsx="true" global="true">{`
         body {
           margin: 0px;
           padding: 0px;
@@ -54,7 +78,7 @@ const App = () => {
         <button className='button' onClick={handleZoomOut}>-</button>
       </div>
 
-      {showExports ? <ExportMap className='map' year={year} zoom={zoom}/> : <ImportMap className='map' year={year} zoom={zoom}/>}
+      {showExports ? <ExportMap className='map' year={year} zoom={zoom} onCountryChange={handleCountryChange}/> : <ImportMap className='map' year={year} zoom={zoom} onCountryChange={handleCountryChange}/>}
       
       <div className='slider-container'>
         <YearSlider onYearChange={handleYearChange}></YearSlider>
