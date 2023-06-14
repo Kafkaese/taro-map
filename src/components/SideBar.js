@@ -126,7 +126,7 @@ const SideBar = ({countryData}) => {
                             bottom: 5,
                         }}
                         >
-                        <CartesianGrid strokeDasharray="3 3" />
+                        
                         <YAxis dataKey="name" type="category"/>
                         <XAxis type="number" domain={[0, countryData.total_imports.value]} tick={false}/>
                         <Tooltip />
