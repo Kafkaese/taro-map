@@ -155,7 +155,7 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
 
   return (
     <div>
-      <SideBar country={countryData}></SideBar>
+      <SideBar countryData={activeCountryData}></SideBar>
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}
