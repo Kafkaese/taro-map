@@ -3,12 +3,12 @@ import './SideBar.css'
 
 const SideBar = ({countryData}) => {
 
+     // Handles collapsebale logic
     const [collapsed, setCollapsed] = useState(false)
 
     const collapse = () => {
         setCollapsed(!collapsed)
         console.log(typeof countryData)
-        console.log(typeof countryData.name === 'undefined')
     }
 
     return (
@@ -23,7 +23,7 @@ const SideBar = ({countryData}) => {
             </div>
             <button 
                 className="button" 
-                style={collapsed ? {left: '0%'} : {left: '30.45%'}}
+                style={collapsed ? {left: '0%'} : {left: '30%'}}
                 onClick={collapse}
             >
                 {collapsed ? ">" : "<"} 
