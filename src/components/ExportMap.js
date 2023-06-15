@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import { getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import PercentageCircle from './PercentageCircle';
+import SideBarExports from './SideBarExports';
 import { HOST, API_PORT } from './env';
 
 /**
@@ -65,8 +66,44 @@ const ExportMap = ({year, zoom}) => {
   };
 
 
+    // Collapse for sidebar
+    const [collapsed, setCollapsed] = useState(false)
+
+    // Data for sidebar
+    const [activeCountryData, setActiveCountryData] = useState({});
+  
+    // Gets country data for sidebar from APIs
+    const handleCountryClick = async (alpha2) => {
+  
+      try {
+  
+        const name = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
+        const totalExports = await fetch(`http://${HOST}:${API_PORT}/exports/year?country_code=${alpha2}&year=${year}`);
+        const sources = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
+        const timeSeries = await fetch(`http://${HOST}:${API_PORT}/exports/arms/timeseries?country_code=${alpha2}`)
+        const merchExports = await fetch(`http://${HOST}:${API_PORT}/exports/merchandise/year?country_code=${alpha2}&year=${year}`)
+  
+        const nameData = await name.json();
+        const totalExportsData = await totalExports.json();
+        const sourcesData = await sources.json()
+        const timeSeriesData = await timeSeries.json()
+        const merchExportData = await merchExports.json()
+  
+        // update object with new data
+        setActiveCountryData({ name: nameData, totalExports: totalExportsData, sources: sourcesData, timeSeries: timeSeriesData, merchExports: merchExportData});
+  
+        // uncollpase sidebar if new country is selected
+        setCollapsed(false)
+
+
+      } catch (error) {
+        console.error('Error fetching country data:', error);
+      }
+    };
+
   return (
     <div>
+      {typeof activeCountryData.name !== 'undefined' ? <SideBarExports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year}></SideBarExports> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}
@@ -85,7 +122,7 @@ const ExportMap = ({year, zoom}) => {
                     geography={geo}
                     onMouseOver={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
-                    onClick={() => onCountryChange(alpha2)}
+                    onClick={() => handleCountryClick(alpha2)}
                     style={{
                       default: {
                         fill: defaultColor,
