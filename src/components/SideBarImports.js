@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line,} from 'recharts';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import './SideBarImports.css'
 
@@ -12,9 +12,9 @@ import './SideBarImports.css'
  * @param {object} countryData Data to be sidplayed in the side bar for the currently selected country
  * @param {boolean} collapsed Wether or not the side bar is currently collapsed. 
  * @param {function} onCollapse Funcion to be called when the side bar is being (un-)collapsed by the cooresponding button. 
- * 
+ * @param {integer} year Year currently selected on the parent map. Influences the data being displayed.
  */
-const SideBarImports = ({countryData, collapsed, onCollapse}) => {
+const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
 
     const collapse = () => {
         onCollapse(!collapsed)
@@ -51,7 +51,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse}) => {
                     </div>
                 </div>
                 <div className="barPlot">
-                    <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>Distribution of Imports</div>
+                    <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Distribution of Imports ${year}`}</div>
                     <BarChart
                         layout="vertical"
                         barSize={10}

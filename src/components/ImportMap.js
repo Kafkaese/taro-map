@@ -88,15 +88,17 @@ const ImportMap = ({year, zoom}) => {
       const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
       const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
       const sources = await fetch(`http://${HOST}:${API_PORT}/imports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
+      const timeSeries = await fetch(`http://${HOST}:${API_PORT}/imports/arms/timeseries?country_code=${alpha2}`)
 
       const name_data = await name.json();
       const democracy_index_data = await democracy_index.json();
       const peace_index_data = await peace_index.json();
       const total_imports_data = await total_imports.json();
       const sources_data = await sources.json()
+      const timeSeriesData = await timeSeries.json()
 
       // update object with new data
-      setActiveCountryData({ name: name_data, democracy_index: democracy_index_data, peace_index: peace_index_data, total_imports: total_imports_data, sources: sources_data});
+      setActiveCountryData({ name: name_data, democracy_index: democracy_index_data, peace_index: peace_index_data, total_imports: total_imports_data, sources: sources_data, timeSeries: timeSeriesData});
 
       // uncollpase sidebar if new country is selected
       setCollapsed(false)
@@ -109,7 +111,7 @@ const ImportMap = ({year, zoom}) => {
 
   return (
     <div>
-      {typeof activeCountryData.name !== 'undefined' ? <SideBarImports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed}></SideBarImports> : <div/>}
+      {typeof activeCountryData.name !== 'undefined' ? <SideBarImports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year}></SideBarImports> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}
