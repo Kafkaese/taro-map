@@ -5,7 +5,9 @@ import { PieChart, Pie, Label} from 'recharts';
 const PercentageCircle = ({percentage}) => {
 
     const translateAngle = (value) => {
+
         return (value/100) * -360 +90;
+
       }
 
     return (
@@ -28,7 +30,7 @@ const PercentageCircle = ({percentage}) => {
                 dataKey="value"
                 isAnimationActive={false}
                 startAngle={90}
-                endAngle={translateAngle(percentage)}
+                endAngle={Number.isFinite(percentage) ? translateAngle(percentage) : 90}
                 data={[{value: 1}]}
                 cx="50%"
                 cy="50%"
@@ -40,7 +42,7 @@ const PercentageCircle = ({percentage}) => {
                 <Label 
                     position="center"
                     >
-                    {!Number.isNaN(percentage) ? (Math.round(percentage) > 0 ?`${Math.round(percentage)}%` : "<1%") : "?%"}
+                    {!Number.isNaN(percentage) && Number.isFinite(percentage) ? (Math.round(percentage) > 0 ?`${Math.round(percentage)}%` : "<1%") : "?%"}
                     </Label>
                 </Pie>
 
