@@ -29,7 +29,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                     {countryData.name.value}
                 </div>
                 <div className="colorcoded-wrapper">
-                    <div className="money-wrapper">
+                    <div className="money-wrapper" style={{widht: collapsed ? '0px' : '70px', overflow: "hidden"}}>
                         <div className="money" style={{ backgroundColor: getUSDColor(countryData.totalExports.value) }}>
                             {formatUSDvalue(countryData.totalExports.value)}
                         </div>
@@ -37,7 +37,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                         <span className='money-label'>Exports</span>
                     </div>
 
-                    <div className='circle-wrapper' >
+                    <div className='circle-wrapper' style={{widht: collapsed ? '0px' : '70px', overflow: "hidden"}}>
                         <PercentageCircle percentage={((countryData.totalExports.value/1000000) / countryData.merchExports.value) * 100} style={{widht: collapsed ? '0px' : '70px', overflow: "hidden"}}/>
                         <span className='circle-label' style={{width: collapsed ? '0' : '100%', }}>Percentage of Exports<sup>[1]</sup></span>
                     </div>
