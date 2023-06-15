@@ -43,7 +43,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                     </div>
                 </div>
                 <div className="barPlot">
-                    <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Distribution of Imports ${year}`}</div>
+                    <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Distribution of Exports ${year}`}</div>
                     <BarChart
                         layout="vertical"
                         barSize={10}
