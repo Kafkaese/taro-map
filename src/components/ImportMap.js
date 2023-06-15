@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
+import { HOST, API_PORT } from './env';
 import SideBar from './SideBar';
 
 import './HoverBox.css';
 
 const ImportMap = ({year, zoom, onCountryChange}) => {
-
-  // API url 
-  const HOST = 'localhost'
-  const API_PORT = '8080'
 
   // map defaulo colors
   const defaultColor = '#84B098';
