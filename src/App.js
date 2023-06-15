@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ExportMap from './components/ExportMap';
 import ImportMap from './components/ImportMap';
 import YearSlider from './components/YearSlider';
@@ -23,8 +23,7 @@ const App = () => {
   // Displayed year
   const [year, setYear] = useState(2020)
   const handleYearChange = (newYear) => {
-    setYear(newYear);
-    updateActiveCountry(activeCountryAlpha2)
+    setYear(() => newYear);
   }
 
   // Zoom
@@ -45,6 +44,11 @@ const App = () => {
   // Needs to be tracked here for updating activeCountryData on year change
   const [activeCountryAlpha2, setActiveCountryAlpha2] = useState('')
   
+  // Effect to update country on year change only once the state has actually been updated
+  useEffect( () => {
+    updateActiveCountry(activeCountryAlpha2)
+  }, [year])
+
   const updateActiveCountry = async (alpha2) => {
     try {
 
@@ -91,7 +95,6 @@ const App = () => {
       console.error('Error fetching country data:', error);
     }
   }
-
 
   return (
     <div className="app" >
