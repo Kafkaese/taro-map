@@ -91,7 +91,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                     <XAxis dataKey="year" />
                     <YAxis />
                     <Tooltip />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} />
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>
                 </div>
