@@ -1,30 +1,54 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
+import { getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import PercentageCircle from './PercentageCircle';
+import { HOST, API_PORT } from './env';
 
-const ExportMap = ({year, zoom, onCountryChange}) => {
+/**
+ * Renders world map with tooltip with export data and a conditional, collapsible sidebar with more detailed information.
+ * Zoom level and year are controlled by parent component.
+ * 
+ * @param {integer} year Year currently selected. Chnages data that is displayed in tooltip and sidebar
+ * @param {integer} zoom Zoom level for the zoomable component that contains the actual map
+ * @returns 
+ */
+const ExportMap = ({year, zoom}) => {
 
-  const HOST = 'localhost'
-  const API_PORT = '8080'
-
-  // map default colors
+  // geometry colors
   const defaultColor = '#84B098';
   const hoverColor = '#66B087';
 
+  // Hover states
   const [hoveredCountry, setHoveredCountry] = useState(null);
-
-  const [countryData, setCountryData] = useState({});
-
-
+  const [hoveredCountryData, setHoveredCountryData] = useState({});
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
+  // Track mouse and let tooltip follow
   const handleMouseMove = (event) => {
-    const { clientX, clientY } = event;
-    setMousePosition({ x: clientX, y: clientY });
-  };
-  
 
-  const handleCountryHover = async (alpha2, name, geography) => {
+    const { clientX, clientY } = event;
+
+    setMousePosition({ x: clientX, y: clientY });
+
+    if (hoveredCountry) {
+      setHoveredCountry({...hoveredCountry, position: mousePosition})
+    }
+
+  };
+
+  // Mouse enter  for hover tool
+  const handleMouseEnterBox = (event) => {
+    setHoveredCountry(null)
+  }
+  
+  // Remove hover tool when leaving geometry
+  const handleCountryLeave = (event) => {
+    setHoveredCountry(null)
+    event.target.setAttribute('fill', defaultColor);
+  };
+
+  // Tooltip data fetching
+  const handleCountryHover = async (alpha2, name) => {
     try {
       const arms_export_response = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year?country_code=${alpha2}&year=${year}`); 
       const arms_export_data = await arms_export_response.json();
@@ -32,7 +56,7 @@ const ExportMap = ({year, zoom, onCountryChange}) => {
       const merch_export_response = await fetch(`http://${HOST}:${API_PORT}/exports/merchandise/year?country_code=${alpha2}&year=${year}`)
       const merch_export_data = await merch_export_response.json()
 
-      setCountryData({arms_exports: arms_export_data, merch_exports : merch_export_data});
+      setHoveredCountryData({arms_exports: arms_export_data, merch_exports : merch_export_data});
       setHoveredCountry({ name, position: mousePosition });
 
     } catch (error) {
@@ -40,53 +64,6 @@ const ExportMap = ({year, zoom, onCountryChange}) => {
     }
   };
 
-
-  // Color coding for USD import values
-  const getUSDColor = (value) => {
-    if (value >= 4713.75) {
-      return '#8b0000'
-    } else if (value >= 342.5) {
-      return '#ffae42'
-    } else if (value >= 0) {
-      return '#008000'
-    } else {
-      return '#383838'}
-  }
-
-  // Formatting for USD import values to k, mn or bn
-  const formatUSDvalue = (value) => {
-    if (value > 1000000000) {
-      return `${(value / 1000000000).toFixed(2)}`
-    } else if (value > 1000000) {
-      return `${(value / 1000000).toFixed(2)}`
-    } else if (value > 1000) {
-      return `${(value / 1000).toFixed(2)}`
-    }else {
-      return value
-    }
-  }
-  const formatUSDorder = (value) => {
-    if (value > 1000000000) {
-      return "billion"
-    } else if (value > 1000000) {
-      return "million"
-    } else if (value > 1000) {
-      return "thousand"
-    }else {
-      return ""
-    }
-  }
-
-  // Mouse enter  for hover tool
-  const handleMouseEnterBox = (event) => {
-    setHoveredCountry(null)
-  }
-
-  // Remove hover tool whne leaving geometry
-  const handleCountryLeave = (event) => {
-    setHoveredCountry(null)
-    event.target.setAttribute('fill', defaultColor);
-  };
 
   return (
     <div>
@@ -145,15 +122,15 @@ const ExportMap = ({year, zoom, onCountryChange}) => {
         <div className="circle-container">
           
           <div className="money-wrapper">
-              <div className="money" style={{ backgroundColor: getUSDColor(countryData.arms_exports.value) }}>
-                {formatUSDvalue(countryData.arms_exports.value)}
+              <div className="money" style={{ backgroundColor: getUSDColor(hoveredCountryData.arms_exports.value) }}>
+                {formatUSDvalue(hoveredCountryData.arms_exports.value)}
               </div>
-              <div className='annotate'><div className='text'>{formatUSDorder(countryData.arms_exports.value)}</div></div>
+              <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountryData.arms_exports.value)}</div></div>
               <span className='money-label'>'Exports</span>
           </div>
 
           <div className='circle-wrapper'>
-            <PercentageCircle percentage={((countryData.arms_exports.value/1000000) / countryData.merch_exports.value) * 100}/>
+            <PercentageCircle percentage={((hoveredCountryData.arms_exports.value/1000000) / hoveredCountryData.merch_exports.value) * 100}/>
             <span className='circle-label'>Percentage of Exports<sup>[1]</sup></span>
           </div>
           

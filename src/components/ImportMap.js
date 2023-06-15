@@ -1,42 +1,85 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
-import SideBar from './SideBar';
+import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
+import { HOST, API_PORT } from './env';
+import SideBarImports from './SideBarImports';
 
 import './HoverBox.css';
 
-const ImportMap = ({year, zoom, onCountryChange}) => {
+/**
+ * Renders world map with tooltip with import data and a conditional, collapsible sidebar with more detailed information.
+ * Zoom level and year are controlled by parent component.
+ * 
+ * @param {integer} year Year currently selected. Chnages data that is displayed in tooltip and sidebar
+ * @param {integer} zoom Zoom level for the zoomable component that contains the actual map
+ * @returns 
+ */
+const ImportMap = ({year, zoom}) => {
 
-  // API url 
-  const HOST = 'localhost'
-  const API_PORT = '8080'
-
-  // map defaulo colors
+  // geometry colors
   const defaultColor = '#84B098';
   const hoverColor = '#66B087';
-  
-  // Data fot sidebar
-  const [activeCountryData, setActiveCountryData] = useState({});
 
-  // Map states
-  //const [zoom, setZoom] = useState(1);
+  // Hover states
   const [hoveredCountry, setHoveredCountry] = useState(null);
-  const [countryData, setCountryData] = useState({});
+  const [hoveredCountryData, setHoveredCountryData] = useState({});
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // Track mouse and let tooltip follow
+  const handleMouseMove = (event) => {
+
+    const { clientX, clientY } = event;
+
+    setMousePosition({ x: clientX, y: clientY });
+
+    if (hoveredCountry) {
+      setHoveredCountry({...hoveredCountry, position: mousePosition})
+    }
+
+  };
+
+  // Mouse enter  for hover tool
+  const handleMouseEnterBox = (event) => {
+    setHoveredCountry(null)
+  }
+  
+  // Tooltip data fetching 
+  const handleCountryHover = async (alpha2, name) => {
+    try {
+      const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
+      const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
+      const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
+      
+      const democracy_index_data = await democracy_index.json();
+      const peace_index_data = await peace_index.json();
+      const total_imports_data = await total_imports.json();
+     
+      // Populate data for tooltip with API resonses
+      setHoveredCountryData({ democracy_index: democracy_index_data, peace_index: peace_index_data,total_imports: total_imports_data});
+
+      // Set hovered country state
+      setHoveredCountry({ name, position: mousePosition });
+
+    } catch (error) {
+      console.error('Error fetching country data:', error);
+    }
+  };
+
+  // Remove hover tool when leaving geometry
+  const handleCountryLeave = (event) => {
+    setHoveredCountry(null)
+    event.target.setAttribute('fill', defaultColor);
+  };
+
 
   // Collapse for sidebar
   const [collapsed, setCollapsed] = useState(false)
 
-  // Track mouse and hover tool follow
-  const handleMouseMove = (event) => {
-    const { clientX, clientY } = event;
-    setMousePosition({ x: clientX, y: clientY });
-    if (hoveredCountry) {
-      setHoveredCountry({...hoveredCountry, position: mousePosition})
-    }
-  };
-  
+  // Data for sidebar
+  const [activeCountryData, setActiveCountryData] = useState({});
+
   // Gets country data for sidebar from APIs
-  const handleCountryClick = async (alpha2, name, geography) => {
+  const handleCountryClick = async (alpha2) => {
 
     try {
 
@@ -55,116 +98,18 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
       // update object with new data
       setActiveCountryData({ name: name_data, democracy_index: democracy_index_data, peace_index: peace_index_data, total_imports: total_imports_data, sources: sources_data});
 
+      // uncollpase sidebar if new country is selected
       setCollapsed(false)
 
     } catch (error) {
       console.error('Error fetching country data:', error);
     }
   };
-  // Mouse enter  for hover tool
-  const handleMouseEnterBox = (event) => {
-    setHoveredCountry(null)
-  }
 
-  // Actual hover tool logic with API calls
-  const handleCountryHover = async (alpha2, name, geography) => {
-    try {
-      const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
-      const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
-      const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
-      
-      const democracy_index_data = await democracy_index.json();
-      const peace_index_data = await peace_index.json();
-      const total_imports_data = await total_imports.json();
-     
-      setCountryData({ democracy_index: democracy_index_data, peace_index: peace_index_data,total_imports: total_imports_data});
-
-      setHoveredCountry({ name, position: mousePosition });
-
-    } catch (error) {
-      console.error('Error fetching country data:', error);
-    }
-  };
-  
-  // Remove hover tool whne leaving geometry
-  const handleCountryLeave = (event) => {
-    setHoveredCountry(null)
-    event.target.setAttribute('fill', defaultColor);
-  };
-
-
-
-  // Color coding for democracy index
-  const getDemocracyColor = (value) => {
-    if (value >= 9.0) {
-      return '#008000'
-    } else if (value >= 7.0) {
-      return '#98fb98'
-    } else if (value >= 4.0) {
-      return '#ffae42'
-    } else if (value >= 0.0) {
-      return '#8b0000'
-    } else {
-      return '#383838'
-    }
-      
-  }
-
-  // Color coding for peace index
-  const getPeaceColor = (value) => {
-    if (value < 1.0) {
-      return '#00E676' // green
-    } else if (value < 2.0) {
-      return '#C6FF00' // green-yellow
-    } else if (value < 3.0) {
-      return '#d4d400' // yellow
-    } else if (value < 4.0) {
-      return '#FFD600' // orange
-    } else {
-      return '#383838' // red
-    }
-      
-  }
-
-  // Color coding for USD import values
-  const getUSDColor = (value) => {
-    if (value >= 4713.75) {
-      return '#8b0000'
-    } else if (value >= 342.5) {
-      return '#ffae42'
-    } else if (value >= 0) {
-      return '#008000'
-    } else {
-      return '#383838'}
-  }
-
-  // Formatting for USD import values to k, mn or bn
-  const formatUSDvalue = (value) => {
-    if (value > 1000000000) {
-      return `${(value / 1000000000).toFixed(2)}`
-    } else if (value > 1000000) {
-      return `${(value / 1000000).toFixed(2)}`
-    } else if (value > 1000) {
-      return `${(value / 1000).toFixed(2)}`
-    }else {
-      return value
-    }
-  }
-  const formatUSDorder = (value) => {
-    if (value > 1000000000) {
-      return "billion"
-    } else if (value > 1000000) {
-      return "million"
-    } else if (value > 1000) {
-      return "thousand"
-    }else {
-      return ""
-    }
-  }
 
   return (
     <div>
-      {typeof activeCountryData.name !== 'undefined' ? <SideBar countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed}></SideBar> : <div/>}
+      {typeof activeCountryData.name !== 'undefined' ? <SideBarImports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed}></SideBarImports> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}
@@ -183,7 +128,7 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
                     geography={geo}
                     onMouseOver={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
-                    onClick={() => handleCountryClick(alpha2, name, geo)}
+                    onClick={() => handleCountryClick(alpha2)}
                     style={{
                       default: {
                         fill: defaultColor,
@@ -220,23 +165,23 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
         <div className="circle-container">
           
           <div className="money-wrapper">
-            <div className="money" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
-              {formatUSDvalue(countryData.total_imports.value)}
+            <div className="money" style={{ backgroundColor: getUSDColor(hoveredCountryData.total_imports.value) }}>
+              {formatUSDvalue(hoveredCountryData.total_imports.value)}
             </div>
-            <div className='annotate'><div className='text'>{formatUSDorder(countryData.total_imports.value)}</div></div>
+            <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountryData.total_imports.value)}</div></div>
             <span className='money-label'>Imports</span>
           </div>
 
           <div className='circle-wrapper'>
-            <div className="circle" style={{ backgroundColor: getDemocracyColor(countryData.democracy_index.value) }}>
-              {countryData.democracy_index.value}
+            <div className="circle" style={{ backgroundColor: getDemocracyColor(hoveredCountryData.democracy_index.value) }}>
+              {hoveredCountryData.democracy_index.value}
             </div>
             <span className='circle-label'>Democracy Index<sup>[1]</sup></span>
           </div>
 
           <div className='circle-wrapper'>
-            <div className="circle" style={{ backgroundColor: getPeaceColor(countryData.peace_index.value) }}>
-              {countryData.peace_index.value}
+            <div className="circle" style={{ backgroundColor: getPeaceColor(hoveredCountryData.peace_index.value) }}>
+              {hoveredCountryData.peace_index.value}
             </div>
             <span className='circle-label'>Peace Index <sup>[2]</sup></span>
           </div>
