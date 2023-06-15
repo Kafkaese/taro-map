@@ -77,7 +77,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
 
                 <div className="timeSeries">
                 <LineChart
-                width={500}
+                width={collapsed ? 0 : 500}
                 height={300}
                 data={countryData.timeSeries}
                 margin={{
