@@ -51,21 +51,41 @@ const App = () => {
       setActiveCountryAlpha2(alpha2)
 
       const name = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
-      const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
-      const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
-      const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
-      const sources = await fetch(`http://${HOST}:${API_PORT}/imports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
-      const timeSeries = await fetch(`http://${HOST}:${API_PORT}/imports/arms/timeseries?country_code=${alpha2}`)
+      const democracyIndex = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
+      const totalImports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
+      const peaceIndex = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
+      const importSources = await fetch(`http://${HOST}:${API_PORT}/imports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
+      const importTimeSeries = await fetch(`http://${HOST}:${API_PORT}/imports/arms/timeseries?country_code=${alpha2}`)
+      const totalExports = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year?country_code=${alpha2}&year=${year}`); 
+      const exportSources = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
+      const exportTimeSeries = await fetch(`http://${HOST}:${API_PORT}/exports/arms/timeseries?country_code=${alpha2}`)
+      const merchExports = await fetch(`http://${HOST}:${API_PORT}/exports/merchandise/year?country_code=${alpha2}&year=${year}`)
 
-      const name_data = await name.json();
-      const democracy_index_data = await democracy_index.json();
-      const peace_index_data = await peace_index.json();
-      const total_imports_data = await total_imports.json();
-      const sources_data = await sources.json()
-      const timeSeriesData = await timeSeries.json()
+      const nameData = await name.json();
+      const democracyIndexData = await democracyIndex.json();
+      const peaceIndexData = await peaceIndex.json();
+      const totalImportsData = await totalImports.json();
+      const importSourcesData = await importSources.json()
+      const importTimeSeriesData = await importTimeSeries.json()
+      const totalExportsData = await totalExports.json();
+      const exportSourcesData = await exportSources.json()
+      const exportTimeSeriesData = await exportTimeSeries.json()
+      const merchExportData = await merchExports.json()
 
       // update object with new data
-      setActiveCountryData({ name: name_data, democracy_index: democracy_index_data, peace_index: peace_index_data, total_imports: total_imports_data, sources: sources_data, timeSeries: timeSeriesData});
+      setActiveCountryData({ 
+        name: nameData, 
+        democracyIndex: democracyIndexData,
+        peaceIndex: peaceIndexData,
+        totalImports: totalImportsData,
+        importSources: importSourcesData,
+        importTimeSeries: importTimeSeriesData,
+        totalExports: totalExportsData,
+        exportSources: exportSourcesData,
+        exportTimeSeries: exportTimeSeriesData,
+        merchExports: merchExportData
+      });
+        
 
     } catch (error) {
       console.error('Error fetching country data:', error);
