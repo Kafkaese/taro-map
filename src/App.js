@@ -117,7 +117,8 @@ const App = () => {
         <button className='button' onClick={handleZoomIn}>+</button>
         <button className='button' onClick={handleZoomOut}>-</button>
       </div>
-
+      
+      {activeCountryAlpha2 === '' ? <div style={{ color: 'whitesmoke', position: 'absolute', top: '50%', left: '40%'}}>(Click on Country for more Details)</div> : ''}
       {showExports ? <ExportMap className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry}/> : <ImportMap className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry}/>}
       
       <div className='slider-container'>
