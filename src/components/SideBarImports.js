@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line, CartesianGrid, ReferenceLine} from 'recharts';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import './SideBarImports.css'
 
@@ -12,9 +12,9 @@ import './SideBarImports.css'
  * @param {object} countryData Data to be sidplayed in the side bar for the currently selected country
  * @param {boolean} collapsed Wether or not the side bar is currently collapsed. 
  * @param {function} onCollapse Funcion to be called when the side bar is being (un-)collapsed by the cooresponding button. 
- * 
+ * @param {integer} year Year currently selected on the parent map. Influences the data being displayed.
  */
-const SideBarImports = ({countryData, collapsed, onCollapse}) => {
+const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
 
     const collapse = () => {
         onCollapse(!collapsed)
@@ -51,7 +51,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse}) => {
                     </div>
                 </div>
                 <div className="barPlot">
-                    <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>Distribution of Imports</div>
+                    <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Distribution of Imports ${year}`}</div>
                     <BarChart
                         layout="vertical"
                         barSize={10}
@@ -76,7 +76,32 @@ const SideBarImports = ({countryData, collapsed, onCollapse}) => {
                 </div>
 
                 <div className="timeSeries">
-                    Time Series
+                <LineChart
+                width={collapsed ? 0 : 500}
+                height={300}
+                data={countryData.timeSeries}
+                margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="year" />
+                    <YAxis 
+                        tick={false} 
+                        label={{
+                            value: `Total Import Value (EUR)`,
+                            style: { textAnchor: 'middle' },
+                            angle: -90,
+                            position: 'right',
+                            offset: -15,
+                    }}/>
+                    <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}}/>
+                    <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} unit={" EUR"} name="Import value"/>
+                    <ReferenceLine x={year} stroke="red" />
+                </LineChart>
                 </div>
 
                 <button 
