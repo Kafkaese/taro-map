@@ -3,7 +3,6 @@ import ExportMap from './components/ExportMap';
 import ImportMap from './components/ImportMap';
 import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
-import SideBar from './components/SideBar';
 
 import './App.css'
 

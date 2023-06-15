@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import { HOST, API_PORT } from './env';
-import SideBar from './SideBar';
+import SideBarImports from './SideBarImports';
 
 import './HoverBox.css';
 
@@ -92,7 +92,7 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
 
   return (
     <div>
-      {typeof activeCountryData.name !== 'undefined' ? <SideBar countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed}></SideBar> : <div/>}
+      {typeof activeCountryData.name !== 'undefined' ? <SideBarImports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed}></SideBarImports> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}

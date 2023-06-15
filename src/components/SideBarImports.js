@@ -1,12 +1,19 @@
 import React, {useState} from "react";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
-import './SideBar.css'
-
-const SideBar = ({countryData, collapsed, onCollapse}) => {
-
-     // Handles collapsebale logic
-    //const [collapsed, setCollapsed] = useState(false)
+import './SideBarImports.css'
+/**
+ * Sidebar component for Import Map. Shows info for country currently selected on ImportMap:
+ * - name of the country
+ * - Source countries and corresponding mport values for the selected year and country in a bar plot
+ *  
+ * 
+ * @param {object} countryData Data to be sidplayed in the side bar for the currently selected country
+ * @param {boolean} collapsed Wether or not the side bar is currently collapsed. 
+ * @param {function} onCollapse Funcion to be called when the side bar is being (un-)collapsed by the cooresponding button. 
+ * 
+ */
+const SideBarImports = ({countryData, collapsed, onCollapse}) => {
 
     const collapse = () => {
         onCollapse(!collapsed)
@@ -83,4 +90,4 @@ const SideBar = ({countryData, collapsed, onCollapse}) => {
     )
 }
 
-export default SideBar;
+export default SideBarImports;
