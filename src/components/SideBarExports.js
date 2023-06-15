@@ -34,7 +34,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                             {formatUSDvalue(countryData.totalExports.value)}
                         </div>
                         <div className='annotate'><div className='text'>{formatUSDorder(countryData.totalExports.value)}</div></div>
-                        <span className='money-label'>'Exports</span>
+                        <span className='money-label'>Exports</span>
                     </div>
 
                     <div className='circle-wrapper'>

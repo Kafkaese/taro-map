@@ -163,7 +163,7 @@ const ExportMap = ({year, zoom}) => {
                 {formatUSDvalue(hoveredCountryData.arms_exports.value)}
               </div>
               <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountryData.arms_exports.value)}</div></div>
-              <span className='money-label'>'Exports</span>
+              <span className='money-label'>Exports</span>
           </div>
 
           <div className='circle-wrapper'>
