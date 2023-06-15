@@ -1,7 +1,8 @@
-import React, {useState} from "react";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import React from "react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip} from 'recharts';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import './SideBarImports.css'
+
 /**
  * Sidebar component for Import Map. Shows info for country currently selected on ImportMap:
  * - name of the country
