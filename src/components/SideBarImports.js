@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line,} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line, CartesianGrid} from 'recharts';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import './SideBarImports.css'
 
@@ -76,7 +76,23 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                 </div>
 
                 <div className="timeSeries">
-                    Time Series
+                <LineChart
+                width={500}
+                height={300}
+                data={countryData.timeSeries}
+                margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                }}
+                >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="year" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+                </LineChart>
                 </div>
 
                 <button 
