@@ -24,6 +24,7 @@ const App = () => {
   const [year, setYear] = useState(2020)
   const handleYearChange = (newYear) => {
     setYear(newYear);
+    updateActiveCountry(activeCountryAlpha2)
   }
 
   // Zoom
@@ -34,6 +35,42 @@ const App = () => {
   const handleZoomOut = () => {
     setZoom((prevZoom) => prevZoom / 1.2); // Decrease the zoom level
   };
+
+
+
+  
+  // Data for sidebar
+  const [activeCountryData, setActiveCountryData] = useState({});
+
+  // Needs to be tracked here for updating activeCountryData on year change
+  const [activeCountryAlpha2, setActiveCountryAlpha2] = useState('')
+  
+  const updateActiveCountry = async (alpha2) => {
+    try {
+
+      setActiveCountryAlpha2(alpha2)
+
+      const name = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
+      const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
+      const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
+      const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
+      const sources = await fetch(`http://${HOST}:${API_PORT}/imports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
+      const timeSeries = await fetch(`http://${HOST}:${API_PORT}/imports/arms/timeseries?country_code=${alpha2}`)
+
+      const name_data = await name.json();
+      const democracy_index_data = await democracy_index.json();
+      const peace_index_data = await peace_index.json();
+      const total_imports_data = await total_imports.json();
+      const sources_data = await sources.json()
+      const timeSeriesData = await timeSeries.json()
+
+      // update object with new data
+      setActiveCountryData({ name: name_data, democracy_index: democracy_index_data, peace_index: peace_index_data, total_imports: total_imports_data, sources: sources_data, timeSeries: timeSeriesData});
+
+    } catch (error) {
+      console.error('Error fetching country data:', error);
+    }
+  }
 
 
   return (
@@ -58,7 +95,7 @@ const App = () => {
         <button className='button' onClick={handleZoomOut}>-</button>
       </div>
 
-      {showExports ? <ExportMap className='map' year={year} zoom={zoom} /> : <ImportMap className='map' year={year} zoom={zoom} />}
+      {showExports ? <ExportMap className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry}/> : <ImportMap className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry}/>}
       
       <div className='slider-container'>
         <YearSlider onYearChange={handleYearChange}></YearSlider>
