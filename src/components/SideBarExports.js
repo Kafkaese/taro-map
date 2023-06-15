@@ -37,9 +37,9 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                         <span className='money-label'>Exports</span>
                     </div>
 
-                    <div className='circle-wrapper'>
-                        <PercentageCircle percentage={((countryData.totalExports.value/1000000) / countryData.merchExports.value) * 100}/>
-                        <span className='circle-label'>Percentage of Exports<sup>[1]</sup></span>
+                    <div className='circle-wrapper' >
+                        <PercentageCircle percentage={((countryData.totalExports.value/1000000) / countryData.merchExports.value) * 100} style={{widht: collapsed ? '0px' : '70px', overflow: "hidden"}}/>
+                        <span className='circle-label' style={{width: collapsed ? '0' : '100%', }}>Percentage of Exports<sup>[1]</sup></span>
                     </div>
                 </div>
                 <div className="barPlot">
