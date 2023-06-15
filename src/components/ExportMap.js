@@ -4,11 +4,12 @@ import { getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import PercentageCircle from './PercentageCircle';
 import { HOST, API_PORT } from './env';
 
-const ExportMap = ({year, zoom, onCountryChange}) => {
+const ExportMap = ({year, zoom}) => {
 
   // map default colors
   const defaultColor = '#84B098';
   const hoverColor = '#66B087';
+
 
   const [hoveredCountry, setHoveredCountry] = useState(null);
 

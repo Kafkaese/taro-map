@@ -19,25 +19,6 @@ const App = () => {
   const toggleComponent = (leftActive) => {
     leftActive ? setShowExports(false) : setShowExports(true);
   };
-
-
-  // Controls country displayed in side panel
-  const [country, setCountry] = useState("CA")
-  const [countryData, setCountryData] = useState({})
-  const handleCountryChange = (newCountry) => {
-    setCountry(newCountry);
-    getCountryData(newCountry);
-  }
-
-  // Gets country data from API (currenlty only name)
-  const getCountryData = async (alpha2) => {
-    try {
-      const response = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
-      setCountryData(await response.json());
-    } catch (error) {
-      console.error('Error fetching country data:', error);
-    }
-  }
   
   // Displayed year
   const [year, setYear] = useState(2020)
@@ -77,7 +58,7 @@ const App = () => {
         <button className='button' onClick={handleZoomOut}>-</button>
       </div>
 
-      {showExports ? <ExportMap className='map' year={year} zoom={zoom} onCountryChange={handleCountryChange}/> : <ImportMap className='map' year={year} zoom={zoom} onCountryChange={handleCountryChange}/>}
+      {showExports ? <ExportMap className='map' year={year} zoom={zoom} /> : <ImportMap className='map' year={year} zoom={zoom} />}
       
       <div className='slider-container'>
         <YearSlider onYearChange={handleYearChange}></YearSlider>

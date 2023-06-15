@@ -5,8 +5,15 @@ import { HOST, API_PORT } from './env';
 import SideBarImports from './SideBarImports';
 
 import './HoverBox.css';
-
-const ImportMap = ({year, zoom, onCountryChange}) => {
+/**
+ * Renders world map with tooltip with import data and a conditional, collapsible sidebar with more detailed information.
+ * Zoom level and year are controlled by parent component.
+ * 
+ * @param {integer} year Year currently selected. Chnages data that is displayed in tooltip and sidebar
+ * @param {integer} zoom Zoom level for the zoomable component that contains the actual map
+ * @returns 
+ */
+const ImportMap = ({year, zoom}) => {
 
   // geometry colors
   const defaultColor = '#84B098';
@@ -101,7 +108,7 @@ const ImportMap = ({year, zoom, onCountryChange}) => {
 
   return (
     <div>
-      {typeof activeCountryData.name !== 'undefined' ? <SideBarImports hoveredCountryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed}></SideBarImports> : <div/>}
+      {typeof activeCountryData.name !== 'undefined' ? <SideBarImports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed}></SideBarImports> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}
