@@ -5,6 +5,7 @@ import { HOST, API_PORT } from './env';
 import SideBarImports from './SideBarImports';
 
 import './HoverBox.css';
+
 /**
  * Renders world map with tooltip with import data and a conditional, collapsible sidebar with more detailed information.
  * Zoom level and year are controlled by parent component.
