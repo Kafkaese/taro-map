@@ -13,7 +13,7 @@ import { HOST, API_PORT } from './env';
  * @param {integer} zoom Zoom level for the zoomable component that contains the actual map
  * @returns 
  */
-const ExportMap = ({year, zoom}) => {
+const ExportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
 
   // geometry colors
   const defaultColor = '#84B098';
@@ -68,37 +68,16 @@ const ExportMap = ({year, zoom}) => {
 
     // Collapse for sidebar
     const [collapsed, setCollapsed] = useState(false)
-
-    // Data for sidebar
-    const [activeCountryData, setActiveCountryData] = useState({});
   
     // Gets country data for sidebar from APIs
     const handleCountryClick = async (alpha2) => {
-  
-      try {
-  
-        const name = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
-        const totalExports = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year?country_code=${alpha2}&year=${year}`); 
-        const sources = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
-        const timeSeries = await fetch(`http://${HOST}:${API_PORT}/exports/arms/timeseries?country_code=${alpha2}`)
-        const merchExports = await fetch(`http://${HOST}:${API_PORT}/exports/merchandise/year?country_code=${alpha2}&year=${year}`)
-  
-        const nameData = await name.json();
-        const totalExportsData = await totalExports.json();
-        const sourcesData = await sources.json()
-        const timeSeriesData = await timeSeries.json()
-        const merchExportData = await merchExports.json()
-  
-        // update object with new data
-        setActiveCountryData({ name: nameData, totalExports: totalExportsData, sources: sourcesData, timeSeries: timeSeriesData, merchExports: merchExportData});
-  
-        // uncollpase sidebar if new country is selected
-        setCollapsed(false)
+      
+        // Call update function on parent
+      updateActiveCountry(alpha2);
 
-
-      } catch (error) {
-        console.error('Error fetching country data:', error);
-      }
+      // uncollpase sidebar if new country is selected
+      setCollapsed(false)
+     
     };
 
   return (

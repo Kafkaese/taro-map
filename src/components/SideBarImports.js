@@ -29,23 +29,23 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                 </div>
                 <div className="colorcoded-wrapper">
                     <div className="money-wrapper">
-                        <div className="money" style={{ backgroundColor: getUSDColor(countryData.total_imports.value) }}>
-                        {formatUSDvalue(countryData.total_imports.value)}
+                        <div className="money" style={{ backgroundColor: getUSDColor(countryData.totalImports.value) }}>
+                        {formatUSDvalue(countryData.totalImports.value)}
                         </div>
-                        <div className='annotate'><div className='text'>{formatUSDorder(countryData.total_imports.value)}</div></div>
+                        <div className='annotate'><div className='text'>{formatUSDorder(countryData.totalImports.value)}</div></div>
                         <span className='money-label'>Imports</span>
                     </div>
 
                     <div className='circle-wrapper'>
-                        <div className="circle" style={{width: collapsed ? '0%' : '70px', backgroundColor: getDemocracyColor(countryData.democracy_index.value) }}>
-                        {countryData.democracy_index.value}
+                        <div className="circle" style={{width: collapsed ? '0%' : '70px', backgroundColor: getDemocracyColor(countryData.democracyIndex.value) }}>
+                        {countryData.democracyIndex.value}
                         </div>
                         <span className='circle-label' style={{width: collapsed ? '0%' : '100%'}}>Democracy Index<sup>[1]</sup></span>
                     </div>
 
                     <div className='circle-wrapper'>
-                        <div className="circle" style={{width: collapsed ? '0%' : '70px', backgroundColor: getPeaceColor(countryData.peace_index.value) }}>
-                        {countryData.peace_index.value}
+                        <div className="circle" style={{width: collapsed ? '0%' : '70px', backgroundColor: getPeaceColor(countryData.peaceIndex.value) }}>
+                        {countryData.peaceIndex.value}
                         </div>
                         <span className='circle-label' style={{width: collapsed ? '0%' : '100%'}}>Peace Index <sup>[2]</sup></span>
                     </div>
@@ -59,7 +59,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         height={200}
                         barCategoryGap={1}
                         barGap={1}
-                        data={countryData.sources}
+                        data={countryData.importSources}
                         margin={{
                             top: 5,
                             right: 30,
@@ -68,7 +68,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         }}
                     >
                         <YAxis dataKey="name" type="category"/>
-                        <XAxis type="number" domain={[0, countryData.total_imports.value]} tick={false}/>
+                        <XAxis type="number" domain={[0, countryData.totalImports.value]} tick={false}/>
                         <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}}/>
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} unit={" EUR"} name="Import value"/>
                     </BarChart>
@@ -79,7 +79,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                 <LineChart
                 width={collapsed ? 0 : 500}
                 height={300}
-                data={countryData.timeSeries}
+                data={countryData.importTimeSeries}
                 margin={{
                     top: 5,
                     right: 30,

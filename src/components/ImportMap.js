@@ -46,16 +46,16 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   // Tooltip data fetching 
   const handleCountryHover = async (alpha2, name) => {
     try {
-      const democracy_index = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
-      const total_imports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
-      const peace_index = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
+      const democracyIndex = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
+      const totalImports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
+      const peaceIndex = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
       
-      const democracy_index_data = await democracy_index.json();
-      const peace_index_data = await peace_index.json();
-      const total_imports_data = await total_imports.json();
+      const democracyIndexData = await democracyIndex.json();
+      const peaceIndexData = await peaceIndex.json();
+      const totalImportsData = await totalImports.json();
      
       // Populate data for tooltip with API resonses
-      setHoveredCountryData({ democracy_index: democracy_index_data, peace_index: peace_index_data,total_imports: total_imports_data});
+      setHoveredCountryData({ democracyIndex: democracyIndexData, peaceIndex: peaceIndexData,totalImports: totalImportsData});
 
       // Set hovered country state
       setHoveredCountry({ name, position: mousePosition });
@@ -144,23 +144,23 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
         <div className="circle-container">
           
           <div className="money-wrapper">
-            <div className="money" style={{ backgroundColor: getUSDColor(hoveredCountryData.total_imports.value) }}>
-              {formatUSDvalue(hoveredCountryData.total_imports.value)}
+            <div className="money" style={{ backgroundColor: getUSDColor(hoveredCountryData.totalImports.value) }}>
+              {formatUSDvalue(hoveredCountryData.totalImports.value)}
             </div>
-            <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountryData.total_imports.value)}</div></div>
+            <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountryData.totalImports.value)}</div></div>
             <span className='money-label'>Imports</span>
           </div>
 
           <div className='circle-wrapper'>
-            <div className="circle" style={{ backgroundColor: getDemocracyColor(hoveredCountryData.democracy_index.value) }}>
-              {hoveredCountryData.democracy_index.value}
+            <div className="circle" style={{ backgroundColor: getDemocracyColor(hoveredCountryData.democracyIndex.value) }}>
+              {hoveredCountryData.democracyIndex.value}
             </div>
             <span className='circle-label'>Democracy Index<sup>[1]</sup></span>
           </div>
 
           <div className='circle-wrapper'>
-            <div className="circle" style={{ backgroundColor: getPeaceColor(hoveredCountryData.peace_index.value) }}>
-              {hoveredCountryData.peace_index.value}
+            <div className="circle" style={{ backgroundColor: getPeaceColor(hoveredCountryData.peaceIndex.value) }}>
+              {hoveredCountryData.peaceIndex.value}
             </div>
             <span className='circle-label'>Peace Index <sup>[2]</sup></span>
           </div>
