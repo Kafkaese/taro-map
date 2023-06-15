@@ -71,7 +71,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                 <LineChart
                 width={collapsed ? 0 : 500}
                 height={300}
-                data={countryData.timeSeries}
+                data={countryData.exportTimeSeries}
                 margin={{
                     top: 5,
                     right: 30,
