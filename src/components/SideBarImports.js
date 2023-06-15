@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line, CartesianGrid} from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line, CartesianGrid, ReferenceLine} from 'recharts';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import './SideBarImports.css'
 
@@ -92,6 +92,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                     <YAxis />
                     <Tooltip />
                     <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+                    <ReferenceLine x={year} stroke="red" />
                 </LineChart>
                 </div>
 
