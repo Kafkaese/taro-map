@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
+import { getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import PercentageCircle from './PercentageCircle';
 
 const ExportMap = ({year, zoom, onCountryChange}) => {
@@ -40,42 +41,6 @@ const ExportMap = ({year, zoom, onCountryChange}) => {
     }
   };
 
-
-  // Color coding for USD import values
-  const getUSDColor = (value) => {
-    if (value >= 4713.75) {
-      return '#8b0000'
-    } else if (value >= 342.5) {
-      return '#ffae42'
-    } else if (value >= 0) {
-      return '#008000'
-    } else {
-      return '#383838'}
-  }
-
-  // Formatting for USD import values to k, mn or bn
-  const formatUSDvalue = (value) => {
-    if (value > 1000000000) {
-      return `${(value / 1000000000).toFixed(2)}`
-    } else if (value > 1000000) {
-      return `${(value / 1000000).toFixed(2)}`
-    } else if (value > 1000) {
-      return `${(value / 1000).toFixed(2)}`
-    }else {
-      return value
-    }
-  }
-  const formatUSDorder = (value) => {
-    if (value > 1000000000) {
-      return "billion"
-    } else if (value > 1000000) {
-      return "million"
-    } else if (value > 1000) {
-      return "thousand"
-    }else {
-      return ""
-    }
-  }
 
   // Mouse enter  for hover tool
   const handleMouseEnterBox = (event) => {
