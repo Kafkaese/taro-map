@@ -82,7 +82,7 @@ const ExportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
 
   return (
     <div>
-      {typeof activeCountryData.name !== 'undefined' ? <SideBarExports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year}></SideBarExports> : <div/>}
+      {activeCountryData.name.value !== 'no data' ? <SideBarExports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year}></SideBarExports> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}
