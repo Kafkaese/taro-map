@@ -1,18 +1,18 @@
 .sideBar .panel {
     position: absolute;
-    height: 90%;
-    top: 55px;
+    height: 88%;
+    top: 41.5px;
     background: #101827;
     border: solid 5px black;
     border-left: 0px;
-    border-radius: 0px 25px;
+    border-radius: 0px 25px 25px 0px;
     display: flex;
     flex-direction: column;
 }
 
 .sideBar .button {
     position: absolute;
-    top: 55%;
+    top: 45%;
     width: 20px;
     height: 150px;
     background: #101827;
