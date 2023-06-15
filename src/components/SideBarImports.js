@@ -89,7 +89,15 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                 >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="year" />
-                    <YAxis />
+                    <YAxis 
+                        tick={false} 
+                        label={{
+                            value: `Total Import Value (EUR)`,
+                            style: { textAnchor: 'middle' },
+                            angle: -90,
+                            position: 'right',
+                            offset: -15,
+                    }}/>
                     <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}}/>
                     <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} unit={" EUR"} name="Import value"/>
                     <ReferenceLine x={year} stroke="red" />
