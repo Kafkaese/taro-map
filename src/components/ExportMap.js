@@ -78,7 +78,7 @@ const ExportMap = ({year, zoom}) => {
       try {
   
         const name = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
-        const totalExports = await fetch(`http://${HOST}:${API_PORT}/exports/year?country_code=${alpha2}&year=${year}`);
+        const totalExports = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year?country_code=${alpha2}&year=${year}`); 
         const sources = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
         const timeSeries = await fetch(`http://${HOST}:${API_PORT}/exports/arms/timeseries?country_code=${alpha2}`)
         const merchExports = await fetch(`http://${HOST}:${API_PORT}/exports/merchandise/year?country_code=${alpha2}&year=${year}`)
