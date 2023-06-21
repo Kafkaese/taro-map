@@ -3,7 +3,7 @@ import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simp
 import { getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import PercentageCircle from './PercentageCircle';
 import SideBarExports from './SideBarExports';
-import { HOST, API_PORT } from './env';
+
 
 /**
  * Renders world map with tooltip with export data and a conditional, collapsible sidebar with more detailed information.
@@ -14,6 +14,10 @@ import { HOST, API_PORT } from './env';
  * @returns 
  */
 const ExportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
+
+  // API vars from env
+  const HOST = process.env.REACT_APP_API_HOST
+  const API_PORT = process.env.REACT_APP_API_PORT
 
   // geometry colors
   const defaultColor = '#84B098';
@@ -82,7 +86,7 @@ const ExportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
 
   return (
     <div>
-      {typeof activeCountryData.name !== 'undefined' ? <SideBarExports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year}></SideBarExports> : <div/>}
+      {activeCountryData.name.value !== 'no data' ? <SideBarExports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year}></SideBarExports> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}

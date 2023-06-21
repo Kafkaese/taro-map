@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
-import { HOST, API_PORT } from './env';
 import SideBarImports from './SideBarImports';
 
 import './HoverBox.css';
@@ -15,6 +14,10 @@ import './HoverBox.css';
  * @returns 
  */
 const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
+
+  // API vars from env
+  const HOST = process.env.REACT_APP_API_HOST
+  const API_PORT = process.env.REACT_APP_API_PORT
 
   // geometry colors
   const defaultColor = '#84B098';
@@ -88,7 +91,7 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
 
   return (
     <div>
-      {typeof activeCountryData.name !== 'undefined' ? <SideBarImports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year}></SideBarImports> : <div/>}
+      {typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data' ? <SideBarImports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year}></SideBarImports> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}
