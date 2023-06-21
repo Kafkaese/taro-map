@@ -16,7 +16,7 @@ jobs:
           name: Build & push Docker image
           with:
             image: kafkaese/taro
-            tags: react v1
+            tags: react, v1
             registry: docker.io
             dockerfile: Dockerfile_prod
             username: ${{ secrets.DOCKER_USERNAME }}
