@@ -14,10 +14,10 @@ test("renders ToggleButton without errors", () => {
 test("left option is initially selected", () => {
   render(<ToggleButton left="Left" right="Right" onToggleChange={() => {}} />);
 
-  const leftOption = screen.getByText("Left");
+  const leftOption = screen.getByTestId("left-option");
   expect(leftOption).toHaveClass("text-box-active");
 
-  const rightOption = screen.getByText("Right");
+  const rightOption = screen.getByTestId("right-option");
   expect(rightOption).toHaveClass("text-box");
 });
 
@@ -35,7 +35,7 @@ test("clicking right option updates state and applies active class", () => {
     />
   );
 
-  const rightOption = screen.getByText("Right");
+  const rightOption = screen.getByTestId("right-option");
   fireEvent.click(rightOption);
 
   expect(toggleState).toBe(false);
@@ -56,7 +56,7 @@ test("clicking left option updates state and applies active class", () => {
     />
   );
 
-  const leftOption = screen.getByText("Left");
+  const leftOption = screen.getByTestId("left-option");
   fireEvent.click(leftOption);
 
   expect(toggleState).toBe(true);
