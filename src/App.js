@@ -8,8 +8,7 @@ import './App.css'
 
 function App() {
 
-  // API url 
-  console.log(process.env)
+  // API vars from env
   const HOST = process.env.REACT_APP_API_HOST
   const API_PORT = process.env.REACT_APP_API_PORT
 
