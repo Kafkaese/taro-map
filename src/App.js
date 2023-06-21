@@ -6,11 +6,12 @@ import ToggleButton from './components/ToggleButton';
 
 import './App.css'
 
-const App = () => {
+function App() {
 
   // API url 
-  const HOST = 'localhost'
-  const API_PORT = '8080'
+  console.log(process.env)
+  const HOST = process.env.REACT_APP_API_HOST
+  const API_PORT = process.env.REACT_APP_API_PORT
 
   // Controls which map is shown
   const [showExports, setShowExports] = useState(false) 
