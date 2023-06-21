@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ExportMap from './components/ExportMap';
 import ImportMap from './components/ImportMap';
 import YearSlider from './components/YearSlider';
@@ -9,7 +9,7 @@ import './App.css'
 function App() {
 
   // API vars from env
-  const HOST = process.env.REACT_APP_API_HOST
+  const API_HOST = process.env.REACT_APP_API_HOST
   const API_PORT = process.env.REACT_APP_API_PORT
 
   // Controls which map is shown
@@ -44,26 +44,21 @@ function App() {
   // Needs to be tracked here for updating activeCountryData on year change
   const [activeCountryAlpha2, setActiveCountryAlpha2] = useState('')
   
-  // Effect to update country on year change only once the state has actually been updated
-  useEffect( () => {
-    updateActiveCountry(activeCountryAlpha2)
-  }, [year])
-
-  const updateActiveCountry = async (alpha2) => {
+  const updateActiveCountry = useCallback(async (alpha2) => {
     try {
 
       setActiveCountryAlpha2(alpha2)
 
-      const name = await fetch(`http://${HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
-      const democracyIndex = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
-      const totalImports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
-      const peaceIndex = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
-      const importSources = await fetch(`http://${HOST}:${API_PORT}/imports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
-      const importTimeSeries = await fetch(`http://${HOST}:${API_PORT}/imports/arms/timeseries?country_code=${alpha2}`)
-      const totalExports = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year?country_code=${alpha2}&year=${year}`); 
-      const exportSources = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
-      const exportTimeSeries = await fetch(`http://${HOST}:${API_PORT}/exports/arms/timeseries?country_code=${alpha2}`)
-      const merchExports = await fetch(`http://${HOST}:${API_PORT}/exports/merchandise/year?country_code=${alpha2}&year=${year}`)
+      const name = await fetch(`http://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
+      const democracyIndex = await fetch(`http://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
+      const totalImports = await fetch(`http://${API_HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
+      const peaceIndex = await fetch(`http://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
+      const importSources = await fetch(`http://${API_HOST}:${API_PORT}/imports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
+      const importTimeSeries = await fetch(`http://${API_HOST}:${API_PORT}/imports/arms/timeseries?country_code=${alpha2}`)
+      const totalExports = await fetch(`http://${API_HOST}:${API_PORT}/exports/arms/year?country_code=${alpha2}&year=${year}`); 
+      const exportSources = await fetch(`http://${API_HOST}:${API_PORT}/exports/arms/year_all?country_code=${alpha2}&year=${year}&limit=${5}`)
+      const exportTimeSeries = await fetch(`http://${API_HOST}:${API_PORT}/exports/arms/timeseries?country_code=${alpha2}`)
+      const merchExports = await fetch(`http://${API_HOST}:${API_PORT}/exports/merchandise/year?country_code=${alpha2}&year=${year}`)
 
       const nameData = await name.json();
       const democracyIndexData = await democracyIndex.json();
@@ -94,7 +89,12 @@ function App() {
     } catch (error) {
       console.error('Error fetching country data:', error);
     }
-  }
+  }, [API_PORT, year])
+
+    // Effect to update country on year change only once the state has actually been updated
+    useEffect( () => {
+      updateActiveCountry(activeCountryAlpha2)
+    }, [year, activeCountryAlpha2, updateActiveCountry])
 
   return (
     <div className="app" >
