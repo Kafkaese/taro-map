@@ -1,6 +1,6 @@
 import React from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line, CartesianGrid, ReferenceLine} from 'recharts';
-import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
+import {getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import PercentageCircle from "./PercentageCircle";
 import './SideBarExports.css'
 
