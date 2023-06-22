@@ -55,10 +55,10 @@ const ExportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   // Tooltip data fetching
   const handleCountryHover = async (alpha2, name) => {
     try {
-      const arms_export_response = await fetch(`http://${HOST}:${API_PORT}/exports/arms/year?country_code=${alpha2}&year=${year}`); 
+      const arms_export_response = await fetch(`http://${HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}`); 
       const arms_export_data = await arms_export_response.json();
       
-      const merch_export_response = await fetch(`http://${HOST}:${API_PORT}/exports/merchandise/year?country_code=${alpha2}&year=${year}`)
+      const merch_export_response = await fetch(`http://${HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}`)
       const merch_export_data = await merch_export_response.json()
 
       setHoveredCountryData({arms_exports: arms_export_data, merch_exports : merch_export_data});
