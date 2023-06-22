@@ -51,7 +51,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                         height={200}
                         barCategoryGap={1}
                         barGap={1}
-                        data={countryData.sources}
+                        data={countryData.exportSources}
                         margin={{
                             top: 5,
                             right: 30,
