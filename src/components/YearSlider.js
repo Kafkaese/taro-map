@@ -23,7 +23,7 @@ const YearSlider = ({ onYearChange }) => {
             //marks={[1996, 2001, 2006, 2011, 2016, 2021]}
             markClassName="example-mark"
             trackClassName="example-track"
-            defaultValue={2022}
+            defaultValue={2020}
             max={2022}
             min={1996}
             onChange={handleChange}
