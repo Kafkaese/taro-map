@@ -25,7 +25,6 @@ jobs:
           ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
           ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-          SECRET: ${{ secrets.PGP_SECRET_SIGNING_PASSPHRASE }}
       
       steps:
         - name: Checkout
@@ -61,7 +60,7 @@ jobs:
             - name: Login to Azure with service principal
               uses: azure/login@v1.4.3
               with:
-                creds: ${{ secrets.AZURE_SP_CREDNETIALS }}
+                creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
             - name: 'Loggin to Azure Container Registry'
               run: az acr login --name taroFrontendTestContainerRegistry.azurecr.io
             - name: Set up QEMU
@@ -73,7 +72,7 @@ jobs:
               with:
                 file: ./testing.Dockerfile
                 push: true
-                tags: tarofrontendtestcontainerregistry.azurecr.io/taro:api
+                tags: tarofrontendtestcontainerregistry.azurecr.io/taro:frontend
   
     tf-destroy:
         name: 'Destroy test environment'
