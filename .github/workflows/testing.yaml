@@ -1,0 +1,76 @@
+name: Testing
+
+on: 
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency: test_environment
+
+env: 
+  ENV: test
+
+jobs:
+    tf-setup:
+      name: 'Provision test environment'
+      runs-on: ubuntu-latest
+      outputs:
+        sql-server-encrypted: ${{ steps.terraform.outputs.sql_server_encrypted }}
+      environment: testing
+      env:
+          ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+          ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+          ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+          SECRET: ${{ secrets.PGP_SECRET_SIGNING_PASSPHRASE }}
+      
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: 'Terraform Setup'
+          uses: hashicorp/setup-terraform@v1
+          with:
+            terraform_wrapper: false
+        - name: 'Initialize Terraform'
+          working-directory: ./terraform
+          run: terraform init
+        - name: 'Get state'
+          working-directory: ./terraform
+          run: terraform plan -refresh-only
+        - name: 'Make plan'
+          working-directory: ./terraform
+          run: terraform plan -out test.tfplan
+        - name: 'Apply plan'
+          working-directory: ./terraform
+          run: terraform apply test.tfplan
+
+    build-frontend:
+        name: 'Build Frontend'
+        needs: tf-setup
+        runs-on: ubuntu-latest
+        environment: testing
+        env:
+            ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+            ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+            ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+            ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        steps:
+            - name: Login to Azure with service principal
+              uses: azure/login@v1.4.3
+              with:
+                creds: ${{ secrets.AZURE_SP_CREDNETIALS }}
+            - name: 'Loggin to Azure Container Registry'
+              run: az acr login --name taroFrontendTestContainerRegistry.azurecr.io
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v1
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v1
+            - name: Build and push
+              uses: docker/build-push-action@v2
+              with:
+                file: ./testing.Dockerfile
+                push: true
+                tags: tarofrontendtestcontainerregistry.azurecr.io/taro:api
