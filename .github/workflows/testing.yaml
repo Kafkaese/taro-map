@@ -74,3 +74,34 @@ jobs:
                 file: ./testing.Dockerfile
                 push: true
                 tags: tarofrontendtestcontainerregistry.azurecr.io/taro:api
+  
+    tf-destroy:
+        name: 'Destroy test environment'
+        if: ${{ always() }}
+        needs: [tf-setup, build-frontend]
+        runs-on: ubuntu-latest
+        environment: testing
+        env:
+            ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+            ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+            ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+            ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+        
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
+            - name: 'Terraform Setup'
+              uses: hashicorp/setup-terraform@v1
+            - name: 'Initialize Terraform'
+              working-directory: ./terraform
+              run: terraform init
+            - name: 'Get state'
+              working-directory: ./terraform
+              run: terraform plan -refresh-only
+            - name: 'Make plan'
+              working-directory: ./terraform
+              run: terraform plan -destroy -out test.tfplan
+            - name: 'Apply plan'
+              working-directory: ./terraform
+              run: terraform apply test.tfplan
+        
