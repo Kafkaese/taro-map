@@ -37,6 +37,7 @@ jobs:
     tf-setup:
       name: 'Provision test environment'
       runs-on: ubuntu-latest
+      needs: unit-tests
       outputs:
         sql-server-encrypted: ${{ steps.terraform.outputs.sql_server_encrypted }}
       environment: testing
