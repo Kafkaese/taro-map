@@ -28,7 +28,7 @@ resource "azurerm_container_group" "taro-test-frontend-instance" {
 
   container {
     name   = "taro-test-frontend"
-    image  = "tarotestcontainerregistry.azurecr.io/taro:frontend"
+    image  = "${azurerm_container_registry.taro-test-registry.login_server}/taro:frontend"
     cpu    = "0.5"
     memory = "1.5"
     environment_variables = {
