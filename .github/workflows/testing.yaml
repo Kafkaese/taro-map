@@ -14,6 +14,26 @@ env:
   ENV: test
 
 jobs:
+    unit-tests:
+      name: 'Run unit tests'
+      runs-on: ubuntu-latest
+      environment: testing
+
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+        - name: Intsall node
+          uses: actions/setup-node@v3
+          with:
+            node-version: '16.13.1'
+            cache: 'npm'
+        - name: 'Install app'
+          run: npm ci
+        - name: 'Build'
+          run: npm run build --if-present
+        - name: 'Run tests'
+          run: npm test
+          
     tf-setup:
       name: 'Provision test environment'
       runs-on: ubuntu-latest
