@@ -50,7 +50,7 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   const handleCountryHover = async (alpha2, name) => {
     try {
       const democracyIndex = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
-      const totalImports = await fetch(`http://${HOST}:${API_PORT}/imports/year?country_code=${alpha2}&year=${year}`);
+      const totalImports = await fetch(`http://${HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}`);
       const peaceIndex = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
       
       const democracyIndexData = await democracyIndex.json();
