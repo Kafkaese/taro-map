@@ -4,7 +4,7 @@ variable "resource_group_location" {
 }
 
 variable "resource_group_name" {
-  default     = "taro-test-env"
+  default     = "taro-test-env-frontend"
   description = "The resource group name."
 }
 
