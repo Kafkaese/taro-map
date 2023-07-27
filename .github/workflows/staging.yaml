@@ -22,6 +22,7 @@ jobs:
             ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
             ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
             ACR_LOGIN: ${{ github.event.client_payload.acr-login }}
+            ACR_TAG: ${{ github.event.client_payload.acr-login }}/taro:frontend
 
         steps:
             - name: Login to Azure with service principal
@@ -39,7 +40,7 @@ jobs:
               with:
                 file: ./testing.Dockerfile
                 push: true
-                tags: $ACR_LOGIN/taro:frontend
+                tags: $ACR_TAG
   
     deploy-frontend:
         name: 'Deploy Frontend'
