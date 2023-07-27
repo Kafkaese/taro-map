@@ -23,6 +23,7 @@ jobs:
             ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
             ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
             ACR_LOGIN: ${{ github.event.client_payload.acr-login }}
+
         steps:
             - name: Login to Azure with service principal
               uses: azure/login@v1.4.3
