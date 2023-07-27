@@ -1,8 +1,13 @@
-name: Testing
+name: Staging
 
 on: 
-  repository_dispatch:
-
+  workflow_dispatch:
+    inputs:
+      acr-login:
+        description: 'Login server for container registry'
+        required: true
+        default: ''
+        type: string
 
 permissions:
   id-token: write
@@ -22,13 +27,14 @@ jobs:
             ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
             ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
             ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+            ACR_LOGIN: ${{ github.event.inputs.acr-login }}
         steps:
             - name: Login to Azure with service principal
               uses: azure/login@v1.4.3
               with:
                 creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
             - name: 'Loggin to Azure Container Registry'
-              run: az acr login --name taroFrontendTestContainerRegistry.azurecr.io
+              run: az acr login --name $ACR_LOGIN
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v1
             - name: Set up Docker Buildx
@@ -38,7 +44,7 @@ jobs:
               with:
                 file: ./testing.Dockerfile
                 push: true
-                tags: tarofrontendtestcontainerregistry.azurecr.io/taro:frontend
+                tags: $ACR_LOGIN/taro:frontend
   
     deploy-frontend:
         name: 'Deploy Frontend'
