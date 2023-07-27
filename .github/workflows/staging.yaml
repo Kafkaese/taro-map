@@ -40,7 +40,8 @@ jobs:
               with:
                 file: ./testing.Dockerfile
                 push: true
-                tags: $ACR_TAG
+                tags: '${{ env.ACR_TAG }}'
+
   
     deploy-frontend:
         name: 'Deploy Frontend'
