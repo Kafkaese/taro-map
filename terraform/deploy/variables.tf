@@ -8,6 +8,11 @@ variable "resource_group_name" {
   description = "The resource group name."
 }
 
+variable "acr_name" {
+  default = "taroFrontendTestContainerRegistry"
+  description = "Name of the container registry"
+}
+
 variable "image_registry_credential_user" {
   default = "user"
 }

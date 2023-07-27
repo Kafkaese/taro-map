@@ -52,7 +52,8 @@ jobs:
             ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
             ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
             ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-        
+            ACR_TAG: ${{ github.event.client_payload.acr-login }}/taro:frontend
+
         steps:
             - name: Checkout
               uses: actions/checkout@v3
@@ -65,7 +66,7 @@ jobs:
               run: terraform init
             - name: 'Make plan'
               working-directory: ./terraform/deploy
-              run: terraform plan -var "image_registry_credential_user=$ARM_CLIENT_ID" -var "image_registry_credential_password=$ARM_CLIENT_SECRET" -out 'test-deploy.tfplan'
+              run: terraform plan -var "acr_name=$TAG" -var "image_registry_credential_user=$ARM_CLIENT_ID" -var "image_registry_credential_password=$ARM_CLIENT_SECRET" -out 'test-deploy.tfplan'
             - name: 'Apply plan'
               working-directory: ./terraform/deploy
               run: terraform apply test-deploy.tfplan
