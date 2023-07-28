@@ -32,7 +32,7 @@ resource "azurerm_container_group" "container-instance" {
     cpu    = "0.5"
     memory = "1.5"
     environment_variables = {
-      ENV=vars.environment
+      ENV=var.environment
     }
 
     ports {
@@ -42,6 +42,6 @@ resource "azurerm_container_group" "container-instance" {
   }
 
   tags = {
-    environment = vars.environment
+    environment = var.environment
   }
 }
