@@ -5,7 +5,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 # Container registry for the frontend container
-resource "azurerm_container_registry" "taro-test-registry" {
+resource "azurerm_container_registry" "container-registry" {
   name                = var.acr_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
@@ -13,8 +13,8 @@ resource "azurerm_container_registry" "taro-test-registry" {
 }
 
 # Container Instance for the frontend
-resource "azurerm_container_group" "taro-test-frontend-instance" {
-  name                = "taroTestFrontendInstance"
+resource "azurerm_container_group" "container-instance" {
+  name                = var.instance_name
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
   ip_address_type     = "Public"
@@ -23,16 +23,16 @@ resource "azurerm_container_group" "taro-test-frontend-instance" {
   image_registry_credential {
     username = var.image_registry_credential_user
     password = var.image_registry_credential_password
-    server   = azurerm_container_registry.taro-test-registry.login_server
+    server   = azurerm_container_registry.container-registry.login_server
   }
 
   container {
-    name   = "taro-test-frontend"
-    image  = "${azurerm_container_registry.taro-test-registry.login_server}/taro:frontend"
+    name   = "taro-frontend"
+    image  = "${azurerm_container_registry.container-registry.login_server}/taro:frontend"
     cpu    = "0.5"
     memory = "1.5"
     environment_variables = {
-      ENV="test"
+      ENV=vars.environment
     }
 
     ports {
@@ -42,6 +42,6 @@ resource "azurerm_container_group" "taro-test-frontend-instance" {
   }
 
   tags = {
-    environment = "testing"
+    environment = vars.environment
   }
 }
