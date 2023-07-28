@@ -31,6 +31,8 @@ jobs:
             ACR_TAG: ${{ github.event.client_payload.acr-login }}/taro:frontend
 
         steps:
+            - name: echo distinct ID ${{ github.event.inputs.distinct_id }}
+              run: echo ${{ github.event.inputs.distinct_id }}
             - name: Login to Azure with service principal
               uses: azure/login@v1.4.3
               with:
