@@ -2,6 +2,12 @@ name: Staging
 
 on: 
   workflow_dispatch:
+    inputs: 
+      distinct_id:
+        description: 'Input id from triggering workflow'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   id-token: write
