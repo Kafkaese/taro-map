@@ -73,7 +73,7 @@ jobs:
               run: terraform init
             - name: 'Make plan'
               working-directory: ./terraform/deploy
-              run: terraform plan -var "acr_name=tarostagingregistry.azurecr.io/taro:frontend" -var "image_registry_credential_user=$ARM_CLIENT_ID" -var "image_registry_credential_password=$ARM_CLIENT_SECRET" -out 'test-deploy.tfplan'
+              run: terraform plan -var "acr_name=tarostagingregistry" -var "image_registry_credential_user=$ARM_CLIENT_ID" -var "image_registry_credential_password=$ARM_CLIENT_SECRET" -out 'test-deploy.tfplan'
             - name: 'Apply plan'
               working-directory: ./terraform/deploy
               run: terraform apply test-deploy.tfplan
