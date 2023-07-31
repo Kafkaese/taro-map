@@ -72,7 +72,7 @@ jobs:
                 terraform_wrapper: false
             - name: 'Initialize Terraform'
               working-directory: ./terraform/deploy
-              run: terraform init
+              run: terraform init -backend-config='./config.staging.tfbackend'
             - name: 'Make plan'
               working-directory: ./terraform/deploy
               run: terraform plan -var "instance_name=staging-frontend" -var "environment=stagging" -var "resource_group_name=taro-staging" -var "acr_name=tarostagingregistry" -var "image_registry_credential_user=$ARM_CLIENT_ID" -var "image_registry_credential_password=$ARM_CLIENT_SECRET" -out 'test-deploy.tfplan'
