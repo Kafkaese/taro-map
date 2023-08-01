@@ -2,6 +2,7 @@ data "terraform_remote_state" "first_configuration" {
   backend = "azurerm"
 
   config = {
+    resource_group_name  = "taro"
     storage_account_name = "taro"
     container_name       = "terraform-staging-env"
     key                  = "staging.tfstate"
