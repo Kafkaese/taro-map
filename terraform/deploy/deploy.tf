@@ -1,3 +1,13 @@
+data "terraform_remote_state" "first_configuration" {
+  backend = "azurerm"
+
+  config = {
+    storage_account_name = "taro"
+    container_name       = "terraform-staging-env"
+    key                  = "staging.tfstate"
+  }
+}
+
 # Use shared resource module from taro-tf
 module "shared-resource" {
   source = "git::https://github.com/Kafkaese/taro-tf//staging_env/shared_resource_module?ref=staging_branch"
