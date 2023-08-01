@@ -1,5 +1,5 @@
 # Use shared resource module from taro-tf
-module "shared-resources" {
+module "shared-resource" {
   source = "git::https://github.com/Kafkaese/taro-tf//staging_env/shared_resource_module?ref=staging_branch"
 }
 
