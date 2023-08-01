@@ -1,41 +1,29 @@
-provider "azurerm" {
-  features {}
-}
+# Use shared resource module from taro-tf
+module "shared-resources" {
+  source = "https://github.com/Kafkaese/taro-tf.git//staging/shared_resource_module?ref=staging"
 
-data "terraform_remote_state" "first_configuration" {
-  backend = "azurerm"
-  config = {
-    storage_account_name = "taro"
-    container_name       = "terraform-staging-env"
-    key                  = "taging.tfstate"
-  }
-}
-
-# Container registry for the frontend container
-resource "azurerm_container_registry" "container-registry" {
-  name                = var.acr_name
-  resource_group_name = data.terraform_remote_state.first_configuration.outputs.rg-name
-  location            = data.terraform_remote_state.first_configuration.outputs.rg-location
-  sku                 = "Basic"
+  resource_group_name = var.resource_group_name
+  resource_group_location = var.resource_group_location
+  container_registry_name = var.acr_name
 }
 
 # Container Instance for the frontend
 resource "azurerm_container_group" "container-instance" {
   name                = var.instance_name
-  location            = data.terraform_remote_state.first_configuration.outputs.rg-location
-  resource_group_name = var.resource_group_name
+  location            = module.shared-resources.rg-location
+  resource_group_name = module.shared-resources.rg-name
   ip_address_type     = "Public"
   os_type             = "Linux"
 
   image_registry_credential {
     username = var.image_registry_credential_user
     password = var.image_registry_credential_password
-    server   = azurerm_container_registry.container-registry.login_server
+    server   = module.shared-resources.acr-login
   }
 
   container {
     name   = "taro-frontend"
-    image  = "${azurerm_container_registry.container-registry.login_server}/taro:frontend"
+    image  = "${module.shared-resources.acr-login}/taro:frontend"
     cpu    = "0.5"
     memory = "1.5"
     environment_variables = {
