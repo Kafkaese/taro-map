@@ -4,8 +4,8 @@ terraform {
   backend "azurerm" {
     resource_group_name  = "taro"
     storage_account_name = "taro"
-    container_name       = "terraform-test-env-frontend"
-    key                  = "test.tfstate"
+    container_name       = "terraform-staging-env"
+    key                  = "staging.tfstate"
   }
 
   required_providers {
