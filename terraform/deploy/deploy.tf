@@ -12,6 +12,8 @@ data "terraform_remote_state" "first_configuration" {
 # Use shared resource module from taro-tf
 module "shared-resource" {
   source = "git::https://github.com/Kafkaese/taro-tf//staging_env/shared_resource_module?ref=staging_branch"
+
+  resource_group_name = data.terraform_remote_state.first_configuration.outputs.rg-name
 }
 /*
 module "frontend" {
