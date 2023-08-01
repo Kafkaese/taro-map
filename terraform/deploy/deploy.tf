@@ -2,7 +2,7 @@
 module "shared-resource" {
   source = "git::https://github.com/Kafkaese/taro-tf//staging_env/shared_resource_module?ref=staging_branch"
 }
-
+/*
 module "frontend" {
   source = "./shared"  
 
@@ -15,3 +15,4 @@ module "frontend" {
   instance_name = var.instance_name
   environment = var.environment
 }
+*/
