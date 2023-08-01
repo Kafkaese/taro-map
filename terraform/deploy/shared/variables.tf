@@ -21,6 +21,10 @@ variable "image_registry_credential_password" {
   default = "secret"
 }
 
+variable "image_registry_login_server" {
+  
+}
+
 variable "instance_name" {
 }
 
