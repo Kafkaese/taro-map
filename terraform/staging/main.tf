@@ -22,9 +22,9 @@ resource "azurerm_container_group" "container-instance" {
   os_type             = "Linux"
 
   image_registry_credential {
-    username = var.image_registry_credential_user
-    password = var.image_registry_credential_password
-    server   = var.image_registry_login_server
+    username = azurerm_container_registry.container-registry.admin_username
+    password = azurerm_container_registry.container-registry.admin_password
+    server   = azurerm_container_registry.container-registry.login_server
   }
 
   container {
