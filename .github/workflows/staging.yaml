@@ -64,6 +64,7 @@ jobs:
             ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
             ACR_TAG: ${{ github.event.client_payload.acr-login }}/taro:frontend
             TF_VAR_github_token: ${{ secrets.PAT_RAW }}
+
         steps:
             - name: Checkout
               uses: actions/checkout@v3

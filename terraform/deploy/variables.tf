@@ -1,4 +1,9 @@
 
+variable "acr_name" {
+  default = "taroFrontendTestContainerRegistry"
+  description = "Name of the container registry"
+}
+
 variable "image_registry_credential_user" {
   default = "user"
 }
