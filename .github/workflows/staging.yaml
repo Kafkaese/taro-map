@@ -1,7 +1,13 @@
 name: Staging
 
 on: 
-  repository_dispatch:
+  workflow_dispatch:
+    inputs: 
+      distinct_id:
+        description: 'Input id from triggering workflow'
+        required: false
+        default: ''
+        type: string
 
 permissions:
   id-token: write
@@ -16,6 +22,7 @@ jobs:
     build-frontend:
         name: 'Build Frontend'
         runs-on: ubuntu-latest
+        environment: staging
         env:
             ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
             ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
@@ -25,12 +32,14 @@ jobs:
             ACR_TAG: ${{ github.event.client_payload.acr-login }}/taro:frontend
 
         steps:
+            - name: echo distinct ID ${{ github.event.inputs.distinct_id }}
+              run: echo ${{ github.event.inputs.distinct_id }}
             - name: Login to Azure with service principal
               uses: azure/login@v1.4.3
               with:
                 creds: ${{ secrets.AZURE_SP_CREDENTIALS }}
             - name: 'Loggin to Azure Container Registry'
-              run: az acr login --name $ACR_LOGIN
+              run: az acr login --name tarostagingregistry.azurecr.io
             - name: Set up QEMU
               uses: docker/setup-qemu-action@v1
             - name: Set up Docker Buildx
@@ -40,34 +49,40 @@ jobs:
               with:
                 file: ./testing.Dockerfile
                 push: true
-                tags: '${{ env.ACR_TAG }}'
+                tags: 'tarostagingregistry.azurecr.io/taro:frontend'
 
   
     deploy-frontend:
         name: 'Deploy Frontend'
         runs-on: ubuntu-latest
         needs: [build-frontend]
-        environment: testing
+        environment: staging
         env:
             ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
             ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
             ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
             ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
             ACR_TAG: ${{ github.event.client_payload.acr-login }}/taro:frontend
+            TF_VAR_github_token: ${{ secrets.PAT_RAW }}
 
         steps:
             - name: Checkout
               uses: actions/checkout@v3
+              with:
+                persist-credentials: true
+            - uses: fusion-engineering/setup-git-credentials@v2
+              with:
+                credentials: https://kafkaese:${{ secrets.PAT_RAW }}@github.com
             - name: 'Terraform Setup'
               uses: hashicorp/setup-terraform@v1
               with:
                 terraform_wrapper: false
             - name: 'Initialize Terraform'
-              working-directory: ./terraform/deploy
-              run: terraform init
+              working-directory: ./terraform/staging
+              run: terraform init 
             - name: 'Make plan'
-              working-directory: ./terraform/deploy
-              run: terraform plan -var "acr_name=$TAG" -var "image_registry_credential_user=$ARM_CLIENT_ID" -var "image_registry_credential_password=$ARM_CLIENT_SECRET" -out 'test-deploy.tfplan'
+              working-directory: ./terraform/staging
+              run: terraform plan -var "instance_name=staging-frontend" -var "environment=stagging" -var "image_registry_credential_user=$ARM_CLIENT_ID" -var "image_registry_credential_password=$ARM_CLIENT_SECRET" -out 'test-deploy.tfplan'
             - name: 'Apply plan'
-              working-directory: ./terraform/deploy
+              working-directory: ./terraform/staging
               run: terraform apply test-deploy.tfplan
