@@ -87,7 +87,9 @@ jobs:
               working-directory: ./terraform/staging
               run: terraform apply test-deploy.tfplan
             - name: 'Get ip and port from outputs'
-              run: echo "$(tf output -raw public-ip)" > url.txt
+              run: | 
+                echo "$(terraform output -raw public-ip)" > url.txt
+                cat url.txt
             - name: 'Upload url artifact'
               uses: actions/upload-artifact@v3
               with:
