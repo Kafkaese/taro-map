@@ -87,6 +87,7 @@ jobs:
               working-directory: ./terraform/staging
               run: terraform apply test-deploy.tfplan
             - name: 'Get ip and port from outputs'
+              working-directory: ./terraform/staging
               run: | 
                 echo "$(terraform output -raw public-ip)" > url.txt
                 cat url.txt
@@ -94,4 +95,4 @@ jobs:
               uses: actions/upload-artifact@v3
               with:
                 name: frontend-url
-                path: url.txt
+                path: ./terraform/staging/url.txt
