@@ -98,11 +98,11 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
         onMouseMove={handleMouseMove}
       >
         <ZoomableGroup zoom={zoom} center={[0, 0]} translateExtent={[[-Infinity, -100], [Infinity, 600]]}> {/* [?,maxup,?, maxdown]*/}
-          <Geographies geography="/world-countries-topo.json">
+          <Geographies geography="/world-new.json">
             {({ geographies }) =>
               geographies.map((geo) => {
-                const { name } = geo.properties;
-                const { 'Alpha-2': alpha2 } = geo.properties;
+                const { 'countryName': name } = geo.properties;
+                const { 'countryKey': alpha2 } = geo.properties;
 
                 return (
                   <Geography
