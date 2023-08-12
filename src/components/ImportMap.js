@@ -115,19 +115,23 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
                       default: {
                         fill: defaultColor,
                         stroke: '#607D8B',
-                        strokeWidth: 0.75,
+                        strokeLinecap: 'round',
+                        strokeLinejoin: 'round',
+                        strokeWidth: 0.25,
                         outline: 'none',
                       },
                       hover: {
                         fill: hoverColor,
                         stroke: '#607D8B',
-                        strokeWidth: 0.75,
+                        strokeLinejoin: 'round',
+                        strokeWidth: 0.30,
                         outline: 'none',
                       },
                       pressed: {
                         fill: hoverColor,
                         stroke: '#607D8B',
-                        strokeWidth: 0.75,
+                        strokeLinejoin: 'round',
+                        strokeWidth: 0.35,
                         outline: 'none',
                       },
                     }}
