@@ -59,7 +59,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                             bottom: 5,
                         }}
                     >
-                        <YAxis dataKey="name" type="category"/>
+                        <YAxis dataKey="full-name" type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalExports.value]} tick={false}/>
                         <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}}/>
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} unit={" EUR"} name="Export value"/>
