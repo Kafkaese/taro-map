@@ -67,10 +67,11 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                             bottom: 5,
                         }}
                     >
-                        <YAxis dataKey="name" type="category"/>
-                        <XAxis type="number" domain={[0, countryData.totalImports.value]} tick={false}/>
+                        
+                        <YAxis dataKey="full_name" type="category"/>
+                        <XAxis type="number" domain={[0, countryData.totalImports.value]} tick={false} />
                         <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}}/>
-                        <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} unit={" EUR"} name="Import value"/>
+                        <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }}  unit={" EUR"} name="Import value"/>
                     </BarChart>
                     
                 </div>
