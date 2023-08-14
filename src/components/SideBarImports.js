@@ -2,7 +2,9 @@ import React from "react";
 import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
 import SidebarCustomTooltip from "./SidebarCustomTooltip";
+import CustomizedTick from "./CustomizedTicks";
 import './SideBarImports.css'
+
 
 /**
  * Sidebar component for Import Map. Shows info for country currently selected on ImportMap:
@@ -10,7 +12,7 @@ import './SideBarImports.css'
  * - Source countries and corresponding mport values for the selected year and country in a bar plot
  *  
  * 
- * @param {object} countryData Data to be sidplayed in the side bar for the currently selected country
+ * @param {object} countryData Data to be displayed in the side bar for the currently selected country
  * @param {boolean} collapsed Wether or not the side bar is currently collapsed. 
  * @param {function} onCollapse Funcion to be called when the side bar is being (un-)collapsed by the cooresponding button. 
  * @param {integer} year Year currently selected on the parent map. Influences the data being displayed.
@@ -69,7 +71,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         }}
                     >
                         
-                        <YAxis dataKey="name" type="category"/>
+                        <YAxis dataKey="name" tick={CustomizedTick} type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalImports.value]} tick={false} />
                         <Tooltip content={<SidebarCustomTooltip/>} />
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }}  name=" "/>

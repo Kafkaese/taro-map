@@ -3,6 +3,7 @@ import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, Responsiv
 import {getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
 import PercentageCircle from "./PercentageCircle";
 import SidebarCustomTooltip from "./SidebarCustomTooltip";
+import CustomizedTick from "./CustomizedTicks";
 import './SideBarExports.css'
 
 /**
@@ -60,7 +61,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                             bottom: 5,
                         }}
                     >
-                        <YAxis dataKey="name" type="category"/>
+                        <YAxis dataKey="name" tick={CustomizedTick} type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalExports.value]} tick={false}/>
                         <Tooltip content={<SidebarCustomTooltip/>} />
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} name=" "/>
