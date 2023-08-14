@@ -1,6 +1,6 @@
 import React from "react";
 import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
-import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
+import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
 import './SideBarImports.css'
 
 /**
@@ -20,9 +20,6 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
         onCollapse(!collapsed)
         console.log(countryData)
     }
-
-    // Formats the value in the plots
-    const formatImportValue = (value, name, props) => {return `${formatUSDvalue(value)} ${formatUSDorder(value)}`}
 
     return (
         <div className="sideBar">
@@ -72,8 +69,8 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         
                         <YAxis dataKey="full_name" type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalImports.value]} tick={false} />
-                        <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}} formatter={formatImportValue}/>
-                        <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }}  unit={" EUR"} name="Import value"/>
+                        <Tooltip contentStyle={{background: '#101827'}} labelStyle={{fontWeight: 'bold', textDecorationLine: 'underline'}} itemStyle={{color: 'white'}} separator="" formatter={formatTooltipValue}/>
+                        <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }}  name=" "/>
                     </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -100,8 +97,8 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                             position: 'right',
                             offset: -15,
                     }}/>
-                    <Tooltip contentStyle={{background: '#101827'}} formatter={formatImportValue} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}}/>
-                    <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} unit={" EUR"} name="Import value"/>
+                    <Tooltip contentStyle={{background: '#101827'}} formatter={formatTooltipValue} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} separator=""/>
+                    <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} name=" "/>
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>
                 </ResponsiveContainer>

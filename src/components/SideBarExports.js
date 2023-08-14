@@ -1,6 +1,6 @@
 import React from "react";
 import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
-import {getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
+import {getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
 import PercentageCircle from "./PercentageCircle";
 import './SideBarExports.css'
 
@@ -21,10 +21,6 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
         onCollapse(!collapsed)
         console.log(countryData)
     }
-
-    // Formats the value in the plots
-    const formatExportValue = (value, name, props) => {return `${formatUSDvalue(value)} ${formatUSDorder(value)}`}
-
  
 
     return (
@@ -65,8 +61,8 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                     >
                         <YAxis dataKey="full_name" type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalExports.value]} tick={false}/>
-                        <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}} formatter={formatExportValue}/>
-                        <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} unit={" EUR"} name="Export value"/>
+                        <Tooltip contentStyle={{background: '#101827'}} separator="" itemStyle={{color: 'white'}} formatter={formatTooltipValue}/>
+                        <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} name=" "/>
                     </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -95,8 +91,8 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                             position: 'right',
                             offset: -15,
                     }}/>
-                    <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} formatter={formatExportValue}/>
-                    <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} unit={" EUR"} name="Import value"/>
+                    <Tooltip contentStyle={{background: '#101827'}} separator="" itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} formatter={formatTooltipValue}/>
+                    <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} name=" "/>
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>
                 </ResponsiveContainer>
