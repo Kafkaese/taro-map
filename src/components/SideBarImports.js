@@ -100,7 +100,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                             offset: -15,
                     }}/>
                     <Tooltip contentStyle={{background: '#101827', borderRadius: '8px'}} formatter={formatTooltipValue} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} separator=""/>
-                    <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} name=" "/>
+                    <Line dot={false} type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} name=" "/>
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>
                 </ResponsiveContainer>
