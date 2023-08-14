@@ -2,6 +2,7 @@ import React from "react";
 import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 import {getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
 import PercentageCircle from "./PercentageCircle";
+import SidebarCustomTooltip from "./SidebarCustomTooltip";
 import './SideBarExports.css'
 
 /**
@@ -61,7 +62,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                     >
                         <YAxis dataKey="full_name" type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalExports.value]} tick={false}/>
-                        <Tooltip contentStyle={{background: '#101827'}} separator="" itemStyle={{color: 'white'}} formatter={formatTooltipValue}/>
+                        <Tooltip content={<SidebarCustomTooltip/>} />
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} name=" "/>
                     </BarChart>
                     </ResponsiveContainer>
@@ -91,7 +92,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                             position: 'right',
                             offset: -15,
                     }}/>
-                    <Tooltip contentStyle={{background: '#101827'}} separator="" itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} formatter={formatTooltipValue}/>
+                    <Tooltip contentStyle={{background: '#101827', borderRadius: '8px'}} separator="" itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} formatter={formatTooltipValue}/>
                     <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} name=" "/>
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>

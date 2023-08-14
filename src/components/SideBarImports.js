@@ -1,6 +1,7 @@
 import React from "react";
 import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
+import SidebarCustomTooltip from "./SidebarCustomTooltip";
 import './SideBarImports.css'
 
 /**
@@ -20,6 +21,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
         onCollapse(!collapsed)
         console.log(countryData)
     }
+
 
     return (
         <div className="sideBar">
@@ -67,9 +69,9 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         }}
                     >
                         
-                        <YAxis dataKey="full_name" type="category"/>
+                        <YAxis dataKey="name" type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalImports.value]} tick={false} />
-                        <Tooltip contentStyle={{background: '#101827'}} labelStyle={{fontWeight: 'bold', textDecorationLine: 'underline'}} itemStyle={{color: 'white'}} separator="" formatter={formatTooltipValue}/>
+                        <Tooltip content={<SidebarCustomTooltip/>} />
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }}  name=" "/>
                     </BarChart>
                     </ResponsiveContainer>
@@ -97,7 +99,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                             position: 'right',
                             offset: -15,
                     }}/>
-                    <Tooltip contentStyle={{background: '#101827'}} formatter={formatTooltipValue} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} separator=""/>
+                    <Tooltip contentStyle={{background: '#101827', borderRadius: '8px'}} formatter={formatTooltipValue} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} separator=""/>
                     <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} name=" "/>
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>
