@@ -21,6 +21,9 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
         console.log(countryData)
     }
 
+    // Formats the value in the plots
+    const formatImportValue = (value, name, props) => {return `${formatUSDvalue(value)} ${formatUSDorder(value)}`}
+
     return (
         <div className="sideBar">
             <div className="panel" style={collapsed ? {width: '0%'} : {width: '30%'}}>
@@ -69,7 +72,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         
                         <YAxis dataKey="full_name" type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalImports.value]} tick={false} />
-                        <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}}/>
+                        <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}} formatter={formatImportValue}/>
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }}  unit={" EUR"} name="Import value"/>
                     </BarChart>
                     </ResponsiveContainer>
@@ -97,7 +100,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                             position: 'right',
                             offset: -15,
                     }}/>
-                    <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}}/>
+                    <Tooltip contentStyle={{background: '#101827'}} formatter={formatImportValue} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}}/>
                     <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} unit={" EUR"} name="Import value"/>
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>
