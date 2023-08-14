@@ -1,5 +1,5 @@
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line, CartesianGrid, ReferenceLine} from 'recharts';
+import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
 import './SideBarImports.css'
 
@@ -52,11 +52,10 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                 </div>
                 <div className="barPlot">
                     <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Distribution of Imports ${year}`}</div>
+                    <ResponsiveContainer width={collapsed ? 0 : "100%"} height={200}>
                     <BarChart
                         layout="vertical"
                         barSize={10}
-                        width={collapsed ? 0 : 500}
-                        height={200}
                         barCategoryGap={1}
                         barGap={1}
                         data={countryData.importSources}
@@ -73,13 +72,12 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}}/>
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }}  unit={" EUR"} name="Import value"/>
                     </BarChart>
-                    
+                    </ResponsiveContainer>
                 </div>
 
                 <div className="timeSeries">
+                <ResponsiveContainer width={collapsed ? 0 : "100%"} height={300}>
                 <LineChart
-                width={collapsed ? 0 : 500}
-                height={300}
                 data={countryData.importTimeSeries}
                 margin={{
                     top: 5,
@@ -103,6 +101,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                     <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} unit={" EUR"} name="Import value"/>
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>
+                </ResponsiveContainer>
                 </div>
 
                 <button 
