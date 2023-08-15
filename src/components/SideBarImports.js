@@ -54,15 +54,15 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         <span className='circle-label' style={{width: collapsed ? '0%' : '100%'}}>Peace Index <sup>[2]</sup></span>
                     </div>
                 </div>
+                <div style={{color: 'white', textAlign: 'center', textDecoration: 'underline', width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Import Source Countries ${year}`}</div>
                 <div className="barPlot">
-                    <div style={{textDecoration: 'underline', width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Import Source Countries ${year}`}</div>
-                    <ResponsiveContainer width={collapsed ? 0 : "100%"} height={200}>
+                    <ResponsiveContainer width={collapsed ? 0 : "100%"} height={countryData.importSources.length*30+20}>
                     {countryData.importSources.value !== 'no data' ? 
                     <BarChart
                         layout="vertical"
                         barSize={10}
-                        barCategoryGap={1}
-                        barGap={1}
+                        barCategoryGap={'5%'}
+                        barGap={'5%'}
                         data={countryData.importSources}
                         margin={{
                             top: 5,
@@ -73,7 +73,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                     >
                         
                         <YAxis dataKey="name" tick={CustomizedTick} type="category"/>
-                        <XAxis type="number" domain={[0, countryData.totalImports.value]} tick={false} />
+                        <XAxis hide={true} type="number" domain={[0, countryData.totalImports.value]} tick={false} />
                         <Tooltip content={<SidebarCustomTooltip/>} />
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }}  name=" "/>
                     </BarChart> : <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>

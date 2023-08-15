@@ -4,7 +4,6 @@ import {getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "
 import PercentageCircle from "./PercentageCircle";
 import SidebarCustomTooltip from "./SidebarCustomTooltip";
 import CustomizedTick from "./CustomizedTicks";
-import './SideBarExports.css'
 
 /**
  * Sidebar component for Import Map. Shows info for country currently selected on ImportMap:
@@ -44,9 +43,10 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                         <span className='circle-label' style={{width: collapsed ? '0' : '100%', }}>Percentage of Exports<sup>[1]</sup></span>
                     </div>
                 </div>
+                <div style={{color: 'white', textAlign: 'center', textDecoration: 'underline', width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Import Source Countries ${year}`}</div>
+
                 <div className="barPlot">
-                    <div style={{textDecoration: 'underline', width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Export Destination Countries ${year}`}</div>
-                    <ResponsiveContainer width={collapsed ? 0 : "100%"} height={200}>
+                    <ResponsiveContainer width={collapsed ? 0 : "100%"} height={countryData.exportSources.length*30+20}>
                     { (countryData.exportSources.value !== 'no data') ? <BarChart
                         layout="vertical"
                         barSize={10}

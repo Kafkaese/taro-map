@@ -117,6 +117,8 @@
     text-align: center;
     color: white;
     margin-top: 10px;
+    overflow-y: scroll;
+    height: 200px;
 }
 
 .sideBar .panel .timeSeries {
