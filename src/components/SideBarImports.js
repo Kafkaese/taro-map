@@ -57,6 +57,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                 <div className="barPlot">
                     <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Distribution of Imports ${year}`}</div>
                     <ResponsiveContainer width={collapsed ? 0 : "100%"} height={200}>
+                    {countryData.importSources.value !== 'no data' ? 
                     <BarChart
                         layout="vertical"
                         barSize={10}
@@ -75,7 +76,9 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         <XAxis type="number" domain={[0, countryData.totalImports.value]} tick={false} />
                         <Tooltip content={<SidebarCustomTooltip/>} />
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }}  name=" "/>
-                    </BarChart>
+                    </BarChart> : <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                    <p style={{'flex': '0'}}>No data available</p>
+                                </div>}
                     </ResponsiveContainer>
                 </div>
 
