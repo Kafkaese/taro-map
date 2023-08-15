@@ -55,7 +55,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                     </div>
                 </div>
                 <div className="barPlot">
-                    <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Distribution of Imports ${year}`}</div>
+                    <div style={{textDecoration: 'underline', width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Import Source Countries ${year}`}</div>
                     <ResponsiveContainer width={collapsed ? 0 : "100%"} height={200}>
                     {countryData.importSources.value !== 'no data' ? 
                     <BarChart
