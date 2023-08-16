@@ -9,7 +9,7 @@ import ReactCountryFlag from "react-country-flag";
  * @param {object} payload payload for the datat at the current tick. Needs to have field @value with countryCode as 2 character {string}
  */
 const CustomizedTick = ({x, y, payload}) => {
-    console.log(payload.value)
+
     return (
         <svg xmlns="http://www.w3.org/2000/svg">
             <foreignObject 
