@@ -116,8 +116,9 @@
 .sideBar .panel .barPlot {
     text-align: center;
     color: white;
-    text-decoration: underline;
     margin-top: 10px;
+    overflow-y: scroll;
+    height: 200px;
 }
 
 .sideBar .panel .timeSeries {

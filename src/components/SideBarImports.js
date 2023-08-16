@@ -1,7 +1,10 @@
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line, CartesianGrid, ReferenceLine} from 'recharts';
-import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
+import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
+import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
+import SidebarCustomTooltip from "./SidebarCustomTooltip";
+import CustomizedTick from "./CustomizedTicks";
 import './SideBarImports.css'
+
 
 /**
  * Sidebar component for Import Map. Shows info for country currently selected on ImportMap:
@@ -9,7 +12,7 @@ import './SideBarImports.css'
  * - Source countries and corresponding mport values for the selected year and country in a bar plot
  *  
  * 
- * @param {object} countryData Data to be sidplayed in the side bar for the currently selected country
+ * @param {object} countryData Data to be displayed in the side bar for the currently selected country
  * @param {boolean} collapsed Wether or not the side bar is currently collapsed. 
  * @param {function} onCollapse Funcion to be called when the side bar is being (un-)collapsed by the cooresponding button. 
  * @param {integer} year Year currently selected on the parent map. Influences the data being displayed.
@@ -20,6 +23,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
         onCollapse(!collapsed)
         console.log(countryData)
     }
+
 
     return (
         <div className="sideBar">
@@ -50,15 +54,15 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         <span className='circle-label' style={{width: collapsed ? '0%' : '100%'}}>Peace Index <sup>[2]</sup></span>
                     </div>
                 </div>
+                <div style={{color: 'white', textAlign: 'center', textDecoration: 'underline', width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Import Source Countries ${year}`}</div>
                 <div className="barPlot">
-                    <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Distribution of Imports ${year}`}</div>
+                    <ResponsiveContainer width={collapsed ? 0 : "100%"} height={countryData.importSources.length*30+20}>
+                    {countryData.importSources.value !== 'no data' ? 
                     <BarChart
                         layout="vertical"
                         barSize={10}
-                        width={collapsed ? 0 : 500}
-                        height={200}
-                        barCategoryGap={1}
-                        barGap={1}
+                        barCategoryGap={'5%'}
+                        barGap={'5%'}
                         data={countryData.importSources}
                         margin={{
                             top: 5,
@@ -67,18 +71,20 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                             bottom: 5,
                         }}
                     >
-                        <YAxis dataKey="name" type="category"/>
-                        <XAxis type="number" domain={[0, countryData.totalImports.value]} tick={false}/>
-                        <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}}/>
-                        <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} unit={" EUR"} name="Import value"/>
-                    </BarChart>
-                    
+                        
+                        <YAxis dataKey="name" tick={CustomizedTick} type="category"/>
+                        <XAxis hide={true} type="number" domain={[0, countryData.totalImports.value]} tick={false} />
+                        <Tooltip content={<SidebarCustomTooltip/>} />
+                        <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }}  name=" "/>
+                    </BarChart> : <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                    <p style={{'flex': '0'}}>No data available</p>
+                                </div>}
+                    </ResponsiveContainer>
                 </div>
 
                 <div className="timeSeries">
+                <ResponsiveContainer width={collapsed ? 0 : "100%"} height={300}>
                 <LineChart
-                width={collapsed ? 0 : 500}
-                height={300}
                 data={countryData.importTimeSeries}
                 margin={{
                     top: 5,
@@ -98,10 +104,11 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                             position: 'right',
                             offset: -15,
                     }}/>
-                    <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}}/>
-                    <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} unit={" EUR"} name="Import value"/>
+                    <Tooltip contentStyle={{background: '#101827', borderRadius: '8px'}} formatter={formatTooltipValue} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} separator=""/>
+                    <Line dot={false} type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} name=" "/>
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>
+                </ResponsiveContainer>
                 </div>
 
                 <button 

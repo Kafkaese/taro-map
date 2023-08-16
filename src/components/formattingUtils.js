@@ -66,4 +66,10 @@
     }
   }
 
-  export {getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue};
+  // Format values for plot tooltips
+  const formatTooltipValue = (value, name, props) => {
+    return `€${value.toLocaleString('en')}`
+  }
+
+
+  export {getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue};

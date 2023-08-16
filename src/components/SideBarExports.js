@@ -1,8 +1,9 @@
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, LineChart, Line, CartesianGrid, ReferenceLine} from 'recharts';
-import {getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
+import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
+import {getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
 import PercentageCircle from "./PercentageCircle";
-import './SideBarExports.css'
+import SidebarCustomTooltip from "./SidebarCustomTooltip";
+import CustomizedTick from "./CustomizedTicks";
 
 /**
  * Sidebar component for Import Map. Shows info for country currently selected on ImportMap:
@@ -42,13 +43,13 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                         <span className='circle-label' style={{width: collapsed ? '0' : '100%', }}>Percentage of Exports<sup>[1]</sup></span>
                     </div>
                 </div>
+                <div style={{color: 'white', textAlign: 'center', textDecoration: 'underline', width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Import Source Countries ${year}`}</div>
+
                 <div className="barPlot">
-                    <div style={{width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Distribution of Exports ${year}`}</div>
-                    <BarChart
+                    <ResponsiveContainer width={collapsed ? 0 : "100%"} height={countryData.exportSources.length*30+20}>
+                    { (countryData.exportSources.value !== 'no data') ? <BarChart
                         layout="vertical"
                         barSize={10}
-                        width={collapsed ? 0 : 500}
-                        height={200}
                         barCategoryGap={1}
                         barGap={1}
                         data={countryData.exportSources}
@@ -59,15 +60,18 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                             bottom: 5,
                         }}
                     >
-                        <YAxis dataKey="name" type="category"/>
+                        <YAxis dataKey="name" tick={CustomizedTick} type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalExports.value]} tick={false}/>
-                        <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}}/>
-                        <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} unit={" EUR"} name="Export value"/>
-                    </BarChart>
-                    
+                        <Tooltip content={<SidebarCustomTooltip/>} />
+                        <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} name=" "/>
+                    </BarChart> : <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                                    <p style={{flex: '0', textDecoration: 'none'}}>No data available</p>
+                                </div>}
+                    </ResponsiveContainer>
                 </div>
 
                 <div className="timeSeries">
+                <ResponsiveContainer width={collapsed ? 0 : "100%"} height={300}>
                 <LineChart
                 width={collapsed ? 0 : 500}
                 height={300}
@@ -90,10 +94,11 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                             position: 'right',
                             offset: -15,
                     }}/>
-                    <Tooltip contentStyle={{background: '#101827'}} itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}}/>
-                    <Line type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} unit={" EUR"} name="Import value"/>
+                    <Tooltip contentStyle={{background: '#101827', borderRadius: '8px'}} separator="" itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} formatter={formatTooltipValue}/>
+                    <Line dot={false} type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} name=" "/>
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>
+                </ResponsiveContainer>
                 </div>
 
                 <button 
