@@ -53,18 +53,32 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   // Get data for the tooltip if map mode is import
   const getImportTooltipData = async (alpha2) => {
     try {
-      const democracyIndex = await fetch(`http://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
-      const totalImports = await fetch(`http://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}`);
-      const peaceIndex = await fetch(`http://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
+      const fetchPromises = [
+        fetch(`http://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
+        fetch(`http://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`),
+        fetch(`http://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}`),
+        fetch(`http://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`)
+      ];
+  
+      const responses = await Promise.all(fetchPromises);
       
-      const democracyIndexData = await democracyIndex.json();
-      const peaceIndexData = await peaceIndex.json();
-      const totalImportsData = await totalImports.json();
-
-      return { democracyIndex: democracyIndexData, peaceIndex: peaceIndexData,totalImports: totalImportsData}
-
+      if (responses.some(response => !response.ok)) {
+        throw new Error('One or more fetch requests failed');
+      }
+  
+      const [countryName, democracyIndex, totalImports, peaceIndex] = await Promise.all(
+        responses.map(response => response.json())
+      );
+  
+      return {
+        countryName,
+        democracyIndex,
+        totalImports,
+        peaceIndex
+      };
     } catch (error) {
       console.error('Error fetching country data:', error);
+      throw error; // Rethrow the error to indicate that an error occurred
     }
   } 
 
@@ -72,13 +86,11 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   const getExportTooltipData = async (alpha2) => {
 
     try {
-      const arms_export_response = await fetch(`http://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}`); 
-      const arms_export_data = await arms_export_response.json();
+      const arms_export = fetch(`http://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}`); 
       
-      const merch_export_response = await fetch(`http://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}`)
-      const merch_export_data = await merch_export_response.json()
+      const merch_export = fetch(`http://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}`)
 
-      return {arms_exports: arms_export_data, merch_exports : merch_export_data}
+      return {arms_exports: arms_export.json(), merch_exports : merch_export}
 
 
     } catch (error) {
@@ -94,20 +106,9 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
 
     // Get data based on mapMode 
     mapModeImport ? data = await getImportTooltipData(alpha2) : data = await getExportTooltipData(alpha2);
-    console.log(data)
-    // Get name of hovered country and add to data
-    try{
-      const country_name = await fetch(`http://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
-      const country_name_data = await country_name.json()
-      data.country_name = country_name_data.value
-    } catch (error) {
-      console.error('Error fetching country data:', error);
-      data.country_name = 'Missing'
-    }
-
+    
     // Populate data for tooltip with API resonses
     setHoveredCountry({...data, position: mousePosition});
-
 
   };
 
