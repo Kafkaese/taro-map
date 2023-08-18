@@ -13,14 +13,11 @@ import './HoverBox.css';
  * @param {integer} zoom Zoom level for the zoomable component that contains the actual map
  * @returns 
  */
-const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
+const ImportMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCountry}) => {
 
   // API vars from env
   const API_HOST = process.env.REACT_APP_API_HOST
   const API_PORT = process.env.REACT_APP_API_PORT
-
-  // Conrols wether to show import or export data
-  const [mapModeImport, setMapModeImport] = useState(true);
 
   // geometry colors
   const defaultColor = '#84B098';
