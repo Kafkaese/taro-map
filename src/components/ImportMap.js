@@ -154,7 +154,6 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
           <Geographies geography="/world-new.json">
             {({ geographies }) =>
               geographies.map((geo) => {
-                const { 'countryName': name } = geo.properties;
                 const { 'countryKey': alpha2 } = geo.properties;
 
                 return (
