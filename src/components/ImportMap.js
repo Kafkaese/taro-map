@@ -52,6 +52,7 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   
   // Get data for the tooltip if map mode is import
   const getImportTooltipData = async (alpha2) => {
+
     try {
       const fetchPromises = [
         fetch(`http://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
@@ -89,16 +90,35 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   const getExportTooltipData = async (alpha2) => {
 
     try {
-      const arms_export = fetch(`http://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}`); 
+      const fetchPromises = [
+        fetch(`http://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
+        fetch(`http://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}`),
+        fetch(`http://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}`)
+      ];
+  
+      const responses = await Promise.all(fetchPromises);
       
-      const merch_export = fetch(`http://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}`)
+      if (responses.some(response => !response.ok)) {
+        throw new Error('One or more fetch requests failed');
+      }
+  
+      const [countryName, totalExports, totalMerchExports] = await Promise.all(
+        responses.map(response => response.json())
+      );
+  
+      const data = {
+        countryName,
+        totalExports,
+        totalMerchExports
+      };
 
-      return {arms_exports: arms_export.json(), merch_exports : merch_export}
-
+      setHoveredCountry({...data, position: mousePosition});
 
     } catch (error) {
       console.error('Error fetching country data:', error);
+      throw error; // Rethrow the error to indicate that an error occurred
     }
+
   }
 
   // Remove hover tool when leaving geometry
