@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ExportMap from './components/ExportMap';
-import ImportMap from './components/ImportMap';
+import ImportMap from './components/WorldMap';
 import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
 

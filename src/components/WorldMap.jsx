@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
-import MapTooltip from './MapTooltip';
+import MapTooltip from './MapTooltipImports';
 import SideBarImports from './SideBarImports';
 
 import './HoverBox.css';
