@@ -101,20 +101,6 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
     }
   }
 
-  // Tooltip data fetching 
-  const handleCountryHover = async (alpha2) => {
-    
-    // data
-    var data = {}
-
-    // Get data based on mapMode 
-    mapModeImport ? data = await getImportTooltipData(alpha2) : data = await getExportTooltipData(alpha2);
-    
-    // Populate data for tooltip with API resonses
-    setHoveredCountry({...data, position: mousePosition});
-
-  };
-
   // Remove hover tool when leaving geometry
   const handleCountryLeave = (event) => {
     setHoveredCountry(null)
