@@ -3,10 +3,12 @@ import { formatUSDvalue, formatUSDorder, getDemocracyColor, getPeaceColor, getUS
 
 const MapTooltip = (hoveredCountry, handleMouseEnterBox) => {
 
+    console.log(hoveredCountry)
+    
     return (
         <div className="hover-box-container" style={{top: hoveredCountry.position.y +5, left: hoveredCountry.position.x +10,}}
             onMouseEnter={handleMouseEnterBox}>
-                <h3>{hoveredCountry.name}</h3>
+                <h3>{hoveredCountry.country_name}</h3>
 
                 
                 <div className="circle-container">

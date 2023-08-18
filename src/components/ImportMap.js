@@ -93,16 +93,21 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
     var data = {}
 
     // Get data based on mapMode 
-    mapModeImport ? data = getImportTooltipData(alpha2) : data = getExportTooltipData(alpha2);
-
+    mapModeImport ? data = await getImportTooltipData(alpha2) : data = await getExportTooltipData(alpha2);
+    console.log(data)
     // Get name of hovered country and add to data
-    const country_name = await fetch(`http://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
-    data.country_name = country_name
+    try{
+      const country_name = await fetch(`http://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
+      const country_name_data = await country_name.json()
+      data.country_name = country_name_data.value
+    } catch (error) {
+      console.error('Error fetching country data:', error);
+      data.country_name = 'Missing'
+    }
 
     // Populate data for tooltip with API resonses
     setHoveredCountry({...data, position: mousePosition});
 
-    console.log(hoveredCountry)
 
   };
 
