@@ -19,9 +19,13 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   const HOST = process.env.REACT_APP_API_HOST
   const API_PORT = process.env.REACT_APP_API_PORT
 
+  // Conrols wether to show import or export data
+  const [mapMode, setMapMode] = useState('import');
+
   // geometry colors
   const defaultColor = '#84B098';
   const hoverColor = '#66B087';
+  const pressedColor = '#80dbfc';
 
   // Hover states
   const [hoveredCountry, setHoveredCountry] = useState(null);
@@ -46,8 +50,7 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
     setHoveredCountry(null)
   }
   
-  // Tooltip data fetching 
-  const handleCountryHover = async (alpha2, name) => {
+  const getImportTooltipData = async (alpha2) => {
     try {
       const democracyIndex = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
       const totalImports = await fetch(`http://${HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}`);
@@ -63,9 +66,27 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
       // Set hovered country state
       setHoveredCountry({ name, position: mousePosition });
 
+      return { democracyIndex: democracyIndexData, peaceIndex: peaceIndexData,totalImports: totalImportsData}
+
     } catch (error) {
       console.error('Error fetching country data:', error);
     }
+  } 
+  // Tooltip data fetching 
+  const handleCountryHover = async (alpha2, name) => {
+   
+    // data
+    var data = {}
+
+    // Get data based on mapMode 
+    mapMode === 'import' ? data = getImportTooltipData(alpha2) : data = getExportTooltipData(alpha2);
+    
+    // Populate data for tooltip with API resonses
+    setHoveredCountryData(data);
+
+    // Set hovered country state
+    setHoveredCountry({ name, position: mousePosition });
+
   };
 
   // Remove hover tool when leaving geometry
@@ -79,14 +100,20 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   const [collapsed, setCollapsed] = useState(false)
 
   // Gets country data for sidebar from APIs
-  const handleCountryClick = (alpha2) => {
+  const handleCountryClick = (alpha2, geo, style) => {
     
+    // Set active Geography
+    setSelectedGeography(geo);
+
     // Call update function on parent
     updateActiveCountry(alpha2);
 
     // uncollpase sidebar if new country is selected
     setCollapsed(false)
   };
+
+  const [selectedGeography, setSelectedGeography] = useState(null);
+
 
 
   return (
@@ -110,10 +137,10 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
                     geography={geo}
                     onMouseOver={() => handleCountryHover(alpha2, name, geo)}
                     onMouseLeave={handleCountryLeave}
-                    onClick={() => handleCountryClick(alpha2)}
+                    onClick={() => handleCountryClick(alpha2, geo)}
                     style={{
                       default: {
-                        fill: defaultColor,
+                        fill: selectedGeography === geo ? pressedColor : defaultColor,
                         stroke: '#607D8B',
                         strokeLinecap: 'round',
                         strokeLinejoin: 'round',
@@ -128,10 +155,10 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
                         outline: 'none',
                       },
                       pressed: {
-                        fill: hoverColor,
+                        fill: pressedColor,
                         stroke: '#607D8B',
                         strokeLinejoin: 'round',
-                        strokeWidth: 0.35,
+                        strokeWidth: 0.85,
                         outline: 'none',
                       },
                     }}
