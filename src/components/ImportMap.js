@@ -16,11 +16,11 @@ import './HoverBox.css';
 const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
 
   // API vars from env
-  const HOST = process.env.REACT_APP_API_HOST
+  const API_HOST = process.env.REACT_APP_API_HOST
   const API_PORT = process.env.REACT_APP_API_PORT
 
   // Conrols wether to show import or export data
-  const [mapMode, setMapMode] = useState('import');
+  const [mapModeImport, setMapModeImport] = useState(true);
 
   // geometry colors
   const defaultColor = '#84B098';
@@ -53,9 +53,9 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   // Get data for the tooltip if map mode is import
   const getImportTooltipData = async (alpha2) => {
     try {
-      const democracyIndex = await fetch(`http://${HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
-      const totalImports = await fetch(`http://${HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}`);
-      const peaceIndex = await fetch(`http://${HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
+      const democracyIndex = await fetch(`http://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
+      const totalImports = await fetch(`http://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}`);
+      const peaceIndex = await fetch(`http://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
       
       const democracyIndexData = await democracyIndex.json();
       const peaceIndexData = await peaceIndex.json();
@@ -72,10 +72,10 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   const getExportTooltipData = async (alpha2) => {
 
     try {
-      const arms_export_response = await fetch(`http://${HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}`); 
+      const arms_export_response = await fetch(`http://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}`); 
       const arms_export_data = await arms_export_response.json();
       
-      const merch_export_response = await fetch(`http://${HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}`)
+      const merch_export_response = await fetch(`http://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}`)
       const merch_export_data = await merch_export_response.json()
 
       return {arms_exports: arms_export_data, merch_exports : merch_export_data}
@@ -87,19 +87,25 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
   }
 
   // Tooltip data fetching 
-  const handleCountryHover = async (alpha2, name) => {
-   
+  const handleCountryHover = async (alpha2) => {
+    
     // data
     var data = {}
 
     // Get data based on mapMode 
-    mapMode === 'import' ? data = getImportTooltipData(alpha2) : data = getExportTooltipData(alpha2);
-    
+    mapModeImport ? data = getImportTooltipData(alpha2) : data = getExportTooltipData(alpha2);
+
+    // Get name of hovered country and add to data
+    const country_name = await fetch(`http://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
+    data.country_name = country_name
+
     // Populate data for tooltip with API resonses
     setHoveredCountryData(data);
 
+    console.log(hoveredCountryData)
+
     // Set hovered country state
-    setHoveredCountry({ name, position: mousePosition });
+    setHoveredCountry({country_name, position: mousePosition });
 
   };
 
