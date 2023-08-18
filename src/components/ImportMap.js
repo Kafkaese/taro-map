@@ -70,12 +70,15 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
         responses.map(response => response.json())
       );
   
-      return {
+      const data = {
         countryName,
         democracyIndex,
         totalImports,
         peaceIndex
       };
+
+      setHoveredCountry({...data, position: mousePosition});
+
     } catch (error) {
       console.error('Error fetching country data:', error);
       throw error; // Rethrow the error to indicate that an error occurred
@@ -158,7 +161,7 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onMouseOver={() => handleCountryHover(alpha2, name, geo)}
+                    onMouseOver={() => getImportTooltipData(alpha2)}
                     onMouseLeave={handleCountryLeave}
                     onClick={() => handleCountryClick(alpha2, geo)}
                     style={{
