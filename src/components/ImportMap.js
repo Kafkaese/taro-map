@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
-import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue } from "./formattingUtils";
+import MapTooltip from './MapTooltip';
 import SideBarImports from './SideBarImports';
 
 import './HoverBox.css';
@@ -29,7 +29,7 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
 
   // Hover states
   const [hoveredCountry, setHoveredCountry] = useState(null);
-  const [hoveredCountryData, setHoveredCountryData] = useState({});
+  //const [hoveredCountryData, setHoveredCountryData] = useState({});
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   // Track mouse and let tooltip follow
@@ -100,12 +100,9 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
     data.country_name = country_name
 
     // Populate data for tooltip with API resonses
-    setHoveredCountryData(data);
+    setHoveredCountry({...data, position: mousePosition});
 
-    console.log(hoveredCountryData)
-
-    // Set hovered country state
-    setHoveredCountry({country_name, position: mousePosition });
+    console.log(hoveredCountry)
 
   };
 
@@ -189,42 +186,7 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      {hoveredCountry && (
-      <div className="hover-box-container" style={{top: hoveredCountry.position.y +5, left: hoveredCountry.position.x +10,}}
-      onMouseEnter={handleMouseEnterBox}>
-        <h3>{hoveredCountry.name}</h3>
-
-        
-        <div className="circle-container">
-          
-          <div className="money-wrapper">
-            <div className="money" style={{ backgroundColor: getUSDColor(hoveredCountryData.totalImports.value) }}>
-              {formatUSDvalue(hoveredCountryData.totalImports.value)}
-            </div>
-            <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountryData.totalImports.value)}</div></div>
-            <span className='money-label'>Imports</span>
-          </div>
-
-          <div className='circle-wrapper'>
-            <div className="circle" style={{ backgroundColor: getDemocracyColor(hoveredCountryData.democracyIndex.value) }}>
-              {hoveredCountryData.democracyIndex.value}
-            </div>
-            <span className='circle-label'>Democracy Index<sup>[1]</sup></span>
-          </div>
-
-          <div className='circle-wrapper'>
-            <div className="circle" style={{ backgroundColor: getPeaceColor(hoveredCountryData.peaceIndex.value) }}>
-              {hoveredCountryData.peaceIndex.value}
-            </div>
-            <span className='circle-label'>Peace Index <sup>[2]</sup></span>
-          </div>
-          
-        </div>
-      </div>
-
-)}
-
-
+      {hoveredCountry && MapTooltip(hoveredCountry, handleMouseEnterBox)}
     </div>
   );
 };
