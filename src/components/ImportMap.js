@@ -161,7 +161,7 @@ const ImportMap = ({year, zoom, activeCountryData, updateActiveCountry}) => {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onMouseOver={() => getImportTooltipData(alpha2)}
+                    onMouseOver={() => mapModeImport ? getImportTooltipData(alpha2) : getExportTooltipData(alpha2)}
                     onMouseLeave={handleCountryLeave}
                     onClick={() => handleCountryClick(alpha2, geo)}
                     style={{
