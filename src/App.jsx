@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import ExportMap from './components/ExportMap';
-import ImportMap from './components/WorldMap';
+import WorldMap from './components/WorldMap';
 import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
 
@@ -119,7 +118,7 @@ function App() {
       </div>
       
       {activeCountryAlpha2 === '' ? <div style={{ color: 'whitesmoke', position: 'absolute', top: '50%', left: '40%'}}>(Click on Country for more Details)</div> : ''}
-      <ImportMap mapModeImport={mapModeImport} className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry} />
+      <WorldMap mapModeImport={mapModeImport} className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry} />
       
       <div className='slider-container'>
         <YearSlider onYearChange={handleYearChange}></YearSlider>

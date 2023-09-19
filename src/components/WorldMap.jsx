@@ -15,7 +15,7 @@ import './HoverBox.css';
  * @param {integer} zoom Zoom level for the zoomable component that contains the actual map
  *
  */
-const ImportMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCountry}) => {
+const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCountry}) => {
 
   // API vars from env
   const API_HOST = process.env.REACT_APP_API_HOST
@@ -204,4 +204,4 @@ const ImportMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCo
   );
 };
 
-export default ImportMap;
+export default WorldMap;
