@@ -18,6 +18,8 @@ jobs:
       name: 'Run unit tests'
       runs-on: ubuntu-latest
       environment: testing
+      outputs:
+        success: ${{ steps.set-env.outputs.success }}
 
       steps:
         - name: Checkout
@@ -34,7 +36,8 @@ jobs:
         - name: 'Run tests'
           run: npm test
         - name: Set environment variable
-          run: echo "FIRST_JOB_SUCCESS=true" >> $GITHUB_ENV
+          id: set_env
+          run: echo "FIRST_JOB_SUCCESS=true" >> "$GITHUB_OUTPUT"
           
     tf-setup:
       name: 'Provision test environment'
@@ -127,8 +130,9 @@ jobs:
 
     tf-destroy:
         name: 'Destroy test environment'
-        if: success() || ${{env.FIRST_JOB_SUCCESS}} == 'true'
-        needs: [tf-setup, build-frontend, deploy-frontend]
+        
+        needs: [unit-tests, tf-setup, build-frontend, deploy-frontend]
+        if: success() || ${{needs.unit-tests.outputs.success}} == 'true'
         runs-on: ubuntu-latest
         environment: testing
         env:
