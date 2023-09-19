@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import MapTooltipImports from './MapTooltipImports';
 import MapTooltipExports from './MapTooltipExports';
-import SideBarImports from './SideBarImports';
+import SideBar from './SideBar';
 
 import './HoverBox.css';
 
@@ -149,7 +149,7 @@ const ImportMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCo
 
   return (
     <div>
-      {typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data' ? <SideBarImports countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year}></SideBarImports> : <div/>}
+      {typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data' ? <SideBar mapModeImport={mapModeImport} countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year}></SideBar> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}
