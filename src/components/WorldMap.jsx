@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
-import MapTooltip from './MapTooltipImports';
+import MapTooltipImports from './MapTooltipImports';
+import MapTooltipExports from './MapTooltipExports';
 import SideBarImports from './SideBarImports';
 
 import './HoverBox.css';
 
+
 /**
- * Renders world map with tooltip with import data and a conditional, collapsible sidebar with more detailed information.
+ * Renders world map with tooltip and a conditional, collapsible sidebar with more detailed information.
  * Zoom level and year are controlled by parent component.
  * 
  * @param {integer} year Year currently selected. Chnages data that is displayed in tooltip and sidebar
  * @param {integer} zoom Zoom level for the zoomable component that contains the actual map
- * @returns 
+ *
  */
 const ImportMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCountry}) => {
 
@@ -22,7 +24,7 @@ const ImportMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCo
   // geometry colors
   const defaultColor = '#84B098';
   const hoverColor = '#66B087';
-  const pressedColor = '#80dbfc';
+  const pressedColor = '#5b9e79';
 
   // Hover states
   const [hoveredCountry, setHoveredCountry] = useState(null);
@@ -99,13 +101,13 @@ const ImportMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCo
         throw new Error('One or more fetch requests failed');
       }
   
-      const [countryName, totalExports, totalMerchExports] = await Promise.all(
+      const [countryName, totalArmsExports, totalMerchExports] = await Promise.all(
         responses.map(response => response.json())
       );
   
       const data = {
         countryName,
-        totalExports,
+        totalArmsExports,
         totalMerchExports
       };
 
@@ -184,7 +186,7 @@ const ImportMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCo
                       },
                       pressed: {
                         fill: pressedColor,
-                        stroke: '#607D8B',
+                        stroke: '#FFFFFF',
                         strokeLinejoin: 'round',
                         strokeWidth: 0.85,
                         outline: 'none',
@@ -197,7 +199,7 @@ const ImportMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCo
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      {hoveredCountry && MapTooltip(hoveredCountry, handleMouseEnterBox)}
+      {hoveredCountry && (mapModeImport ? MapTooltipImports(hoveredCountry, handleMouseEnterBox) : MapTooltipExports(hoveredCountry, handleMouseEnterBox))}
     </div>
   );
 };
