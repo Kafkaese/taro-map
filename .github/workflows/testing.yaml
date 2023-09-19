@@ -22,6 +22,9 @@ jobs:
         success: ${{ steps.set-env.outputs.success }}
 
       steps:
+        - name: Set environment variable
+          id: set_env
+          run: echo "FIRST_JOB_SUCCESS=false" >> "$GITHUB_OUTPUT"
         - name: Checkout
           uses: actions/checkout@v3
         - name: Intsall node
