@@ -33,6 +33,8 @@ jobs:
           run: npm run build --if-present
         - name: 'Run tests'
           run: npm test
+        - name: Set environment variable
+          run: echo "FIRST_JOB_SUCCESS=true" >> $GITHUB_ENV
           
     tf-setup:
       name: 'Provision test environment'
@@ -125,7 +127,7 @@ jobs:
 
     tf-destroy:
         name: 'Destroy test environment'
-        if: ${{ always() }}
+        if: success() || ${{env.FIRST_JOB_SUCCESS}} == 'true'
         needs: [tf-setup, build-frontend, deploy-frontend]
         runs-on: ubuntu-latest
         environment: testing
