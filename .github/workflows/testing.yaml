@@ -130,9 +130,8 @@ jobs:
 
     tf-destroy:
         name: 'Destroy test environment'
-        
         needs: [unit-tests, tf-setup, build-frontend, deploy-frontend]
-        if: success() || ${{needs.unit-tests.outputs.success}} == 'true'
+        if: ${{needs.unit-tests.outputs.success}} == 'true'
         runs-on: ubuntu-latest
         environment: testing
         env:
