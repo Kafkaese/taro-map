@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "rg" {
 
 # Container registry for the frontend container
 resource "azurerm_container_registry" "taro-test-registry" {
-  name                = "taroFrontendTestContainerRegistry"
+  name                = var.instance_name
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   sku                 = "Basic"
