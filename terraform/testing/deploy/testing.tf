@@ -21,8 +21,8 @@ resource "azurerm_container_group" "taro-test-frontend-instance" {
   os_type             = "Linux"
 
   image_registry_credential {
-    username = var.image_registry_credential_user
-    password = var.image_registry_credential_password
+    username = azurerm_container_registry.taro-test-registry.admin_username
+    password = azurerm_container_registry.taro-test-registry.admin_password
     server   = azurerm_container_registry.taro-test-registry.login_server
   }
 
