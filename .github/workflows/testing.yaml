@@ -54,17 +54,22 @@ jobs:
           uses: hashicorp/setup-terraform@v1
           with:
             terraform_wrapper: false
+        - name: 'check dir'
+          working-directory: ./terraform/testing
+          run: |
+            pwd
+            ls
         - name: 'Initialize Terraform'
-          working-directory: ./terraform
+          working-directory: ./terraform/testing
           run: terraform init
         - name: 'Get state'
-          working-directory: ./terraform
+          working-directory: ./terraform/testing
           run: terraform plan -refresh-only
         - name: 'Make plan'
-          working-directory: ./terraform
+          working-directory: ./terraform/testing
           run: terraform plan -out test.tfplan
         - name: 'Apply plan'
-          working-directory: ./terraform
+          working-directory: ./terraform/testing
           run: terraform apply test.tfplan
 
     build-frontend:
@@ -114,13 +119,13 @@ jobs:
               with:
                 terraform_wrapper: false
             - name: 'Initialize Terraform'
-              working-directory: ./terraform/deploy
+              working-directory: ./terraform/testing/deploy
               run: terraform init
             - name: 'Make plan'
-              working-directory: ./terraform/deploy
+              working-directory: ./terraform/testing/deploy
               run: terraform plan -var "image_registry_credential_user=$ARM_CLIENT_ID" -var "image_registry_credential_password=$ARM_CLIENT_SECRET" -out 'test-deploy.tfplan'
             - name: 'Apply plan'
-              working-directory: ./terraform/deploy
+              working-directory: ./terraform/testing/deploy
               run: terraform apply test-deploy.tfplan
 
     tf-destroy:
@@ -141,15 +146,15 @@ jobs:
             - name: 'Terraform Setup'
               uses: hashicorp/setup-terraform@v1
             - name: 'Initialize Terraform'
-              working-directory: ./terraform
+              working-directory: ./terraform/testing
               run: terraform init
             - name: 'Get state'
-              working-directory: ./terraform
+              working-directory: ./terraform/testing
               run: terraform plan -refresh-only
             - name: 'Make plan'
-              working-directory: ./terraform
+              working-directory: ./terraform/testing
               run: terraform plan -destroy -out test.tfplan
             - name: 'Apply plan'
-              working-directory: ./terraform
+              working-directory: ./terraform/testing
               run: terraform apply test.tfplan
         
