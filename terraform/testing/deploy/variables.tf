@@ -23,3 +23,7 @@ variable "acr_name" {
 variable "instance_name" {
   default = "taro-test-api-instance"
 }
+
+variable "environment" {
+  default = "testing"
+}
