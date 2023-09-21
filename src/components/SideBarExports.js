@@ -43,7 +43,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                         <span className='circle-label' style={{width: collapsed ? '0' : '100%', }}>Percentage of Exports<sup>[1]</sup></span>
                     </div>
                 </div>
-                <div style={{color: 'white', textAlign: 'center', textDecoration: 'underline', width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Import Source Countries ${year}`}</div>
+                <div style={{color: 'white', textAlign: 'center', textDecoration: 'underline', width: collapsed ? '0' : '100%', overflow: "hidden"}}>{`Export Destination Countries ${year}`}</div>
 
                 <div className="barPlot">
                     <ResponsiveContainer width={collapsed ? 0 : "100%"} height={countryData.exportSources.length*30+20}>

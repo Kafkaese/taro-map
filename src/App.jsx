@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import ExportMap from './components/ExportMap';
-import ImportMap from './components/ImportMap';
+import WorldMap from './components/WorldMap';
 import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
 
@@ -13,11 +12,11 @@ function App() {
   const API_PORT = process.env.REACT_APP_API_PORT
 
   // Controls which map is shown
-  const [showExports, setShowExports] = useState(false) 
+  const [mapModeImport, setMapModeImport] = useState(true);
 
   // Sets map active based on state of the button
   const toggleComponent = (leftActive) => {
-    leftActive ? setShowExports(false) : setShowExports(true);
+    leftActive ? setMapModeImport(true) : setMapModeImport(false);
   };
   
   // Displayed year
@@ -110,7 +109,7 @@ function App() {
         <div className='title'>Arms-Tracker</div>
       </div>
       <div className='toggle'>
-        <ToggleButton left={"Imports"} right={"Exports"} onToggleChange={toggleComponent}/> 
+        <ToggleButton  left={"Imports"} right={"Exports"} onToggleChange={toggleComponent}/> 
       </div>
 
       <div className='zoom'>
@@ -119,7 +118,7 @@ function App() {
       </div>
       
       {activeCountryAlpha2 === '' ? <div style={{ color: 'whitesmoke', position: 'absolute', top: '50%', left: '40%'}}>(Click on Country for more Details)</div> : ''}
-      {showExports ? <ExportMap className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry}/> : <ImportMap className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry}/>}
+      <WorldMap mapModeImport={mapModeImport} className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry} />
       
       <div className='slider-container'>
         <YearSlider onYearChange={handleYearChange}></YearSlider>
