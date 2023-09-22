@@ -1,0 +1,15 @@
+.dropdown {
+    color: #ffffff;
+    background-color: #242e41;
+    text-align: left;
+}
+
+.dropdown .dropdown-options {
+    border: 1px #ffffff;
+    padding: 0px;
+    overflow: visible;
+    height: 200%;
+}
+.dropdown .dropdown-option {
+    background-color: aquamarine;
+}

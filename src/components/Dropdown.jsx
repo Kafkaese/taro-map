@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import './Dropdown.css'
+import { Button } from 'bootstrap';
 
 /**
  * Dropdown component for selecting an option from a list.
@@ -35,13 +36,13 @@ const Dropdown = ({ options, onSelect, defaultValue}) => {
       {isOpen && (
         <ul className="dropdown-options">
           {options.map((option) => (
-            <li
+            <div
               key={option.value}
               className="dropdown-option"
               onClick={() => handleOptionClick(option)}
             >
               {option.label}
-            </li>
+            </div>
           ))}
         </ul>
       )}
