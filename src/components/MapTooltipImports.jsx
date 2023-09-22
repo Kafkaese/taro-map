@@ -3,7 +3,7 @@ import { formatUSDvalue, formatUSDorder, getDemocracyColor, getPeaceColor, getUS
 
 const MapTooltip = (hoveredCountry, handleMouseEnterBox) => {
 
-    console.log(hoveredCountry)
+    //console.log(hoveredCountry)
     
     return (
         <div>
