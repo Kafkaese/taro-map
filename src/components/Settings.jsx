@@ -13,6 +13,9 @@ const Settings = ({settings, setSettings}) => {
         }, {
             value: 'EUR',
             label: 'Euro'
+        }, {
+            value: 'var',
+            label: 'AS DATA'
         }
     ]
     const changeCurrency = (option) => {
@@ -21,6 +24,17 @@ const Settings = ({settings, setSettings}) => {
             currency: option
         })
         console.log(settings)
+    }
+
+
+    // Handles currency info 
+    const [showCurrencyInfo, setShowCurrencyInfo] = useState(false);
+
+    const handleMouseEnterInfoIcon = () => {
+        setShowCurrencyInfo(true)
+    }
+    const handleMouseLeaveInfoIcon = () => {
+        setShowCurrencyInfo(false)
     }
 
     return (
@@ -38,9 +52,9 @@ const Settings = ({settings, setSettings}) => {
                         }
                 }></Dropdown>
                 </div>
-                <div className="currency-info"><img className="icon" src="/information-button.png" alt='i'></img></div>
+                <div className="currency-info" onMouseOver={handleMouseEnterInfoIcon} onMouseOut={handleMouseLeaveInfoIcon}><img className="icon" src="/information-button.png" alt='i'></img></div>
             </div>
-            <p className="currency-info-box">As Data displays the currency for every individual instance as in the original data source. If specific currency is picked, the historical exchange rate will be used.</p>
+            {showCurrencyInfo ? <p className="currency-info-box">AS DATA displays the currency for every individual instance as in the original data source. If specific currency is picked, the historical exchange rate will be used.</p> : ''}
         </div>
     )
 
