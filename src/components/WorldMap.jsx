@@ -21,6 +21,9 @@ const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCou
   const API_HOST = process.env.REACT_APP_API_HOST
   const API_PORT = process.env.REACT_APP_API_PORT
 
+  // User defined map settings
+  const [settings, changeSettings] = useState({language: "en-US", currency: 'USD'})
+
   // geometry colors
   const defaultColor = '#84B098';
   const hoverColor = '#66B087';
