@@ -112,7 +112,7 @@ function App() {
       <div className='header'>
         <img className='logo' src="/favicon.png" alt="Taro"/>
         <div className='title'>Arms-Tracker</div>
-        <button className='settings' onClick={() => {setShowSettings(!showSettings)}}>
+        <button className='settings-button' onClick={() => {setShowSettings(!showSettings)}}>
           <img className='settings-icon' src='/settings.png' alt="Settings" />
         </button>
       </div>
