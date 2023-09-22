@@ -39,7 +39,7 @@ function App() {
   // Settings
   // User defined map settings
   const [showSettings, setShowSettings] = useState(false);
-  const [settings, setSettings] = useState({language: "en-US", currency: 'USD'});
+  const [settings, setSettings] = useState({language: "English", currency: 'USD'});
   
 
   // Data for sidebar
@@ -117,7 +117,7 @@ function App() {
         </button>
       </div>
 
-      {showSettings ? <Settings></Settings> : ''}
+      {showSettings ? <Settings settings={settings} setSettings={setSettings}></Settings> : ''}
 
       <div className='toggle'>
         <ToggleButton  left={"Imports"} right={"Exports"} onToggleChange={toggleComponent}/> 
