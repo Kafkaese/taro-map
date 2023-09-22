@@ -38,7 +38,7 @@ const Settings = ({settings, setSettings}) => {
                         }
                 }></Dropdown>
                 </div>
-                <div className="currency-info">INFO</div>
+                <div className="currency-info"><img className="icon" src="/information-button.png" alt='i'></img></div>
             </div>
         </div>
     )

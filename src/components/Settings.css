@@ -25,16 +25,22 @@
 }
 
 .settings .currency-selection .currency-header{
-    width: 33%;
+    width: 40%;
     background-color: azure;
 }
 
 .settings .currency-selection .currency-dropdown{
-    width: 33%;
+    width: 40%;
 }
 
 .settings .currency-selection .currency-info{
-    width: 33%;
+    width: 20px;
     background-color: aqua;
+}
+
+.settings .currency-selection .currency-info .icon{
+    vertical-align: middle  ;
+    height: 20px;
+    width: 20px;
 }
 
