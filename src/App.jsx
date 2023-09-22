@@ -105,9 +105,13 @@ function App() {
       `}
       </style>
       <div className='header'>
-      <img className='logo' src="/favicon.png" alt="Taro"></img>
+        <img className='logo' src="/favicon.png" alt="Taro"/>
         <div className='title'>Arms-Tracker</div>
+        <button className='settings' >
+          <img className='settings-icon' src='/settings.png' alt="Settings" />
+        </button>
       </div>
+
       <div className='toggle'>
         <ToggleButton  left={"Imports"} right={"Exports"} onToggleChange={toggleComponent}/> 
       </div>
