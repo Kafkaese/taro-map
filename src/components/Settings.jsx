@@ -47,8 +47,8 @@ const Settings = ({settings, setSettings}) => {
                     onSelect={changeCurrency}
                     defaultValue={
                         {
-                            value: 'EUR',
-                            label: 'Euro'
+                            value: 'var',
+                            label: 'AS DATA'
                         }
                 }></Dropdown>
                 </div>

@@ -35,20 +35,20 @@
 
 .settings .currency-selection .currency-header{
     width: 40%;
-    background-color: azure;
+    color: #ffffff;
 }
 
 .settings .currency-selection .currency-dropdown{
-    width: 40%;
+    width: 45%;
 }
 
 .settings .currency-selection .currency-info{
-    width: 20px;
-    background-color: aqua;
+    width: 15%;
+    display: flex;
+    justify-content: center;
 }
 
 .settings .currency-selection .currency-info .icon{
-    vertical-align: middle  ;
     height: 20px;
     width: 20px;
 }
