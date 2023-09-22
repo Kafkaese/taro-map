@@ -28,14 +28,17 @@ const Settings = ({settings, setSettings}) => {
 
     return (
         <div className="settings">
-            <Dropdown options={languageOptions}
-                onSelect={changeLanguage}
-                defaultValue={
-                    {
-                        value: 'EN',
-                        label: 'English'
-                    }
-            }></Dropdown>
+            <div className="language-selection">
+                <div className="language-selection-header">Language</div>
+                <Dropdown options={languageOptions}
+                    onSelect={changeLanguage}
+                    defaultValue={
+                        {
+                            value: 'EN',
+                            label: 'English'
+                        }
+                }></Dropdown>
+            </div>
         </div>
     )
 

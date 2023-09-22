@@ -1,9 +1,9 @@
 .settings {
     position: fixed;
     top: 40px;
-    right: 1%;
+    right: 50%;
     width: 200px;
-    height: 60px;
+    height: 260px;
     margin-left: 35%;
     background-color: #101827;
     padding: 4px 8px;
@@ -12,4 +12,12 @@
     flex-direction: column;
     align-items: stretch;
     border-radius: 8px;
+}
+
+.settings .language-selection {
+    display: flex;
+}
+
+.settings .language-selection .language-selection-header{
+    width: 50%;
 }
