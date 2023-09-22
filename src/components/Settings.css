@@ -14,6 +14,15 @@
     border-radius: 8px;
 }
 
+.settings .currency-info-box {
+    position: fixed;
+    left: 10%;
+    background-color: #101827;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    width: 150px;
+}
+
 .settings .settings-header {
     color: #ffffff;
     text-align: center;

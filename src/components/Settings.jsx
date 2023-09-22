@@ -40,6 +40,7 @@ const Settings = ({settings, setSettings}) => {
                 </div>
                 <div className="currency-info"><img className="icon" src="/information-button.png" alt='i'></img></div>
             </div>
+            <p className="currency-info-box">As Data displays the currency for every individual instance as in the original data source. If specific currency is picked, the historical exchange rate will be used.</p>
         </div>
     )
 
