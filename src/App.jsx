@@ -93,7 +93,7 @@ function App() {
     } catch (error) {
       console.error('Error fetching country data:', error);
     }
-  }, [API_HOST, API_PORT, year])
+  }, [API_HOST, API_PORT, year, settings])
 
     // Effect to update country on year change only once the state has actually been updated
     useEffect( () => {
