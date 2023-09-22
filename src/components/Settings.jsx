@@ -6,38 +6,39 @@ import './Settings.css';
 
 const Settings = ({settings, setSettings}) => {
 
-    const languageOptions = [
+    const currencyOptions = [
         {
-            value: 'EN',
-            label: 'English'
+            value: 'USD',
+            label: 'US Dollar'
         }, {
-            value: 'DE',
-            label: 'Deutsch'
-        }, {
-            value: 'FR',
-            label: 'Français'
+            value: 'EUR',
+            label: 'Euro'
         }
     ]
-    const changeLanguage = (option) => {
+    const changeCurrency = (option) => {
         setSettings({
             ...settings,
-            language: option
+            currency: option
         })
         console.log(settings)
     }
 
     return (
         <div className="settings">
-            <div className="language-selection">
-                <div className="language-selection-header">Language</div>
-                <Dropdown options={languageOptions}
-                    onSelect={changeLanguage}
+            <h3 className="settings-header">Settings</h3>
+            <div className="currency-selection">
+                <div className="currency-header">Currency:</div>
+                <div className="currency-dropdown">
+                <Dropdown  options={currencyOptions}
+                    onSelect={changeCurrency}
                     defaultValue={
                         {
-                            value: 'EN',
-                            label: 'English'
+                            value: 'EUR',
+                            label: 'Euro'
                         }
                 }></Dropdown>
+                </div>
+                <div className="currency-info">INFO</div>
             </div>
         </div>
     )

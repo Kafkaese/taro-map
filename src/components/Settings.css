@@ -14,10 +14,27 @@
     border-radius: 8px;
 }
 
-.settings .language-selection {
-    display: flex;
+.settings .settings-header {
+    color: #ffffff;
+    text-align: center;
 }
 
-.settings .language-selection .language-selection-header{
-    width: 50%;
+.settings .currency-selection {
+    display: flex;
+    height: 10%;
 }
+
+.settings .currency-selection .currency-header{
+    width: 33%;
+    background-color: azure;
+}
+
+.settings .currency-selection .currency-dropdown{
+    width: 33%;
+}
+
+.settings .currency-selection .currency-info{
+    width: 33%;
+    background-color: aqua;
+}
+
