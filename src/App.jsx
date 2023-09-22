@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import WorldMap from './components/WorldMap';
 import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
+import Settings from './components/Settings';
 
 import './App.css'
 
@@ -35,8 +36,12 @@ function App() {
   };
 
 
-
+  // Settings
+  // User defined map settings
+  const [showSettings, setShowSettings] = useState(false);
+  const [settings, setSettings] = useState({language: "en-US", currency: 'USD'});
   
+
   // Data for sidebar
   const [activeCountryData, setActiveCountryData] = useState({});
 
@@ -107,10 +112,12 @@ function App() {
       <div className='header'>
         <img className='logo' src="/favicon.png" alt="Taro"/>
         <div className='title'>Arms-Tracker</div>
-        <button className='settings' >
+        <button className='settings' onClick={() => {setShowSettings(!showSettings)}}>
           <img className='settings-icon' src='/settings.png' alt="Settings" />
         </button>
       </div>
+
+      {showSettings ? <Settings></Settings> : ''}
 
       <div className='toggle'>
         <ToggleButton  left={"Imports"} right={"Exports"} onToggleChange={toggleComponent}/> 
