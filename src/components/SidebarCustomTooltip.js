@@ -8,13 +8,13 @@ import './SidebarCustomTooltip.css'
  * @param {string} label Label as defined by the Rechart component. Determined by the data shown and used in the axis components of the 
  *      Chart. Differs from the one we want to show in the tooltip. 
  */
-const SidebarCustomTooltip = ({ active, payload, label }) => {
+const SidebarCustomTooltip = ({ active, payload, label, settings }) => {
 
     if (active && payload && payload.length) {
       return (
         <div className="sidebarCustomTooltip">
           <div style={{textDecorationLine: 'underline', fontWeight: 'bold'}} >{payload[0].payload.full_name}</div>
-          <div>{`€ ${payload[0].value.toLocaleString('en')}`}</div>
+          <div>{`${payload[0].value.toLocaleString('en')} ${settings.currency.symbol}`}</div>
         </div>
       );
     }

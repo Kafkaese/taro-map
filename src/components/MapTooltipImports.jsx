@@ -1,9 +1,9 @@
 import React from "react"
 import { formatUSDvalue, formatUSDorder, getDemocracyColor, getPeaceColor, getUSDColor } from "./formattingUtils"
 
-const MapTooltip = (hoveredCountry, handleMouseEnterBox) => {
+const MapTooltip = (hoveredCountry, handleMouseEnterBox, settings) => {
 
-    console.log(hoveredCountry)
+    //console.log(hoveredCountry)
     
     return (
         <div>
@@ -19,7 +19,7 @@ const MapTooltip = (hoveredCountry, handleMouseEnterBox) => {
                         <div className="money" style={{ backgroundColor: getUSDColor(hoveredCountry.totalImports.value) }}>
                         {formatUSDvalue(hoveredCountry.totalImports.value)}
                         </div>
-                        <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountry.totalImports.value)}</div></div>
+                        <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountry.totalImports.value) && `${formatUSDorder(hoveredCountry.totalImports.value)} ${settings.currency.symbol}`}</div></div>
                         <span className='money-label'>Imports</span>
                     </div>
 

@@ -16,7 +16,7 @@ import CustomizedTick from "./CustomizedTicks";
  * @param {function} onCollapse Funcion to be called when the side bar is being (un-)collapsed by the cooresponding button. 
  * @param {integer} year Year currently selected on the parent map. Influences the data being displayed.
  */
-const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
+const SideBarExports = ({countryData, collapsed, onCollapse, year, settings}) => {
 
     const collapse = () => {
         onCollapse(!collapsed)
@@ -34,7 +34,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                         <div className="money" style={{ backgroundColor: getUSDColor(countryData.totalExports.value) }}>
                             {formatUSDvalue(countryData.totalExports.value)}
                         </div>
-                        <div className='annotate'><div className='text'>{formatUSDorder(countryData.totalExports.value)}</div></div>
+                        <div className='annotate'><div className='text'>{`${formatUSDorder(countryData.totalExports.value)} ${settings.currency.symbol}`}</div></div>
                         <span className='money-label'>Exports</span>
                     </div>
 
@@ -62,7 +62,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                     >
                         <YAxis dataKey="name" tick={CustomizedTick} type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalExports.value]} tick={false}/>
-                        <Tooltip content={<SidebarCustomTooltip/>} />
+                        <Tooltip content={<SidebarCustomTooltip settings={settings}/>} />
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} name=" "/>
                     </BarChart> : <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <p style={{flex: '0', textDecoration: 'none'}}>No data available</p>
@@ -88,14 +88,14 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                     <YAxis 
                         tick={false} 
                         label={{
-                            value: `Total Export Value (EUR)`,
+                            value: `Total Export Value (${settings.currency.value})`,
                             style: { textAnchor: 'middle' },
                             angle: -90,
                             position: 'right',
                             offset: -15,
                     }}/>
                     <Tooltip contentStyle={{background: '#101827', borderRadius: '8px'}} separator="" itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} formatter={formatTooltipValue}/>
-                    <Line dot={false} type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} name=" "/>
+                    <Line unit={` ${settings.currency.symbol}`} dot={false} type="monotone" dataKey="value" stroke="#60dbfc" activeDot={{ r: 8 }} name=" "/>
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>
                 </ResponsiveContainer>
