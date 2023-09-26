@@ -62,7 +62,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year, settings}) =>
                     >
                         <YAxis dataKey="name" tick={CustomizedTick} type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalExports.value]} tick={false}/>
-                        <Tooltip content={<SidebarCustomTooltip/>} />
+                        <Tooltip content={<SidebarCustomTooltip settings={settings}/>} />
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }} name=" "/>
                     </BarChart> : <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <p style={{flex: '0', textDecoration: 'none'}}>No data available</p>
