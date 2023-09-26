@@ -200,7 +200,7 @@ const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCou
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
-      {hoveredCountry && (mapModeImport ? MapTooltipImports(hoveredCountry, handleMouseEnterBox) : MapTooltipExports(hoveredCountry, handleMouseEnterBox))}
+      {hoveredCountry && (mapModeImport ? MapTooltipImports(hoveredCountry, handleMouseEnterBox, settings) : MapTooltipExports(hoveredCountry, handleMouseEnterBox, settings))}
     </div>
   );
 };
