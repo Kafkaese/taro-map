@@ -68,7 +68,7 @@
 
   // Format values for plot tooltips
   const formatTooltipValue = (value, name, props) => {
-    return `€${value.toLocaleString('en')}`
+    return `${value.toLocaleString('en')}`
   }
 
 
