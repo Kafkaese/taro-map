@@ -35,7 +35,7 @@ const Settings = ({settings, setSettings}) => {
     }
 
     return (
-        <div className="settings">
+        <div className="settings" onClick={(e) => {e.stopPropagation();}}>
             <h3 className="settings-header">Settings</h3>
             <div className="currency-selection">
                 <div className="currency-header">Currency:</div>

@@ -101,7 +101,7 @@ function App() {
     }, [year, activeCountryAlpha2, updateActiveCountry])
 
   return (
-    <div className="app" >
+    <div className="app" onClick={() => {setShowSettings(false)}}>
       <style jsx="true" global="true">{`
         body {
           margin: 0px;
@@ -112,7 +112,7 @@ function App() {
       <div className='header'>
         <img className='logo' src="/favicon.png" alt="Taro"/>
         <div className='title'>Arms-Tracker</div>
-        <button className='settings-button' onClick={() => {setShowSettings(!showSettings)}}>
+        <button className='settings-button' onClick={(e) => {e.stopPropagation(); setShowSettings(!showSettings)}}>
           <img className='settings-icon' src='/settings.png' alt="Settings" />
         </button>
       </div>
@@ -126,7 +126,7 @@ function App() {
         <button className='button' onClick={handleZoomOut}>-</button>
       </div>
 
-      {showSettings ? <Settings settings={settings} setSettings={setSettings}></Settings> : ''}
+      {showSettings ? <Settings settings={settings} setSettings={setSettings} ></Settings> : ''}
       
       {activeCountryAlpha2 === '' ? <div style={{ color: 'whitesmoke', position: 'absolute', top: '50%', left: '40%'}}>(Click on Country for more Details)</div> : ''}
       <WorldMap mapModeImport={mapModeImport} className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry} settings={settings}/>
