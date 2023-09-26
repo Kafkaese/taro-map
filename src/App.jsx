@@ -62,7 +62,7 @@ function App() {
       const totalExports = await fetch(`http://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency}`); 
       const exportSources = await fetch(`http://${API_HOST}:${API_PORT}/arms/exports/by_country?country_code=${alpha2}&year=${year}&limit=${5}&currency=${settings.currency}`)
       const exportTimeSeries = await fetch(`http://${API_HOST}:${API_PORT}/arms/exports/timeseries?country_code=${alpha2}&currency=${settings.currency}`)
-      const merchExports = await fetch(`http://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${currency}`)
+      const merchExports = await fetch(`http://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency}`)
 
       const nameData = await name.json();
       const democracyIndexData = await democracyIndex.json();
@@ -129,7 +129,7 @@ function App() {
       </div>
       
       {activeCountryAlpha2 === '' ? <div style={{ color: 'whitesmoke', position: 'absolute', top: '50%', left: '40%'}}>(Click on Country for more Details)</div> : ''}
-      <WorldMap mapModeImport={mapModeImport} className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry} />
+      <WorldMap mapModeImport={mapModeImport} className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry} settings={settings}/>
       
       <div className='slider-container'>
         <YearSlider onYearChange={handleYearChange}></YearSlider>
