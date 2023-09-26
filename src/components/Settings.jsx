@@ -9,10 +9,12 @@ const Settings = ({settings, setSettings}) => {
     const currencyOptions = [
         {
             value: 'USD',
-            label: 'US Dollar'
+            label: 'US Dollar',
+            symbol: '$'
         }, {
             value: 'EUR',
-            label: 'Euro'
+            label: 'Euro',
+            symbol: '€'
         }
     ]
     const changeCurrency = (option) => {
