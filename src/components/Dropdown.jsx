@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import './Dropdown.css'
-import { Button } from 'bootstrap';
 
 /**
  * Dropdown component for selecting an option from a list.
