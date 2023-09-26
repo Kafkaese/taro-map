@@ -45,11 +45,7 @@ const Settings = ({settings, setSettings}) => {
                 <Dropdown  options={currencyOptions}
                     onSelect={changeCurrency}
                     defaultValue={
-                        {
-                            value: 'USD',
-                            label: 'US Dollar',
-                            symbol: '$'
-                        }
+                        settings.currency
                 }></Dropdown>
                 </div>
                 <div className="currency-info" onMouseOver={handleMouseEnterInfoIcon} onMouseOut={handleMouseLeaveInfoIcon}><img className="icon" src="/information-button.png" alt='i'></img></div>
