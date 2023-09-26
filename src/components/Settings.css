@@ -1,9 +1,9 @@
 .settings {
     position: fixed;
     top: 40px;
-    right: 50%;
+    right: 1%;
     width: 200px;
-    height: 260px;
+    height: 100px;
     margin-left: 35%;
     background-color: #101827;
     padding: 4px 8px;
