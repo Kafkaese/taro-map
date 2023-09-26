@@ -47,7 +47,8 @@ const Settings = ({settings, setSettings}) => {
                     defaultValue={
                         {
                             value: 'USD',
-                            label: 'Euro'
+                            label: 'US Dollar',
+                            symbol: '$'
                         }
                 }></Dropdown>
                 </div>
