@@ -16,7 +16,7 @@ import CustomizedTick from "./CustomizedTicks";
  * @param {function} onCollapse Funcion to be called when the side bar is being (un-)collapsed by the cooresponding button. 
  * @param {integer} year Year currently selected on the parent map. Influences the data being displayed.
  */
-const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
+const SideBarExports = ({countryData, collapsed, onCollapse, year, settings}) => {
 
     const collapse = () => {
         onCollapse(!collapsed)
@@ -88,7 +88,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year}) => {
                     <YAxis 
                         tick={false} 
                         label={{
-                            value: `Total Export Value (EUR)`,
+                            value: `Total Export Value (${settings.currency.value})`,
                             style: { textAnchor: 'middle' },
                             angle: -90,
                             position: 'right',
