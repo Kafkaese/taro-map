@@ -16,7 +16,7 @@
 
 .settings .currency-info-box {
     position: fixed;
-    left: 10%;
+    right: 5%;
     background-color: #101827;
     color: #ffffff;
     border: 2px solid #ffffff;
