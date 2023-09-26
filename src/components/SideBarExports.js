@@ -34,7 +34,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year, settings}) =>
                         <div className="money" style={{ backgroundColor: getUSDColor(countryData.totalExports.value) }}>
                             {formatUSDvalue(countryData.totalExports.value)}
                         </div>
-                        <div className='annotate'><div className='text'>{formatUSDorder(countryData.totalExports.value)}</div></div>
+                        <div className='annotate'><div className='text'>{`${formatUSDorder(countryData.totalExports.value)} ${settings.currency.symbol}`}</div></div>
                         <span className='money-label'>Exports</span>
                     </div>
 
