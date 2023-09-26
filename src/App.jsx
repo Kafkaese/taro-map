@@ -117,8 +117,6 @@ function App() {
         </button>
       </div>
 
-      {showSettings ? <Settings settings={settings} setSettings={setSettings}></Settings> : ''}
-
       <div className='toggle'>
         <ToggleButton  left={"Imports"} right={"Exports"} onToggleChange={toggleComponent}/> 
       </div>
@@ -127,6 +125,8 @@ function App() {
         <button className='button' onClick={handleZoomIn}>+</button>
         <button className='button' onClick={handleZoomOut}>-</button>
       </div>
+
+      {showSettings ? <Settings settings={settings} setSettings={setSettings}></Settings> : ''}
       
       {activeCountryAlpha2 === '' ? <div style={{ color: 'whitesmoke', position: 'absolute', top: '50%', left: '40%'}}>(Click on Country for more Details)</div> : ''}
       <WorldMap mapModeImport={mapModeImport} className='map' year={year} zoom={zoom} activeCountryData={activeCountryData} updateActiveCountry={updateActiveCountry} settings={settings}/>
