@@ -17,11 +17,10 @@ import './SideBarImports.css'
  * @param {function} onCollapse Funcion to be called when the side bar is being (un-)collapsed by the cooresponding button. 
  * @param {integer} year Year currently selected on the parent map. Influences the data being displayed.
  */
-const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
+const SideBarImports = ({countryData, collapsed, onCollapse, year, settings}) => {
 
     const collapse = () => {
         onCollapse(!collapsed)
-        console.log(countryData)
     }
 
 
@@ -36,7 +35,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         <div className="money" style={{ backgroundColor: getUSDColor(countryData.totalImports.value) }}>
                         {formatUSDvalue(countryData.totalImports.value)}
                         </div>
-                        <div className='annotate'><div className='text'>{formatUSDorder(countryData.totalImports.value)}</div></div>
+                        <div className='annotate'><div className='text'>{`${formatUSDorder(countryData.totalImports.value)} ${settings.currency.symbol}`}</div></div>
                         <span className='money-label'>Imports</span>
                     </div>
 
@@ -74,7 +73,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year}) => {
                         
                         <YAxis dataKey="name" tick={CustomizedTick} type="category"/>
                         <XAxis hide={true} type="number" domain={[0, countryData.totalImports.value]} tick={false} />
-                        <Tooltip content={<SidebarCustomTooltip/>} />
+                        <Tooltip content={<SidebarCustomTooltip settings={settings}/>} />
                         <Bar dataKey="value" fill="#60dbfc" background={{ fill: 'grey' }}  name=" "/>
                     </BarChart> : <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <p style={{'flex': '0'}}>No data available</p>
