@@ -97,7 +97,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year, settings}) =>
                     <YAxis 
                         tick={false} 
                         label={{
-                            value: `Total Import Value (EUR)`,
+                            value: `Total Import Value (${settings.currency.value})`,
                             style: { textAnchor: 'middle' },
                             angle: -90,
                             position: 'right',
