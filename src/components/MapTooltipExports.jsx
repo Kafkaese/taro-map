@@ -9,7 +9,7 @@ import { formatUSDvalue, formatUSDorder, getUSDColor } from "./formattingUtils";
  * @param {function} handleMouseEnterBox Function on parent that handles mouse being over the tooltip.
  * 
  */
-const MapTooltipExports = (hoveredCountry, handleMouseEnterBox) => {
+const MapTooltipExports = (hoveredCountry, handleMouseEnterBox, settings) => {
 
     return (
         <div>
@@ -25,7 +25,7 @@ const MapTooltipExports = (hoveredCountry, handleMouseEnterBox) => {
                         <div className="money" style={{ backgroundColor: getUSDColor(hoveredCountry.totalArmsExports.value) }}>
                             {formatUSDvalue(hoveredCountry.totalArmsExports.value)}
                         </div>
-                        <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountry.totalArmsExports.value)}</div></div>
+                        <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountry.totalArmsExports.value) && `${formatUSDorder(hoveredCountry.totalArmsExports.value)} ${settings.currency.symbol}`}</div></div>
                         <span className='money-label'>Exports</span>
                     </div>
 
