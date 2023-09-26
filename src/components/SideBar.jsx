@@ -7,7 +7,8 @@ const SideBar = ({
     countryData,
     collapsed,
     onCollapse,
-    year
+    year,
+    settings
 }) => {
 
     return (
@@ -15,10 +16,12 @@ const SideBar = ({
             mapModeImport ? <SideBarImports countryData={countryData}
                 collapsed={collapsed}
                 onCollapse={onCollapse}
-                year={year}/> : <SideBarExports countryData={countryData}
+                year={year}
+                settings={settings}/> : <SideBarExports countryData={countryData}
                 collapsed={collapsed}
                 onCollapse={onCollapse}
-                year={year}/>
+                year={year}
+                settings={settings}/>
         } </div>
     )
 

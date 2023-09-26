@@ -150,7 +150,7 @@ const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCou
 
   return (
     <div>
-      {typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data' ? <SideBar mapModeImport={mapModeImport} countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year} setings={settings}></SideBar> : <div/>}
+      {typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data' ? <SideBar mapModeImport={mapModeImport} countryData={activeCountryData} collapsed={collapsed} settings={settings} onCollapse={setCollapsed} year={year} setings={settings}></SideBar> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}
