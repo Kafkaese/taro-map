@@ -15,7 +15,7 @@ import './HoverBox.css';
  * @param {integer} zoom Zoom level for the zoomable component that contains the actual map
  *
  */
-const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCountry}) => {
+const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCountry, settings}) => {
 
   // API vars from env
   const API_HOST = process.env.REACT_APP_API_HOST
@@ -92,8 +92,8 @@ const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCou
     try {
       const fetchPromises = [
         fetch(`http://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
-        fetch(`http://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}`),
-        fetch(`http://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}`)
+        fetch(`http://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency}`),
+        fetch(`http://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency}`)
       ];
   
       const responses = await Promise.all(fetchPromises);
@@ -150,7 +150,7 @@ const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCou
 
   return (
     <div>
-      {typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data' ? <SideBar mapModeImport={mapModeImport} countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year}></SideBar> : <div/>}
+      {typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data' ? <SideBar mapModeImport={mapModeImport} countryData={activeCountryData} collapsed={collapsed} onCollapse={setCollapsed} year={year} setings={settings}></SideBar> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '93vh' }}
