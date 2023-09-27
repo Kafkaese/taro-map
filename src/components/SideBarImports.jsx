@@ -53,7 +53,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year, settings}) =>
                         <span className='circle-label' style={{width: collapsed ? '0%' : '100%'}}>Peace Index <sup>[2]</sup></span>
                     </div>
                 </div>
-                <div className="barPlot-title" style={{width: collapsed ? '0' : '100%'}}>{`Import Source Countries ${year}`}</div>
+                <div className="barPlot-title" style={{width: collapsed ? '0' : '100%'}}>{`\n Import Source Countries ${year}`}</div>
                 <div className="barPlot">
                     <ResponsiveContainer width={collapsed ? 0 : "100%"} height={countryData.importSources.length*30+20}>
                     {countryData.importSources.value !== 'no data' ? 

@@ -114,7 +114,7 @@
     color: white;
     text-align: center;
     text-decoration: underline;
-
+    white-space: pre-line;
   }
 
 .sideBar .panel .barPlot {
