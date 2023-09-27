@@ -24,15 +24,6 @@ function App() { // API vars from env
         setYear(() => newYear);
     }
 
-    // Zoom
-    const [zoom, setZoom] = useState(1);
-    const handleZoomIn = () => {
-        setZoom((prevZoom) => prevZoom * 1.2); // Increase the zoom level
-    };
-    const handleZoomOut = () => {
-        setZoom((prevZoom) => prevZoom / 1.2); // Decrease the zoom level
-    };
-
 
     // Settings
     // User defined map settings
@@ -153,13 +144,6 @@ function App() { // API vars from env
                     onToggleChange={toggleComponent}/>
             </div>
 
-            <div className='zoom'>
-                <button className='button'
-                    onClick={handleZoomIn}>+</button>
-                <button className='button'
-                    onClick={handleZoomOut}>-</button>
-            </div>
-
             {
             showSettings ? <Settings settings={settings}
                 setSettings={setSettings}></Settings> : ''
@@ -178,7 +162,6 @@ function App() { // API vars from env
             <WorldMap mapModeImport={mapModeImport}
                 className='map'
                 year={year}
-                zoom={zoom}
                 activeCountryData={activeCountryData}
                 updateActiveCountry={updateActiveCountry}
                 settings={settings}/>
