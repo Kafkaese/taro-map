@@ -82,7 +82,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year, settings}) =>
                 </div>
 
                 <div className="timeSeries">
-                <ResponsiveContainer width={collapsed ? 0 : "100%"} height={300}>
+                <ResponsiveContainer width={collapsed ? 0 : "100%"}>
                 <LineChart
                 data={countryData.importTimeSeries}
                 margin={{
