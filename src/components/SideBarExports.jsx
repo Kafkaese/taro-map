@@ -25,7 +25,7 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year, settings}) =>
 
     return (
         <div className="sideBar">
-            <div className="panel" style={collapsed ? {width: '0%'} : {width: '30%'}}>
+            <div className="panel" style={collapsed ? {width: '0%'} : {width: '500px'}}>
                 <div className="title">
                     {countryData.name.value}
                 </div>
