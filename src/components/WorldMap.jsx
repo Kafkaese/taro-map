@@ -175,7 +175,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
         style={{ width: '100%', height: '93vh' }}
         onMouseMove={handleMouseMove}
       >
-        <ZoomableGroup zoom={position.zoom} center={position.coordinates} translateExtent={[[-Infinity, -100], [Infinity, 600]]}> {/* [?,maxup,?, maxdown]*/}
+        <ZoomableGroup onMoveEnd={handleMoveEnd} zoom={position.zoom} center={position.coordinates} translateExtent={[[-Infinity, -100], [Infinity, 600]]}> {/* [?,maxup,?, maxdown]*/}
           <Geographies geography="/world-new.json">
             {({ geographies }) =>
               geographies.map((geo) => {
