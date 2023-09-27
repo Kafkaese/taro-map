@@ -15,7 +15,7 @@ import './HoverBox.css';
  * @param {integer} zoom Zoom level for the zoomable component that contains the actual map
  *
  */
-const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCountry, settings}) => {
+const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, settings}) => {
 
   // API vars from env
   const API_HOST = process.env.REACT_APP_API_HOST
@@ -27,10 +27,28 @@ const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCou
   const hoverColor = '#66B087';
   const pressedColor = '#5b9e79';
 
+  // Position and zoom level for ZoomableGroup
+  const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
+
+  function handleZoomIn() {
+    if (position.zoom >= 4) return;
+    console.log(position);
+    setPosition((pos) => ({ ...pos, zoom: pos.zoom * 2 }));
+  }
+
+  function handleZoomOut() {
+    if (position.zoom <= 1) return;
+    setPosition((pos) => ({ ...pos, zoom: pos.zoom / 2 }));
+  }
+
+  function handleMoveEnd(position) {
+    setPosition(position);
+  }
+
   // Hover states
   const [hoveredCountry, setHoveredCountry] = useState(null);
-  //const [hoveredCountryData, setHoveredCountryData] = useState({});
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
 
   // Track mouse and let tooltip follow
   const handleMouseMove = (event) => {
@@ -157,7 +175,7 @@ const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCou
         style={{ width: '100%', height: '93vh' }}
         onMouseMove={handleMouseMove}
       >
-        <ZoomableGroup zoom={zoom} center={[0, 0]} translateExtent={[[-Infinity, -100], [Infinity, 600]]}> {/* [?,maxup,?, maxdown]*/}
+        <ZoomableGroup zoom={position.zoom} center={position.coordinates} translateExtent={[[-Infinity, -100], [Infinity, 600]]}> {/* [?,maxup,?, maxdown]*/}
           <Geographies geography="/world-new.json">
             {({ geographies }) =>
               geographies.map((geo) => {
@@ -201,6 +219,12 @@ const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCou
           </Geographies>
         </ZoomableGroup>
       </ComposableMap>
+      <div className='zoom'>
+                <button className='button'
+                    onClick={handleZoomIn}>+</button>
+                <button className='button'
+                    onClick={handleZoomOut}>-</button>
+            </div>
       {hoveredCountry && (mapModeImport ? MapTooltipImports(hoveredCountry, handleMouseEnterBox, settings) : MapTooltipExports(hoveredCountry, handleMouseEnterBox, settings))}
     </div>
   );
