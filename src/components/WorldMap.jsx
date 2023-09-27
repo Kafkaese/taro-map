@@ -45,7 +45,8 @@ const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCou
 
   };
 
-  // Mouse enter  for hover tool
+  // Mouse enter for hover tool. If the mouse hovers over the tooltip, is should act as if over no country
+  // Otherwise it would cause the value to get stuck if the mouse happens to leave the geomatry via the tooltip.
   const handleMouseEnterBox = (event) => {
     setHoveredCountry(null)
   }
@@ -67,14 +68,14 @@ const WorldMap = ({mapModeImport, year, zoom, activeCountryData, updateActiveCou
         throw new Error('One or more fetch requests failed');
       }
   
-      const [countryName, democracyIndex, totalImports, peaceIndex] = await Promise.all(
+      const [countryName, democracyIndex, totalArmsImports, peaceIndex] = await Promise.all(
         responses.map(response => response.json())
       );
   
       const data = {
         countryName,
         democracyIndex,
-        totalImports,
+        totalArmsImports,
         peaceIndex
       };
 
