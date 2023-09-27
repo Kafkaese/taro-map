@@ -125,5 +125,5 @@
 }
 
 .sideBar .panel .timeSeries {
-    text-overflow: hidden;
+  min-height: 35%;
 }
