@@ -32,13 +32,12 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
 
   function handleZoomIn() {
     if (position.zoom >= 4) return;
-    console.log(position);
-    setPosition((pos) => ({ ...pos, zoom: pos.zoom * 2 }));
+    setPosition((pos) => ({ ...pos, zoom: pos.zoom * 1.2 }));
   }
 
   function handleZoomOut() {
     if (position.zoom <= 1) return;
-    setPosition((pos) => ({ ...pos, zoom: pos.zoom / 2 }));
+    setPosition((pos) => ({ ...pos, zoom: pos.zoom / 1.2 }));
   }
 
   function handleMoveEnd(position) {
