@@ -7,7 +7,7 @@ const MapTooltip = (hoveredCountry, handleMouseEnterBox, settings) => {
     
     return (
         <div>
-            {hoveredCountry.totalImports &&
+            {hoveredCountry.totalArmsImports &&
             <div className="hover-box-container" style={{top: hoveredCountry.position.y +5, left: hoveredCountry.position.x +10,}}
                 onMouseEnter={handleMouseEnterBox}>
                     <h3>{hoveredCountry.countryName.value}</h3>
@@ -16,10 +16,10 @@ const MapTooltip = (hoveredCountry, handleMouseEnterBox, settings) => {
                     <div className="circle-container">
                     
                     <div className="money-wrapper">
-                        <div className="money" style={{ backgroundColor: getUSDColor(hoveredCountry.totalImports.value) }}>
-                        {formatUSDvalue(hoveredCountry.totalImports.value)}
+                        <div className="money" style={{ backgroundColor: getUSDColor(hoveredCountry.totalArmsImports.value) }}>
+                        {formatUSDvalue(hoveredCountry.totalArmsImports.value)}
                         </div>
-                        <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountry.totalImports.value) && `${formatUSDorder(hoveredCountry.totalImports.value)} ${settings.currency.symbol}`}</div></div>
+                        <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountry.totalArmsImports.value) && `${formatUSDorder(hoveredCountry.totalArmsImports.value)} ${settings.currency.symbol}`}</div></div>
                         <span className='money-label'>Imports</span>
                     </div>
 
