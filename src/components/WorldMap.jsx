@@ -61,7 +61,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
     }
 
     // Ensures tooltip disappears as soon as Geography is left
-    handleMouseEnterBox()
+    setHoveredCountry(null)
   };
 
   // Track mouse over Geography
@@ -79,11 +79,6 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
 
   };
 
-  // Mouse enter for hover tool. If the mouse hovers over the tooltip, is should act as if over no country
-  // Otherwise it would cause the value to get stuck if the mouse happens to leave the geomatry via the tooltip.
-  const handleMouseEnterBox = (event) => {
-    setHoveredCountry(null)
-  }
   
   // Get data for the tooltip if map mode is import
   const getImportTooltipData = async (alpha2) => {
@@ -242,7 +237,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
                 <button className='button'
                     onClick={handleZoomOut}>-</button>
             </div>
-      {hoveredCountry && (mapModeImport ? MapTooltipImports(hoveredCountry, handleMouseEnterBox, settings) : MapTooltipExports(hoveredCountry, handleMouseEnterBox, settings))}
+      {hoveredCountry && (mapModeImport ? MapTooltipImports(hoveredCountry, settings) : MapTooltipExports(hoveredCountry, settings))}
     </div>
   );
 };
