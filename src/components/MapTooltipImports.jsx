@@ -1,7 +1,7 @@
 import React from "react"
 import { formatUSDvalue, formatUSDorder, getDemocracyColor, getPeaceColor, getUSDColor } from "./formattingUtils"
 
-const MapTooltip = (hoveredCountry, handleMouseEnterBox, settings) => {
+const MapTooltip = (hoveredCountry, settings) => {
 
     //console.log(hoveredCountry)
     
@@ -9,7 +9,7 @@ const MapTooltip = (hoveredCountry, handleMouseEnterBox, settings) => {
         <div>
             {hoveredCountry.totalArmsImports &&
             <div className="hover-box-container" style={{top: hoveredCountry.position.y +5, left: hoveredCountry.position.x +10,}}
-                onMouseEnter={handleMouseEnterBox}>
+                >
                     <h3>{hoveredCountry.countryName.value}</h3>
 
                     

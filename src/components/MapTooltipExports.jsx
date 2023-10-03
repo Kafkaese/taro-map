@@ -9,13 +9,13 @@ import { formatUSDvalue, formatUSDorder, getUSDColor } from "./formattingUtils";
  * @param {function} handleMouseEnterBox Function on parent that handles mouse being over the tooltip.
  * 
  */
-const MapTooltipExports = (hoveredCountry, handleMouseEnterBox, settings) => {
+const MapTooltipExports = (hoveredCountry, settings) => {
 
     return (
         <div>
             {hoveredCountry.totalArmsExports && 
             <div className="hover-box-container" style={{top: hoveredCountry.position.y +5, left: hoveredCountry.position.x +10,}}
-                onMouseEnter={handleMouseEnterBox}>
+                >
                     <h3>{hoveredCountry.countryName.value}</h3>
 
                     
