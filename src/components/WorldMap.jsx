@@ -60,6 +60,23 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
       setHoveredCountry({...hoveredCountry, position: mousePosition})
     }
 
+    // Ensures tooltip disappears as soon as Geography is left
+    handleMouseEnterBox()
+  };
+
+  // Track mouse over Geography
+  const handleMouseMoveOnGeo = (event) => {
+
+    event.stopPropagation()
+
+    const { clientX, clientY } = event;
+
+    setMousePosition({ x: clientX, y: clientY });
+
+    if (hoveredCountry) {
+      setHoveredCountry({...hoveredCountry, position: mousePosition})
+    }
+
   };
 
   // Mouse enter for hover tool. If the mouse hovers over the tooltip, is should act as if over no country
@@ -187,6 +204,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
                     onMouseOver={() => mapModeImport ? getImportTooltipData(alpha2) : getExportTooltipData(alpha2)}
                     onMouseLeave={handleCountryLeave}
                     onClick={() => handleCountryClick(alpha2, geo)}
+                    onMouseMove={handleMouseMoveOnGeo}
                     style={{
                       default: {
                         fill: selectedGeography === geo ? pressedColor : defaultColor,
