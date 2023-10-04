@@ -29,6 +29,7 @@
     text-align: center;
     font-size: 2em;
     text-decoration: underline;
+    overflow-x: clip;
 }
 
 
@@ -115,6 +116,7 @@
     text-align: center;
     text-decoration: underline;
     white-space: pre-line;
+    overflow-x: clip;
   }
 
 .sideBar .panel .barPlot {
