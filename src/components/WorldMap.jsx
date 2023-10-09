@@ -18,8 +18,8 @@ import './HoverBox.css';
 const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, settings}) => {
 
   // API vars from env
-  const API_HOST = process.env.REACT_APP_API_HOST
-  const API_PORT = process.env.REACT_APP_API_PORT
+  const API_HOST = window._env_.REACT_APP_API_HOST
+  const API_PORT = window._env_.REACT_APP_API_PORT
 
 
   // geometry colors
