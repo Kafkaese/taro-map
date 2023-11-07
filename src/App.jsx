@@ -3,12 +3,12 @@ import WorldMap from './components/WorldMap';
 import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
 import Settings from './components/Settings';
-
+    
 import './App.css'
 
 function App() { // API vars from env
-    const API_HOST = process.env.REACT_APP_API_HOST
-    const API_PORT = process.env.REACT_APP_API_PORT
+    const API_HOST = window._env_.REACT_APP_API_HOST
+    const API_PORT = window._env_.REACT_APP_API_PORT
 
     // Controls which map is shown
     const [mapModeImport, setMapModeImport] = useState(true);
