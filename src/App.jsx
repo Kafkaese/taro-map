@@ -180,22 +180,22 @@ function App() { // API vars from env
 
             <div className='footer'>
                 <div className='column'>
-                    <span><a href='https://www.eiu.com/n/campaigns/democracy-index-2022/?utm_source=google&utm_medium=paid-search&utm_campaign=democracy-index-2022&gclid=CjwKCAjwscGjBhAXEiwAswQqNCehS0oTsWPWJxsIzvWrjv1LLuuN1smbXTqRXXEMllm3gkV0glNrYBoCg28QAvD_BwE'>Data Sources</a>
+                    <span><a className="footer-link" href='https://www.eiu.com/n/campaigns/democracy-index-2022/?utm_source=google&utm_medium=paid-search&utm_campaign=democracy-index-2022&gclid=CjwKCAjwscGjBhAXEiwAswQqNCehS0oTsWPWJxsIzvWrjv1LLuuN1smbXTqRXXEMllm3gkV0glNrYBoCg28QAvD_BwE'>Data Sources</a>
                     </span>
-                    <span><a href='https://www.visionofhumanity.org/'>Impressum/Disclaimer</a>
-                    </span>
-                </div>
-                <div className='bar'/>
-                <div className='column'>
-                    <span>[1]<a href='https://www.eiu.com/n/campaigns/democracy-index-2022/?utm_source=google&utm_medium=paid-search&utm_campaign=democracy-index-2022&gclid=CjwKCAjwscGjBhAXEiwAswQqNCehS0oTsWPWJxsIzvWrjv1LLuuN1smbXTqRXXEMllm3gkV0glNrYBoCg28QAvD_BwE'>Economist Intelligence Unit: Democracy Index Report 2022</a>
-                    </span>
-                    <span>[2]<a href='https://www.visionofhumanity.org/'>Visions of Humanity: Global Peace Index</a>
+                    <span><a className="footer-link" href='https://www.visionofhumanity.org/'>Impressum/Disclaimer</a>
                     </span>
                 </div>
                 <div className='bar'/>
                 <div className='column'>
-                    <a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings icons created by Freepik - Flaticon</a>
-                    <a href="https://www.flaticon.com/free-icons/info" title="info icons">Info icons created by Freepik - Flaticon</a>
+                    <span>[1]<a className="footer-link" href='https://www.eiu.com/n/campaigns/democracy-index-2022/?utm_source=google&utm_medium=paid-search&utm_campaign=democracy-index-2022&gclid=CjwKCAjwscGjBhAXEiwAswQqNCehS0oTsWPWJxsIzvWrjv1LLuuN1smbXTqRXXEMllm3gkV0glNrYBoCg28QAvD_BwE'>Economist Intelligence Unit: Democracy Index Report 2022</a>
+                    </span>
+                    <span>[2]<a className="footer-link" href='https://www.visionofhumanity.org/'>Visions of Humanity: Global Peace Index</a>
+                    </span>
+                </div>
+                <div className='bar'/>
+                <div className='column'>
+                    <a className="footer-link" href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings icons created by Freepik - Flaticon</a>
+                    <a className="footer-link" href="https://www.flaticon.com/free-icons/info" title="info icons">Info icons created by Freepik - Flaticon</a>
                 </div>
             </div>
         </div>
