@@ -184,6 +184,7 @@ function App() { // API vars from env
                 <span>[2]<a href='https://www.visionofhumanity.org/'>Visions of Humanity: Global Peace Index</a>
                 </span>
                 <a href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings icons created by Freepik - Flaticon</a>
+                <a href="https://www.flaticon.com/free-icons/info" title="info icons">Info icons created by Freepik - Flaticon</a>
             </div>
         </div>
     );
