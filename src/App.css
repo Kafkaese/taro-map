@@ -84,16 +84,21 @@
   background-color: #101827;
   color: white;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   flex-direction: row;
   width: 99vw;
   height: 50px;
+}
+
+.footer .bar  {
+border-left: 1px solid #ffffff;
 }
 
 .footer .column {
   display: flex;
   flex-direction: column;
   align-items: left;
+  justify-content: space-around;
   color: white;
   height: 100%;
 }
