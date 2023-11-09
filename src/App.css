@@ -84,10 +84,30 @@
   background-color: #101827;
   color: white;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
   width: 99vw;
   height: 50px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.footer .bar  {
+  height: 100%;
+  border-left: 1px solid #ffffff;
+}
+
+.footer .column {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: space-around;
+  color: white;
+  height: 100%;
+}
+
+.footer .column .footer-link {
+  color: #bbbbbb;
 }
 
 .zoom {
