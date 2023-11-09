@@ -88,10 +88,13 @@
   flex-direction: row;
   width: 99vw;
   height: 50px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .footer .bar  {
-border-left: 1px solid #ffffff;
+  height: 100%;
+  border-left: 1px solid #ffffff;
 }
 
 .footer .column {
