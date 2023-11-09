@@ -84,10 +84,18 @@
   background-color: #101827;
   color: white;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  flex-direction: row;
   width: 99vw;
   height: 50px;
+}
+
+.footer .column {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  color: white;
+  height: 100%;
 }
 
 .zoom {
