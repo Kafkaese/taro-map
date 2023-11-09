@@ -7,8 +7,10 @@ import Settings from './components/Settings';
 import './App.css'
 
 function App() { // API vars from env
-    const API_HOST = window._env_.REACT_APP_API_HOST
-    const API_PORT = window._env_.REACT_APP_API_PORT
+
+    // Grab API varibles from env_config.js 
+    let API_HOST = window._env_.REACT_APP_API_HOST
+    let API_PORT = window._env_.REACT_APP_API_PORT
 
     // Controls which map is shown
     const [mapModeImport, setMapModeImport] = useState(true);
@@ -164,7 +166,10 @@ function App() { // API vars from env
                 year={year}
                 activeCountryData={activeCountryData}
                 updateActiveCountry={updateActiveCountry}
-                settings={settings}/>
+                settings={settings}
+                API_HOST={API_HOST}
+                API_PORT={API_PORT}
+                />
 
             <div className='slider-container'>
                 <YearSlider onYearChange={handleYearChange}></YearSlider>
