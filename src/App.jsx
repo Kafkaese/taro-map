@@ -49,6 +49,7 @@ function App() { // API vars from env
     // Needs to be tracked here for updating activeCountryData on year change
     const [activeCountryAlpha2, setActiveCountryAlpha2] = useState('')
 
+    // Fetches data for country currently hovered over
     const updateActiveCountry = useCallback(async (alpha2) => {
         try {
 
