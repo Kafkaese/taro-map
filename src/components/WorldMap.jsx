@@ -107,7 +107,6 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
 
     } catch (error) {
       console.error('Error fetching country data:', error);
-      throw error; // Rethrow the error to indicate that an error occurred
     }
   } 
 
