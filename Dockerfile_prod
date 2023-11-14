@@ -13,6 +13,8 @@ RUN npm run build
 FROM nginx:alpine
 COPY --from=build /build/build/ /usr/share/nginx/html
 
+COPY default.conf /etc/nginx/conf.d
+
 # Workdir ngnix 
 WORKDIR /usr/share/nginx/html
 
@@ -25,6 +27,11 @@ RUN apk add --no-cache bash
 
 # Make our shell script executable
 RUN chmod +x env.sh
+
+# Install certbot
+RUN apk add certbot certbot-nginx
+
+# Mount /etc/letsencrypt/live/arms-tracker.app
 
 # Start Nginx server
 CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
