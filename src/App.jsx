@@ -8,12 +8,12 @@ import './App.css'
 
 function App() { // API vars from env
 
-    const API_HOST = 'localhost'
-    const API_PORT = '8080'
+    //const API_HOST = 'localhost'
+    //const API_PORT = '8080'
 
     // Grab API varibles from env_config.js 
-    // const API_HOST = window._env_.REACT_APP_API_HOST
-    // const API_PORT = window._env_.REACT_APP_API_PORT
+    const API_HOST = window._env_.REACT_APP_API_HOST
+    const API_PORT = window._env_.REACT_APP_API_PORT
 
     // Controls which map is shown
     const [mapModeImport, setMapModeImport] = useState(true);
