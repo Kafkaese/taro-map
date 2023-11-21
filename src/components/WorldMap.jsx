@@ -80,10 +80,10 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
 
     try {
       const fetchPromises = [
-        fetch(`http://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
-        fetch(`http://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`),
-        fetch(`http://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}`),
-        fetch(`http://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`)
+        fetch(`https://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
+        fetch(`https://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`),
+        fetch(`https://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}`),
+        fetch(`https://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`)
       ];
   
       const responses = await Promise.all(fetchPromises);
@@ -115,9 +115,9 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
 
     try {
       const fetchPromises = [
-        fetch(`http://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
-        fetch(`http://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency}`),
-        fetch(`http://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency}`)
+        fetch(`https://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
+        fetch(`https://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency}`),
+        fetch(`https://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency}`)
       ];
   
       const responses = await Promise.all(fetchPromises);
