@@ -1,3 +1,4 @@
+# Build stage
 FROM node:latest AS build
 WORKDIR /build
 
@@ -10,8 +11,12 @@ COPY src/ src
 COPY assets/ assets
 RUN npm run build
 
+# Server stage
 FROM nginx:alpine
 COPY --from=build /build/build/ /usr/share/nginx/html
+
+# Configuration file for nginx
+COPY default.conf /etc/nginx/conf.d
 
 # Workdir ngnix 
 WORKDIR /usr/share/nginx/html
@@ -25,6 +30,9 @@ RUN apk add --no-cache bash
 
 # Make our shell script executable
 RUN chmod +x env.sh
+
+# Install certbot
+RUN apk add certbot certbot-nginx
 
 # Start Nginx server
 CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
