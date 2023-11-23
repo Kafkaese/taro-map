@@ -1,4 +1,10 @@
 .popup-container {
     background-color: #101827;
     border: 1px solid #ccc;
+    height: 500px;
+    width: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -250px 0 0 -250px;
 }

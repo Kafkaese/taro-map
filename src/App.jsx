@@ -3,6 +3,7 @@ import WorldMap from './components/WorldMap';
 import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
 import Settings from './components/Settings';
+import PopUp from './components/PopUp'
     
 import './App.css'
 
@@ -152,7 +153,7 @@ function App() { // API vars from env
             {
             showSettings ? <Settings settings={settings}
                 setSettings={setSettings}></Settings> : ''
-        }
+            }
 
             {
             activeCountryAlpha2 === '' ? <div style={
@@ -163,7 +164,10 @@ function App() { // API vars from env
                     left: '40%'
                 }
             }>(Click on Country for more Details)</div> : ''
-        }
+            }
+
+            
+
             <WorldMap mapModeImport={mapModeImport}
                 className='map'
                 year={year}
@@ -173,6 +177,7 @@ function App() { // API vars from env
                 API_HOST={API_HOST}
                 API_PORT={API_PORT}
                 />
+            <PopUp></PopUp>
 
             <div className='slider-container'>
                 <YearSlider onYearChange={handleYearChange}></YearSlider>
