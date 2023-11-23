@@ -2,8 +2,8 @@ import React from "react";
 
 const Impressum = () => {
     return (
-        <div>
-            <h1>Impressum</h1>
+        <div className="impressum">
+            <h1 style={{textAlign: 'center'}}>Impressum</h1>
             <p>Frederik Laubisch</p>
             <p>Allerstr. 43</p>
             <p>12049 Berlin</p>

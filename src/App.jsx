@@ -4,6 +4,7 @@ import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
 import Settings from './components/Settings';
 import PopUp from './components/PopUp'
+import Impressum from './components/Impressum';
     
 import './App.css'
 
@@ -177,7 +178,7 @@ function App() { // API vars from env
                 API_HOST={API_HOST}
                 API_PORT={API_PORT}
                 />
-            <PopUp></PopUp>
+            <PopUp content={'impressum'}></PopUp>
 
             <div className='slider-container'>
                 <YearSlider onYearChange={handleYearChange}></YearSlider>
