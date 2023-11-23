@@ -3,7 +3,7 @@ import React from 'react';
 const PopUp = () => {
 
 return (
-    <div>
+    <div className='popup-container'>
 
     </div>
 )
