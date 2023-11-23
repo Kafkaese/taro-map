@@ -108,6 +108,8 @@
 
 .footer .column .footer-link {
   color: #bbbbbb;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .zoom {
