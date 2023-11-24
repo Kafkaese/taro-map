@@ -4,7 +4,6 @@ import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
 import Settings from './components/Settings';
 import PopUp from './components/PopUp'
-import Impressum from './components/Impressum';
     
 import './App.css'
 
