@@ -3,8 +3,14 @@ import './PopUp.css'
 import Impressum from './Impressum';
 import DataSources from './DataSources';
 
+/**
+ * Renders PopUp at center of screen to be filled with content.
+ * 
+ * @param {string} content Type of content to be displayed. ust be one of [impressum, data]
+ * @param {function} setShowPopUp Function that controlled wether the popup is enabled. Passed from App.
+ * 
+ */
 const PopUp = (content, setShowPopUp) => {
-
 
     return (
         <div className='popup-container'>
