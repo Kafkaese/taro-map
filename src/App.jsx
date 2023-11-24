@@ -20,7 +20,7 @@ function App() { // API vars from env
     const [mapModeImport, setMapModeImport] = useState(true);
 
     // PopUp controls
-    const [showPopUp, setShowPopUp] = useState('None')
+    const [showPopUp, setShowPopUp] = useState('none')
 
     // Sets map active based on state of the button
     const toggleComponent = (leftActive) => {
@@ -182,7 +182,7 @@ function App() { // API vars from env
                 API_PORT={API_PORT}
                 />
 
-            {showPopUp === 'None' ? '' : <PopUp content={showPopUp} setShowPopUp={setShowPopUp}></PopUp>}
+            {showPopUp === 'none' ? '' : <PopUp content={showPopUp} setShowPopUp={setShowPopUp}></PopUp>}
 
             <div className='slider-container'>
                 <YearSlider onYearChange={handleYearChange}></YearSlider>
@@ -192,7 +192,7 @@ function App() { // API vars from env
                 <div className='column'>
                     <span><a className="footer-link" href='https://www.eiu.com/n/campaigns/democracy-index-2022/?utm_source=google&utm_medium=paid-search&utm_campaign=democracy-index-2022&gclid=CjwKCAjwscGjBhAXEiwAswQqNCehS0oTsWPWJxsIzvWrjv1LLuuN1smbXTqRXXEMllm3gkV0glNrYBoCg28QAvD_BwE'>Data Sources</a>
                     </span>
-                    <span><text className="footer-link" onClick={() => {setShowPopUp('impressum')}}>Impressum/Disclaimer</text>
+                    <span><text className="footer-link" onClick={() => {showPopUp==='impressum' ? setShowPopUp('none') : setShowPopUp('impressum')}}>Impressum/Disclaimer</text>
                     </span>
                 </div>
                 <div className='bar'/>

@@ -8,7 +8,7 @@ const PopUp = (content, setShowPopUp) => {
     return (
         <div className='popup-container'>
             <div>{setShowPopUp.content}</div>
-            <button style={{ position: 'absolute', top: '5px', right: '5px', color: 'white', backgroundColor: '#374151', border: 'none', borderRadius: '10px', textAlign: 'center' }} onClick={() => { content.setShowPopUp('None') }}>X</button>
+            <button style={{ position: 'absolute', top: '5px', right: '5px', color: 'white', backgroundColor: '#374151', border: 'none', borderRadius: '10px', textAlign: 'center' }} onClick={() => { content.setShowPopUp('none') }}>X</button>
             <div>
                 {{
                     'impressum': <Impressum />,
