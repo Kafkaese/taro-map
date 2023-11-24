@@ -6,7 +6,7 @@ const DataSources = () => {
         <div>
             <h1 style={{textAlign: 'center', color: 'white'}}>Data Sources</h1>
             <div style={{ display: 'table', clear: 'both', marginLeft: '50px', marginRight: '50px', color: 'white', fontSize: '11pt'}}>
-                <div style={{float: 'left', width: '50%'}}>
+                <div style={{float: 'left', width: '49%'}}>
                     <p>The data displayed here regarding the import and export of arms is 
                     directly sourced from the <a href="https://caat.org.uk/" style={{color: '#06d3fc'}}>CAAT</a> github 
                     respository (accessible <a href="https://github.com/caatdata/eu-arms-export-data" style={{color: '#06d3fc'}}>here</a>). 
@@ -20,9 +20,9 @@ const DataSources = () => {
                     all data displayed regarding arms imports, in particular for non-EU countries, is based on aggredated data from EU member states. Therefore the data is to be considered highly incomplete.</p>
                     <p>I make no claims of nor take any responsibility for correctness and/or completeness of the data presented here.</p>
                 </div>
-                <div style={{float: 'left', width: '50%'}}>
+                <div style={{marginLeft: '2%', float: 'left', width: '49%'}}>
                     <p>
-                        lorem ipsum yadada
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nulla aliquet porttitor lacus luctus. Eu mi bibendum neque egestas. Nam at lectus urna duis. Porttitor lacus luctus accumsan tortor. Fringilla ut morbi tincidunt augue interdum velit. Tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula. Dictum varius duis at consectetur lorem. Rutrum quisque non tellus orci. Ultrices gravida dictum fusce ut placerat orci nulla. Sit amet justo donec enim diam vulputate. Nulla at volutpat diam ut venenatis tellus in metus. Lectus arcu bibendum at varius. Gravida neque convallis a cras semper auctor neque vitae. Cras semper auctor neque vitae tempus quam pellentesque. Id leo in vitae turpis massa sed elementum tempus egestas.
                     </p>
                 </div>
             </div>
