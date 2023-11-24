@@ -189,7 +189,7 @@ function App() { // API vars from env
 
             <div className='footer'>
                 <div className='column'>
-                    <span><a className="footer-link" href='https://www.eiu.com/n/campaigns/democracy-index-2022/?utm_source=google&utm_medium=paid-search&utm_campaign=democracy-index-2022&gclid=CjwKCAjwscGjBhAXEiwAswQqNCehS0oTsWPWJxsIzvWrjv1LLuuN1smbXTqRXXEMllm3gkV0glNrYBoCg28QAvD_BwE'>Data Sources</a>
+                    <span><text className="footer-link" onClick={() => {showPopUp==='data' ? setShowPopUp('none') : setShowPopUp('data')}}>Data Sources</text>
                     </span>
                     <span><text className="footer-link" onClick={() => {showPopUp==='impressum' ? setShowPopUp('none') : setShowPopUp('impressum')}}>Impressum/Disclaimer</text>
                     </span>

@@ -1,6 +1,7 @@
 import React from 'react';
 import './PopUp.css'
 import Impressum from './Impressum';
+import DataSources from './DataSources';
 
 const PopUp = (content, setShowPopUp) => {
 
@@ -12,7 +13,7 @@ const PopUp = (content, setShowPopUp) => {
             <div>
                 {{
                     'impressum': <Impressum />,
-                    'data': <Impressum className='impressum' />
+                    'data': <DataSources />
                 }[content.content]}
             </div>
         </div>
