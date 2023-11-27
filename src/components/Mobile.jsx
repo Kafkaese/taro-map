@@ -4,7 +4,7 @@ const Mobile = (setShowPopUp) => {
 
     return (
         <div style={{color: 'white', marginLeft: '50px', marginRight: '50px',textAlign: 'center'}}>
-            <h1><text style={{color: 'red'}}>!</text> Mobile Device Detected <text style={{color: 'red'}}>!</text></h1>
+            <h1><span style={{color: 'red'}}>!</span> Mobile Device Detected <span style={{color: 'red'}}>!</span></h1>
             <p>We detected a mobile device being used.</p> 
             <p>Currently the application is not optimized for 
             mobile deviced, and will not work properly or not at all. 
