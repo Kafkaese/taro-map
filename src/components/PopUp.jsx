@@ -7,7 +7,7 @@ import Mobile from './Mobile';
 /**
  * Renders PopUp at center of screen to be filled with content.
  * 
- * @param {string} content Type of content to be displayed. ust be one of [impressum, data]
+ * @param {string} content Type of content to be displayed. ust be one of [impressum, data, mobile]
  * @param {function} setShowPopUp Function that controlled wether the popup is enabled. Passed from App.
  *
  */
