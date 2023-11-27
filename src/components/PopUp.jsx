@@ -2,6 +2,7 @@ import React from 'react';
 import './PopUp.css'
 import Impressum from './Impressum';
 import DataSources from './DataSources';
+import Mobile from './Mobile';
 
 /**
  * Renders PopUp at center of screen to be filled with content.
@@ -24,7 +25,8 @@ const PopUp = (content, setShowPopUp) => {
             <div>
                 {{
                     'impressum': <Impressum />,
-                    'data': <DataSources />
+                    'data': <DataSources />,
+                    'mobile': <Mobile />
                 }[content.content]}
             </div>
         </div>
