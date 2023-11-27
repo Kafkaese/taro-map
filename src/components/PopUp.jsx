@@ -26,7 +26,7 @@ const PopUp = (content, setShowPopUp) => {
                 {{
                     'impressum': <Impressum />,
                     'data': <DataSources />,
-                    'mobile': <Mobile />
+                    'mobile': <Mobile setShowPopUp={content.setShowPopUp}/>
                 }[content.content]}
             </div>
         </div>

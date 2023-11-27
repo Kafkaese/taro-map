@@ -1,6 +1,6 @@
 import React from "react";
 
-const Mobile = () => {
+const Mobile = (setShowPopUp) => {
 
     return (
         <div style={{color: 'white', marginLeft: '50px', marginRight: '50px',textAlign: 'center'}}>
@@ -11,7 +11,7 @@ const Mobile = () => {
             </p>
             <p>It is therefore recommended that you use a laptop/desktop computer. </p>
             <p>Should this message show up erroneously, or you want to use the app on your mobile device anyways, just ignore and close this message.</p>
-            <button style={{backgroundColor:'#242e41', borderColor: 'white', color: 'white', borderRadius: '5px'}}>I understand / Close</button>
+            <button onClick={() => { setShowPopUp.setShowPopUp('none') }} style={{backgroundColor:'#242e41', borderColor: 'white', color: 'white', borderRadius: '5px'}}>I understand / Close</button>
         </div>
     )
 }
