@@ -22,8 +22,17 @@ const DataSources = () => {
                 </div>
                 <div style={{marginLeft: '2%', float: 'left', width: '49%'}}>
                     <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Nulla aliquet porttitor lacus luctus. Eu mi bibendum neque egestas. Nam at lectus urna duis. Porttitor lacus luctus accumsan tortor. Fringilla ut morbi tincidunt augue interdum velit. Tristique sollicitudin nibh sit amet commodo nulla facilisi nullam vehicula. Dictum varius duis at consectetur lorem. Rutrum quisque non tellus orci. Ultrices gravida dictum fusce ut placerat orci nulla. Sit amet justo donec enim diam vulputate. Nulla at volutpat diam ut venenatis tellus in metus. Lectus arcu bibendum at varius. Gravida neque convallis a cras semper auctor neque vitae. Cras semper auctor neque vitae tempus quam pellentesque. Id leo in vitae turpis massa sed elementum tempus egestas.
+                    Democracy Index data is sourced directly from <a href="https://en.wikipedia.org/wiki/The_Economist_Democracy_Index" style={{color: '#06d3fc'}}>Wikipedia</a> and is based on
+                    the annual report by the <a href="https://www.eiu.com/n/" style={{color: '#06d3fc'}}>Economist Intelligence Unit</a>.
+                    More information, including the most recent report is
+                    available via the link in footnote [1]. 
                     </p>
+                    <br/>
+                    <p>Peace Index data is sourced directly from <a href="https://en.wikipedia.org/wiki/Global_Peace_Index" style={{color: '#06d3fc'}}>Wikipedia</a> and is based on
+                    the annual report by <a href="https://www.visionofhumanity.org/" style={{color: '#06d3fc'}}>Visions of Humanity</a>.  More information, including the most recent report is
+                    available via the link in footnote [2]. </p>
+                    <br/>
+                    <p>I make no claims of nor take any responsibility for correctness and/or completeness of the data presented here.</p>
                 </div>
             </div>
         </div>
