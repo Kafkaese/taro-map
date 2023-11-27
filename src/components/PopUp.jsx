@@ -13,7 +13,7 @@ import DataSources from './DataSources';
 const PopUp = (content, setShowPopUp) => {
 
     let boxWidth = '500px'
-    let boxLeftMargin = '250px'
+    let boxLeftMargin = '-250px'
 
     if (content.content === 'data') {boxWidth = '1000px'; boxLeftMargin = '-500px'}
 
