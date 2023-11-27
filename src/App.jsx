@@ -198,7 +198,7 @@ function App() { // API vars from env
                 <div className='column'>
                     <span>[1]<a className="footer-link" href='https://www.eiu.com/n/campaigns/democracy-index-2022/?utm_source=google&utm_medium=paid-search&utm_campaign=democracy-index-2022&gclid=CjwKCAjwscGjBhAXEiwAswQqNCehS0oTsWPWJxsIzvWrjv1LLuuN1smbXTqRXXEMllm3gkV0glNrYBoCg28QAvD_BwE'>Economist Intelligence Unit: Democracy Index Report 2022</a>
                     </span>
-                    <span>[2]<a className="footer-link" href='https://www.visionofhumanity.org/'>Visions of Humanity: Global Peace Index</a>
+                    <span>[2]<a className="footer-link" href='https://www.visionofhumanity.org/resources/?type=research'>Visions of Humanity: Global Peace Index</a>
                     </span>
                 </div>
                 <div className='bar'/>
