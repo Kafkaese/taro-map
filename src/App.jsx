@@ -7,6 +7,11 @@ import PopUp from './components/PopUp'
     
 import './App.css'
 
+/**
+ * Main Application component. Renderd Header, Footer and Worldmap, plus contionally popups for Impressum, Data Sources and warning for mobile users.
+ * 
+ * 
+ */
 function App() { // API vars from env
 
     // Grab API varibles:
@@ -65,26 +70,26 @@ function App() { // API vars from env
             const name = await fetch(`https://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
             const democracyIndex = await fetch(`https://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
             const totalImports = await fetch(`https://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}&currency=${
-                settings.currency
+                settings.currency.value
             }`);
             const peaceIndex = await fetch(`https://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
             const importSources = await fetch(`https://${API_HOST}:${API_PORT}/arms/imports/by_country?country_code=${alpha2}&year=${year}&limit=${20}&currency=${
-                settings.currency
+                settings.currency.value
             }`)
             const importTimeSeries = await fetch(`https://${API_HOST}:${API_PORT}/arms/imports/timeseries?country_code=${alpha2}&currency=${
-                settings.currency
+                settings.currency.value
             }`)
             const totalExports = await fetch(`https://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}&currency=${
-                settings.currency
+                settings.currency.value
             }`);
             const exportSources = await fetch(`https://${API_HOST}:${API_PORT}/arms/exports/by_country?country_code=${alpha2}&year=${year}&limit=${5}&currency=${
-                settings.currency
+                settings.currency.value
             }`)
             const exportTimeSeries = await fetch(`https://${API_HOST}:${API_PORT}/arms/exports/timeseries?country_code=${alpha2}&currency=${
-                settings.currency
+                settings.currency.value
             }`)
             const merchExports = await fetch(`https://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${
-                settings.currency
+                settings.currency.value
             }`)
 
             const nameData = await name.json();
