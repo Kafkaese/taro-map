@@ -11,8 +11,12 @@ import './HoverBox.css';
  * Renders world map with tooltip and a conditional, collapsible sidebar with more detailed information.
  * Zoom level and year are controlled by parent component.
  * 
- * @param {integer} year Year currently selected. Chnages data that is displayed in tooltip and sidebar
- * @param {integer} zoom Zoom level for the zoomable component that contains the actual map
+ * @param {boolean} mapModeImport State of the map. If true: show imports, if false show exports.
+ * @param {integer} year Year currently selected. Chnages data that is displayed in tooltip and sidebar.
+ * @param {object} activeCountryData Data about the currently hovered over country on the Map. 
+ * @param {object} settings Global app settings, including currency to be displayed and language (language settings currently not used).
+ * @param {string} API_HOST Host (IP or Domain) of the API.
+ * @param {string} API_PORT Port the API is listening on.
  *
  */
 const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, settings, API_HOST, API_PORT}) => {
@@ -82,7 +86,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
       const fetchPromises = [
         fetch(`https://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
         fetch(`https://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`),
-        fetch(`https://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}`),
+        fetch(`https://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`),
         fetch(`https://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`)
       ];
   
