@@ -17,8 +17,11 @@ function App() { // API vars from env
     // Grab API varibles:
     // from env_config.js  if production/staging/testing
     // from process env    if development  
-    const API_HOST = (window._env_.NODE_ENV === undefined) ? process.env.REACT_APP_API_HOST : window._env_.REACT_APP_API_HOST
-    const API_PORT = (window._env_.NODE_ENV === undefined) ? process.env.REACT_APP_API_PORT : window._env_.REACT_APP_API_PORT
+    
+    const API_HOST = (window._env_ === undefined) ? process.env.REACT_APP_API_HOST : window._env_.REACT_APP_API_HOST
+    const API_PORT = (window._env_ === undefined) ? process.env.REACT_APP_API_PORT : window._env_.REACT_APP_API_PORT
+
+    
 
     // Check for mobile device to display warning message
     const isMobile = ('ontouchstart' in document.documentElement && navigator.userAgent.match(/Mobi/));
