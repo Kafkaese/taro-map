@@ -9,6 +9,7 @@
     border-radius: 0px 25px 25px 0px;
     display: flex;
     flex-direction: column;
+    z-index: 1;
 }
 
 @media (max-width: 1400px) {
