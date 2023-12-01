@@ -81,6 +81,7 @@
 
 .footer {
   position: fixed;
+  bottom: 0px;
   background-color: #101827;
   color: white;
   display: flex;
@@ -88,8 +89,6 @@
   flex-direction: row;
   width: 100vw;
   height: 50px;
-  padding-top: 5px;
-  padding-bottom: 5px;
 }
 
 .footer .bar  {
