@@ -7,7 +7,7 @@
 .header {
   position: fixed;
   height: 40px;
-  width: 99vw;
+  width: 100vw;
   background-color: #101827;
   display: flex;
   flex-direction: row;
@@ -86,7 +86,7 @@
   display: flex;
   justify-content: space-around;
   flex-direction: row;
-  width: 99vw;
+  width: 100vw;
   height: 50px;
   padding-top: 5px;
   padding-bottom: 5px;
