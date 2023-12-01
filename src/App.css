@@ -88,7 +88,8 @@
   justify-content: space-around;
   flex-direction: row;
   width: 100vw;
-  height: 50px;
+  height: 5vh;
+  min-height: 20px;
 }
 
 .footer .bar  {
@@ -106,6 +107,7 @@
 }
 
 .footer .column .footer-link {
+  font-size: calc(.1em + 1.2vw);
   color: #bbbbbb;
   cursor: pointer;
   text-decoration: underline;
