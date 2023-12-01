@@ -50,10 +50,11 @@
 
 .slider-container {
   position: fixed;
+  left: 0%;
   top: 84%;
-  width: 500px;
+  width: 95vw;
+  max-width: 500px;
   height: 60px;
-  margin-left: 35%;
   background-color: #101827;
   padding: 4px 8px;
   border: 1px solid #ccc;
