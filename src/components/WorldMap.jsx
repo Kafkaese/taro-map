@@ -172,16 +172,17 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
     setCollapsed(false)
   };
 
+  // Track selected Geography. Needed to keep last clicked country highlighted, and unhighlight if new one is selected.
   const [selectedGeography, setSelectedGeography] = useState(null);
 
 
-
+  // Render
   return (
-    <div>
+    <div className='map'>
       {typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data' ? <SideBar mapModeImport={mapModeImport} countryData={activeCountryData} collapsed={collapsed} settings={settings} onCollapse={setCollapsed} year={year} setings={settings}></SideBar> : <div/>}
       <ComposableMap
         projection="geoMercator"
-        style={{ width: '100%', height: '93vh' }}
+        style={{ width: '100%', height: '98vh' }}
         onMouseMove={handleMouseMove}
       >
         <ZoomableGroup onMoveEnd={handleMoveEnd} zoom={position.zoom} center={position.coordinates} translateExtent={[[-Infinity, -100], [Infinity, 600]]}> {/* [?,maxup,?, maxdown]*/}
