@@ -107,7 +107,7 @@
 }
 
 .footer .column .footer-link {
-  font-size: calc(.1em + 1.2vw);
+  font-size: calc(.2em + .8vw);
   color: #bbbbbb;
   cursor: pointer;
   text-decoration: underline;
