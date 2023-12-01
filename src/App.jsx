@@ -204,9 +204,9 @@ function App() { // API vars from env
 
             <div className='footer'>
                 <div className='column'>
-                    <span><text className="footer-link" onClick={() => {showPopUp==='data' ? setShowPopUp('none') : setShowPopUp('data')}}>Data Sources</text>
+                    <span className="footer-link"><div onClick={() => {showPopUp==='data' ? setShowPopUp('none') : setShowPopUp('data')}}>Data Sources</div>
                     </span>
-                    <span><text className="footer-link" onClick={() => {showPopUp==='impressum' ? setShowPopUp('none') : setShowPopUp('impressum')}}>Impressum/Disclaimer</text>
+                    <span className="footer-link"><div  onClick={() => {showPopUp==='impressum' ? setShowPopUp('none') : setShowPopUp('impressum')}}>Impressum</div>
                     </span>
                 </div>
                 <div className='bar'/>
