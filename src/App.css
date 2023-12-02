@@ -1,13 +1,13 @@
 .app {
   background-color: #93B6C9;
-  height: 97vh;
-  width: 99vw;
+  height: 100vh;
+  width: 100vw;
 }
 
 .header {
   position: fixed;
   height: 40px;
-  width: 99vw;
+  width: 100vw;
   background-color: #101827;
   display: flex;
   flex-direction: row;
@@ -44,16 +44,18 @@
 }
 
 .map {
-  height: 10%;
-  width: auto;
+  height: 100vh;
+  width: 100vw;
 }
 
 .slider-container {
   position: fixed;
-  top: 84%;
-  width: 500px;
+  left: 50%;
+  transform: translate(-50%);
+  bottom: 5vh;
+  width: 95vw;
+  max-width: 500px;
   height: 60px;
-  margin-left: 35%;
   background-color: #101827;
   padding: 4px 8px;
   border: 1px solid #ccc;
@@ -66,8 +68,8 @@
 .toggle {
   width: 140px;
   height: 40px;
-  top:100px;
-  right: 20px;
+  top: 50px;
+  right: 1vw;
   position: absolute;
   background-color: #242e41;
   border: 5px solid #101827;
@@ -81,15 +83,15 @@
 
 .footer {
   position: fixed;
+  bottom: 0px;
   background-color: #101827;
   color: white;
   display: flex;
   justify-content: space-around;
   flex-direction: row;
-  width: 99vw;
-  height: 50px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  width: 100vw;
+  height: 5vh;
+  min-height: 20px;
 }
 
 .footer .bar  {
@@ -107,6 +109,7 @@
 }
 
 .footer .column .footer-link {
+  font-size: calc(.33em + .5vw);
   color: #bbbbbb;
   cursor: pointer;
   text-decoration: underline;
@@ -115,12 +118,12 @@
 .zoom {
   display: flex;
   position: absolute;
-  top: 180px;
-  right: 20px;
+  top: 110px;
+  right: 1vw;
   height: 40px;
   width: 80px;
   background-color: #101827;
-  border-radius: 10px;
+  border-radius: 15px;
 }
 
 .zoom .button {

@@ -26,7 +26,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year, settings}) =>
 
     return (
         <div className="sideBar">
-            <div className="panel" style={collapsed ? {width: '0%'} : {width: '500px'}}>
+            <div className="panel" style={collapsed ? {width: '0%'} : {maxWidth: '500px', width: '95vw'}}>
                 <div className="title">
                     {countryData.name.value}
                 </div>

@@ -131,6 +131,8 @@ function App() { // API vars from env
         updateActiveCountry(activeCountryAlpha2)
     }, [year, activeCountryAlpha2, updateActiveCountry])
 
+    
+    // Render
     return (
         <div className="app"
             onClick={
@@ -202,16 +204,16 @@ function App() { // API vars from env
 
             <div className='footer'>
                 <div className='column'>
-                    <span><text className="footer-link" onClick={() => {showPopUp==='data' ? setShowPopUp('none') : setShowPopUp('data')}}>Data Sources</text>
+                    <span className="footer-link"><div onClick={() => {showPopUp==='data' ? setShowPopUp('none') : setShowPopUp('data')}}>Data Sources</div>
                     </span>
-                    <span><text className="footer-link" onClick={() => {showPopUp==='impressum' ? setShowPopUp('none') : setShowPopUp('impressum')}}>Impressum/Disclaimer</text>
+                    <span className="footer-link"><div  onClick={() => {showPopUp==='impressum' ? setShowPopUp('none') : setShowPopUp('impressum')}}>Impressum</div>
                     </span>
                 </div>
                 <div className='bar'/>
                 <div className='column'>
-                    <span>[1]<a className="footer-link" href='https://www.eiu.com/n/campaigns/democracy-index-2022/?utm_source=google&utm_medium=paid-search&utm_campaign=democracy-index-2022&gclid=CjwKCAjwscGjBhAXEiwAswQqNCehS0oTsWPWJxsIzvWrjv1LLuuN1smbXTqRXXEMllm3gkV0glNrYBoCg28QAvD_BwE'>Economist Intelligence Unit: Democracy Index Report 2022</a>
+                    <span className="footer-link">[1]<a href='https://www.eiu.com/n/campaigns/democracy-index-2022/?utm_source=google&utm_medium=paid-search&utm_campaign=democracy-index-2022&gclid=CjwKCAjwscGjBhAXEiwAswQqNCehS0oTsWPWJxsIzvWrjv1LLuuN1smbXTqRXXEMllm3gkV0glNrYBoCg28QAvD_BwE'>Economist Intelligence Unit: Democracy Index Report 2022</a>
                     </span>
-                    <span>[2]<a className="footer-link" href='https://www.visionofhumanity.org/resources/?type=research'>Visions of Humanity: Global Peace Index</a>
+                    <span className="footer-link">[2]<a href='https://www.visionofhumanity.org/resources/?type=research'>Visions of Humanity: Global Peace Index</a>
                     </span>
                 </div>
                 <div className='bar'/>

@@ -1,13 +1,33 @@
+
 .sideBar .panel {
     position: absolute;
-    height: 88%;
     top: 41.5px;
+    bottom: 5.1vh;
     background: #101827;
     border: solid 5px black;
     border-left: 0px;
     border-radius: 0px 25px 25px 0px;
     display: flex;
     flex-direction: column;
+    z-index: 1;
+}
+
+@media (max-width: 1400px) {
+  .sideBar .panel {
+    height: calc( 90vh - 78px);
+  }
+}
+
+.sideBar .panel {
+  position: absolute;
+  top: 41.5px;
+  bottom: 5.1vh;
+  background: #101827;
+  border: solid 5px black;
+  border-left: 0px;
+  border-radius: 0px 25px 25px 0px;
+  display: flex;
+  flex-direction: column;
 }
 
 .sideBar .button {
