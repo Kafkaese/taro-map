@@ -198,7 +198,7 @@ function App() { // API vars from env
             {isMobile && showMobilePopUp === 'true' ? <PopUp content='mobile' setShowPopUp={setShowMobilePopUp}></PopUp> : ''}
             {showPopUp === 'none' ? '' : <PopUp content={showPopUp} setShowPopUp={setShowPopUp}></PopUp>}
 
-            <div className='slider-container'>
+            <div>
                 <YearSlider onYearChange={handleYearChange}></YearSlider>
             </div>
 

@@ -2,6 +2,13 @@ import React, { useState } from 'react';
 import ReactSlider from 'react-slider';
 import './YearSlider.css';
 
+/**
+ * Year Slider component for for changing the yer of the displayed data. Contains a slider and shows the 
+ * currently selected year.
+ * 
+ * @param {function} onYearChange Function to be called when the year is changed via the slider by the user.
+ * 
+ */
 const YearSlider = ({ onYearChange }) => {
     const [year, setYear] = useState(2020);
   
@@ -12,7 +19,7 @@ const YearSlider = ({ onYearChange }) => {
     };
   
     return (
-      <div>
+      <div className='slider-container'>
         <div className='slider-year-info-box'>
           <div className='slider-year-info-box-element1'>select year: </div>
           <div className='slider-year-info-box-element2'>{year}</div>  
