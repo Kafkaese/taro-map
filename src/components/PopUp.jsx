@@ -17,6 +17,7 @@ const PopUp = (content, setShowPopUp) => {
     let boxLeftMargin = '-250px'
 
     if (content.content === 'data') {boxWidth = '1000px'; boxLeftMargin = '-500px'}
+    if (content.content === 'mobile') {boxWidth = '100vw'; boxLeftMargin = '-50vw'}
 
     return (
         <div className='popup-container' style={{width: boxWidth, marginLeft: boxLeftMargin}}>

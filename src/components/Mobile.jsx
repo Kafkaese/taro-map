@@ -10,7 +10,7 @@ const Mobile = (setShowPopUp) => {
             mobile deviced, and will not work properly or not at all. 
             </p>
             <p>It is therefore recommended that you use a laptop/desktop computer. </p>
-            <p>Should this message show up erroneously, or you want to use the app on your mobile device anyways, just ignore and close this message.</p>
+            <p>Should this message show up erroneously, or you want to use the app on your mobile device anyways (not recommended), just ignore and close this message.</p>
             <button onClick={() => { setShowPopUp.setShowPopUp('none') }} style={{backgroundColor:'#242e41', borderColor: 'white', color: 'white', borderRadius: '5px'}}>I understand / Close</button>
         </div>
     )
