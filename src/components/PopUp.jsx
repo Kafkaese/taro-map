@@ -3,7 +3,6 @@ import './PopUp.css'
 import Impressum from './Impressum';
 import DataSources from './DataSources';
 import Mobile from './Mobile';
-import { waitForElementToBeRemoved } from '@testing-library/react';
 
 /**
  * Renders PopUp at center of screen to be filled with content.
