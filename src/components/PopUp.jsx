@@ -3,6 +3,7 @@ import './PopUp.css'
 import Impressum from './Impressum';
 import DataSources from './DataSources';
 import Mobile from './Mobile';
+import { waitForElementToBeRemoved } from '@testing-library/react';
 
 /**
  * Renders PopUp at center of screen to be filled with content.
@@ -17,6 +18,7 @@ const PopUp = (content, setShowPopUp) => {
     let boxLeftMargin = '-250px'
 
     if (content.content === 'data') {boxWidth = '1000px'; boxLeftMargin = '-500px'}
+    if (content.content === 'mobile') {boxWidth = '100vw'; boxLeftMargin = '-50vw'}
 
     return (
         <div className='popup-container' style={{width: boxWidth, marginLeft: boxLeftMargin}}>
