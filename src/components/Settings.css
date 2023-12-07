@@ -12,6 +12,7 @@
     flex-direction: column;
     align-items: stretch;
     border-radius: 8px;
+    z-index: 2;
 }
 
 .settings .currency-info-box {
