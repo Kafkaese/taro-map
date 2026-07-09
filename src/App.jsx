@@ -128,6 +128,7 @@ function App() { // API vars from env
 
     // Effect to update country on year change only once the state has actually been updated
     useEffect(() => {
+        if (activeCountryAlpha2 === '') return;
         updateActiveCountry(activeCountryAlpha2)
     }, [year, activeCountryAlpha2, updateActiveCountry])
 
