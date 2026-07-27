@@ -1,0 +1,68 @@
+name: Deploy frontend to GCS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'assets/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'env.sh'
+      - '.env_prod'
+  workflow_dispatch: {}
+
+permissions:
+  id-token: write   # required to request the OIDC token
+  contents: read
+
+concurrency:
+  group: frontend-deploy
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npm run build
+
+      # env.sh was designed to run inside the Nginx container at boot,
+      # reading a .env file to produce env-config.js - there's no container
+      # here, so this runs the same script as a deploy-time step instead,
+      # writing straight into the build output alongside the other static
+      # files. REACT_APP_API_HOST/PORT are set here rather than left at
+      # .env_prod's placeholder values (localhost:800), since env.sh prefers
+      # an actual environment variable over the .env file's default.
+      - name: Generate env-config.js
+        env:
+          REACT_APP_API_HOST: api.arms-tracker.app
+          REACT_APP_API_PORT: '443'
+        run: |
+          cp .env_prod build/.env
+          cp env.sh build/env.sh
+          cd build && bash env.sh && rm env.sh .env
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT_EMAIL }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      # --delete-unmatched-destination-objects removes objects in the
+      # bucket that no longer exist in this build (e.g. old content-hashed
+      # JS/CSS chunk filenames) - without it they'd accumulate forever.
+      - name: Sync to GCS
+        run: |
+          gcloud storage rsync build/ gs://${{ vars.GCP_FRONTEND_BUCKET }} \
+            --recursive \
+            --delete-unmatched-destination-objects
