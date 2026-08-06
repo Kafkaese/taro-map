@@ -15,7 +15,7 @@ test('pressing the right arrow key on the thumb advances the year and notifies t
   render(<YearSlider onYearChange={onYearChange} />);
   const thumb = screen.getByRole('slider');
   // react-slider arms its keyboard handling on focus (attaching a
-  // document-level keydown listener), then processes steps on keydown.
+  // document-level keydown listener), than processes steps on keydown.
   fireEvent.focus(thumb);
   fireEvent.keyDown(thumb, { key: 'ArrowRight', keyCode: 39 });
   expect(onYearChange).toHaveBeenCalledWith(2021);
