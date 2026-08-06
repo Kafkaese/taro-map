@@ -2,9 +2,7 @@ name: Test frontend
 
 on:
   pull_request:
-    - opened
-    - synchronize
-    - reopened
+    types: [opened, synchronize, reopened]
   push:
     branches: [main]
   workflow_dispatch: {}
