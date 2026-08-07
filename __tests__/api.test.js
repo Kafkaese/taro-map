@@ -14,7 +14,8 @@ test('builds the request URL from process.env when window._env_ is not set (dev 
   const fetchMock = mockFetchJson(() => ({ value: 'Germany' }));
   await fetchCountryName('DE');
   expect(fetchMock).toHaveBeenCalledWith(
-    'https://api.example.com:443/metadata/name/short?country_code=DE'
+    'https://api.example.com:443/metadata/name/short?country_code=DE',
+    expect.anything()
   );
 });
 
@@ -23,7 +24,8 @@ test('prefers window._env_ over process.env when both are set (prod/runtime conf
   const fetchMock = mockFetchJson(() => ({ value: 'Germany' }));
   await fetchCountryName('DE');
   expect(fetchMock).toHaveBeenCalledWith(
-    'https://runtime.example.com:8443/metadata/name/short?country_code=DE'
+    'https://runtime.example.com:8443/metadata/name/short?country_code=DE',
+    expect.anything()
   );
 });
 
@@ -31,8 +33,16 @@ test('URL-encodes query parameters', async () => {
   const fetchMock = mockFetchJson(() => ({ value: 8.67 }));
   await fetchDemocracyIndex('DE', 2020);
   expect(fetchMock).toHaveBeenCalledWith(
-    'https://api.example.com:443/metadata/democracy_index?country_code=DE&year=2020'
+    'https://api.example.com:443/metadata/democracy_index?country_code=DE&year=2020',
+    expect.anything()
   );
+});
+
+test('forwards an AbortSignal through to fetch, so a caller can cancel a stale request', async () => {
+  const fetchMock = mockFetchJson(() => ({ value: 'Germany' }));
+  const controller = new AbortController();
+  await fetchCountryName('DE', controller.signal);
+  expect(fetchMock).toHaveBeenCalledWith(expect.any(String), { signal: controller.signal });
 });
 
 test('resolves with the parsed JSON body on success', async () => {

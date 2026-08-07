@@ -113,6 +113,43 @@ test('the tooltip follows the current mouse position immediately, not one event 
   expect(tooltip).toHaveStyle({ left: '110px', top: '205px' });
 });
 
+test('hovering again aborts the previous hover fetch instead of letting it resolve later and overwrite the current one', async () => {
+  const signals = [];
+  global.fetch = jest.fn((url, options = {}) => {
+    if (options.signal) signals.push(options.signal);
+    return new Promise(() => {}); // never resolves - only the abort behavior is under test
+  });
+
+  renderMap();
+  const geo = screen.getByTestId('geography');
+
+  fireEvent.mouseOver(geo);
+  await waitFor(() => expect(signals.length).toBeGreaterThan(0));
+  const firstSignal = signals[0];
+  expect(firstSignal.aborted).toBe(false);
+
+  fireEvent.mouseOver(geo);
+  await waitFor(() => expect(firstSignal.aborted).toBe(true));
+});
+
+test('leaving a country aborts its in-flight tooltip fetch', async () => {
+  const signals = [];
+  global.fetch = jest.fn((url, options = {}) => {
+    if (options.signal) signals.push(options.signal);
+    return new Promise(() => {});
+  });
+
+  renderMap();
+  const geo = screen.getByTestId('geography');
+
+  fireEvent.mouseOver(geo);
+  await waitFor(() => expect(signals.length).toBeGreaterThan(0));
+  expect(signals[0].aborted).toBe(false);
+
+  fireEvent.mouseLeave(geo);
+  await waitFor(() => expect(signals[0].aborted).toBe(true));
+});
+
 test('zoom in is clamped so it stabilizes once it reaches the max', () => {
   renderMap();
   const zoomIn = screen.getByText('+');

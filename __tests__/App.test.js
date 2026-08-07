@@ -13,6 +13,7 @@ jest.mock('../src/components/WorldMap', () => (props) => (
   <div data-testid="world-map">
     {JSON.stringify({ mapModeImport: props.mapModeImport, year: props.year })}
     <button onClick={() => props.onCountrySelect('DE')}>select-country</button>
+    <button onClick={() => props.onCountrySelect('FR')}>select-other-country</button>
   </div>
 ));
 
@@ -108,6 +109,23 @@ test('changing the year while a country is selected refetches its data for the n
   await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(20));
   const urls = fetchMock.mock.calls.map((call) => call[0]);
   expect(urls.filter((u) => u.includes('year=2021')).length).toBeGreaterThan(0);
+});
+
+test('selecting a new country aborts the in-flight fetch for the previous one', async () => {
+  const signals = [];
+  global.fetch = jest.fn((url, options = {}) => {
+    if (options.signal) signals.push(options.signal);
+    return new Promise(() => {}); // never resolves - only the abort behavior is under test
+  });
+
+  render(<App />);
+  fireEvent.click(screen.getByText('select-country'));
+  await waitFor(() => expect(signals.length).toBeGreaterThan(0));
+  const firstSignal = signals[0];
+  expect(firstSignal.aborted).toBe(false);
+
+  fireEvent.click(screen.getByText('select-other-country'));
+  await waitFor(() => expect(firstSignal.aborted).toBe(true));
 });
 
 test('shows a loading indicator while country data is being fetched, then hides it', async () => {
