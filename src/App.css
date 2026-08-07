@@ -115,6 +115,17 @@
   text-decoration: underline;
 }
 
+.footer .column .footer-link button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-decoration: inherit;
+  cursor: inherit;
+}
+
 .country-data-status {
   position: fixed;
   top: 50px;

@@ -1,51 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import './Dropdown.css'
 
 /**
- * Dropdown component for selecting an option from a list.
+ * Dropdown for selecting an option from a list. Backed by a native
+ * <select> so keyboard navigation (arrow keys, type-to-select) and screen
+ * reader semantics come for free instead of being reimplemented by hand.
  *
  * @param {Object} props - The component props.
  * @param {Array} props.options - An array of option objects, each containing a 'value' and 'label'.
  * @param {Function} props.onSelect - A callback function to handle the selected option.
+ * @param {Object} props.value - The currently selected option.
  */
-const Dropdown = ({ options, onSelect, defaultValue}) => {
-  // State to manage the selected option and dropdown open/close state.
-  const [selectedOption, setSelectedOption] = useState(defaultValue);
-  const [isOpen, setIsOpen] = useState(false);
-
-  // Toggle the dropdown open/close state.
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
-  // Handle the selection of an option and close the dropdown.
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    onSelect(option);
-    setIsOpen(false);
+const Dropdown = ({ options, onSelect, value }) => {
+  const handleChange = (event) => {
+    const selected = options.find((option) => option.value === event.target.value);
+    onSelect(selected);
   };
 
   return (
-    <div className="dropdown">
-      <div className="dropdown-header" onClick={toggleDropdown}>
-        {selectedOption ? selectedOption.label : 'Select language'}
-        <i className={`arrow ${isOpen ? 'up' : 'down'}`}></i>
-      </div>
-      {isOpen && (
-        <ul className="dropdown-options">
-          {options.map((option) => (
-            <div
-              key={option.value}
-              className="dropdown-option"
-              onClick={() => handleOptionClick(option)}
-            >
-              {option.label}
-            </div>
-          ))}
-        </ul>
-      )}
-    </div>
+    <select className="dropdown" value={value ? value.value : ''} onChange={handleChange}>
+      {options.map((option) => (
+        <option key={option.value} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </select>
   );
 };
 

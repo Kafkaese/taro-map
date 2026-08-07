@@ -44,11 +44,19 @@ const Settings = ({settings, setSettings}) => {
                 <div className="currency-dropdown">
                 <Dropdown  options={currencyOptions}
                     onSelect={changeCurrency}
-                    defaultValue={
+                    value={
                         settings.currency
                 }></Dropdown>
                 </div>
-                <div className="currency-info" onMouseOver={handleMouseEnterInfoIcon} onMouseOut={handleMouseLeaveInfoIcon}><img className="icon" src="/information-button.png" alt='i'></img></div>
+                <button
+                    type="button"
+                    className="currency-info"
+                    onMouseOver={handleMouseEnterInfoIcon}
+                    onMouseOut={handleMouseLeaveInfoIcon}
+                    onFocus={handleMouseEnterInfoIcon}
+                    onBlur={handleMouseLeaveInfoIcon}
+                    aria-label="Currency information"
+                ><img className="icon" src="/information-button.png" alt=''></img></button>
             </div>
             {showCurrencyInfo ? <p className="currency-info-box">EUR is currency from original data. For USD historical exchange rate for the corresponding year is used.</p> : ''}
         </div>

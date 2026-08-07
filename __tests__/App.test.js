@@ -47,9 +47,9 @@ test('changing the year slider updates the year passed down to the map', () => {
 test('the settings gear toggles the currency settings panel', () => {
   render(<App />);
   expect(screen.queryByText('Currency:')).not.toBeInTheDocument();
-  fireEvent.click(screen.getByAltText('Settings'));
+  fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
   expect(screen.getByText('Currency:')).toBeInTheDocument();
-  fireEvent.click(screen.getByAltText('Settings'));
+  fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
   expect(screen.queryByText('Currency:')).not.toBeInTheDocument();
 });
 

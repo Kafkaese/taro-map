@@ -10,27 +10,25 @@ const options = [
   { value: 'EUR', label: 'Euro' },
 ];
 
-test('shows a placeholder when no default value is given', () => {
+test('lists every option', () => {
   render(<Dropdown options={options} onSelect={() => {}} />);
-  expect(screen.getByText('Select language')).toBeInTheDocument();
+  expect(screen.getByRole('option', { name: 'US Dollar' })).toBeInTheDocument();
+  expect(screen.getByRole('option', { name: 'Euro' })).toBeInTheDocument();
 });
 
-test('shows the default value label when provided', () => {
-  render(<Dropdown options={options} onSelect={() => {}} defaultValue={options[0]} />);
-  expect(screen.getByText('US Dollar')).toBeInTheDocument();
+test('reflects the currently selected value', () => {
+  render(<Dropdown options={options} onSelect={() => {}} value={options[1]} />);
+  expect(screen.getByRole('combobox')).toHaveValue('EUR');
 });
 
-test('opens on click and lists all options', () => {
-  render(<Dropdown options={options} onSelect={() => {}} />);
-  fireEvent.click(screen.getByText('Select language'));
-  expect(screen.getByText('Euro')).toBeInTheDocument();
-});
-
-test('selecting an option calls onSelect and closes the list', () => {
+test('selecting a different option calls onSelect with it', () => {
   const onSelect = jest.fn();
-  render(<Dropdown options={options} onSelect={onSelect} />);
-  fireEvent.click(screen.getByText('Select language'));
-  fireEvent.click(screen.getByText('Euro'));
+  render(<Dropdown options={options} onSelect={onSelect} value={options[0]} />);
+  fireEvent.change(screen.getByRole('combobox'), { target: { value: 'EUR' } });
   expect(onSelect).toHaveBeenCalledWith(options[1]);
-  expect(screen.queryByText('US Dollar')).not.toBeInTheDocument();
+});
+
+test('is a real <select>, so it is reachable and operable by keyboard', () => {
+  render(<Dropdown options={options} onSelect={() => {}} value={options[0]} />);
+  expect(screen.getByRole('combobox').tagName).toBe('SELECT');
 });
