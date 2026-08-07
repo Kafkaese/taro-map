@@ -70,41 +70,37 @@ function App() { // API vars from env
 
             setActiveCountryAlpha2(alpha2)
 
-            const name = await fetch(`https://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`)
-            const democracyIndex = await fetch(`https://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`);
-            const totalImports = await fetch(`https://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}&currency=${
-                settings.currency.value
-            }`);
-            const peaceIndex = await fetch(`https://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`);
-            const importSources = await fetch(`https://${API_HOST}:${API_PORT}/arms/imports/by_country?country_code=${alpha2}&year=${year}&limit=${20}&currency=${
-                settings.currency.value
-            }`)
-            const importTimeSeries = await fetch(`https://${API_HOST}:${API_PORT}/arms/imports/timeseries?country_code=${alpha2}&currency=${
-                settings.currency.value
-            }`)
-            const totalExports = await fetch(`https://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}&currency=${
-                settings.currency.value
-            }`);
-            const exportSources = await fetch(`https://${API_HOST}:${API_PORT}/arms/exports/by_country?country_code=${alpha2}&year=${year}&limit=${5}&currency=${
-                settings.currency.value
-            }`)
-            const exportTimeSeries = await fetch(`https://${API_HOST}:${API_PORT}/arms/exports/timeseries?country_code=${alpha2}&currency=${
-                settings.currency.value
-            }`)
-            const merchExports = await fetch(`https://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${
-                settings.currency.value
-            }`)
+            const fetchPromises = [
+                fetch(`https://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
+                fetch(`https://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`),
+                fetch(`https://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`),
+                fetch(`https://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`),
+                fetch(`https://${API_HOST}:${API_PORT}/arms/imports/by_country?country_code=${alpha2}&year=${year}&limit=${20}&currency=${settings.currency.value}`),
+                fetch(`https://${API_HOST}:${API_PORT}/arms/imports/timeseries?country_code=${alpha2}&currency=${settings.currency.value}`),
+                fetch(`https://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`),
+                fetch(`https://${API_HOST}:${API_PORT}/arms/exports/by_country?country_code=${alpha2}&year=${year}&limit=${5}&currency=${settings.currency.value}`),
+                fetch(`https://${API_HOST}:${API_PORT}/arms/exports/timeseries?country_code=${alpha2}&currency=${settings.currency.value}`),
+                fetch(`https://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`)
+            ];
 
-            const nameData = await name.json();
-            const democracyIndexData = await democracyIndex.json();
-            const peaceIndexData = await peaceIndex.json();
-            const totalImportsData = await totalImports.json();
-            const importSourcesData = await importSources.json()
-            const importTimeSeriesData = await importTimeSeries.json()
-            const totalExportsData = await totalExports.json();
-            const exportSourcesData = await exportSources.json()
-            const exportTimeSeriesData = await exportTimeSeries.json()
-            const merchExportData = await merchExports.json()
+            const responses = await Promise.all(fetchPromises);
+
+            if (responses.some(response => !response.ok)) {
+                throw new Error('One or more fetch requests failed');
+            }
+
+            const [
+                nameData,
+                democracyIndexData,
+                totalImportsData,
+                peaceIndexData,
+                importSourcesData,
+                importTimeSeriesData,
+                totalExportsData,
+                exportSourcesData,
+                exportTimeSeriesData,
+                merchExportData
+            ] = await Promise.all(responses.map(response => response.json()));
 
             // update object with new data
             setActiveCountryData({

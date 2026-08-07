@@ -2,15 +2,17 @@
  * @jest-environment jsdom
  */
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import App from '../src/App';
 
 // WorldMap is unit-tested separately (see WorldMap.test.js) and needs real
 // map geometry to render; here we only care about App's own state wiring,
-// so replace it with a stub that echoes the props it was given.
+// so replace it with a stub that echoes the props it was given, plus a
+// button to trigger updateActiveCountry the same way a real country click would.
 jest.mock('../src/components/WorldMap', () => (props) => (
   <div data-testid="world-map">
     {JSON.stringify({ mapModeImport: props.mapModeImport, year: props.year })}
+    <button onClick={() => props.updateActiveCountry('DE')}>select-country</button>
   </div>
 ));
 
@@ -62,6 +64,32 @@ test('clicking Impressum in the footer opens the Impressum popup', () => {
   render(<App />);
   fireEvent.click(screen.getByText('Impressum'));
   expect(screen.getByRole('heading', { name: 'Impressum' })).toBeInTheDocument();
+});
+
+test('updateActiveCountry issues all of its fetches concurrently rather than one at a time', async () => {
+  // Regression test for a bug where each fetch was awaited before starting
+  // the next, serializing 10 round-trips instead of firing them together.
+  const pending = [];
+  global.fetch = jest.fn(
+    () =>
+      new Promise((resolve) => {
+        pending.push(() => resolve({ ok: true, json: () => Promise.resolve({}) }));
+      })
+  );
+
+  render(<App />);
+  fireEvent.click(screen.getByText('select-country'));
+
+  // If the fetches were still sequential, only the first would ever be
+  // issued, since execution would block on it forever (none of these
+  // promises resolve). A parallel implementation issues the full batch
+  // (all 10 URLs) up front regardless of how many times this ends up
+  // being invoked.
+  await waitFor(() => expect(global.fetch.mock.calls.length).toBeGreaterThanOrEqual(10));
+
+  await act(async () => {
+    pending.forEach((resolve) => resolve());
+  });
 });
 
 test('shows the mobile warning popup for touch devices with a mobile user agent', () => {
