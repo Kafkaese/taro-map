@@ -22,10 +22,19 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # Kept in its own file (test.yaml) so it still runs standalone on PRs
+  # too, not just here - called as a job via workflow_call rather than
+  # duplicated, so this is a real gate (via needs:) rather than a loosely
+  # correlated workflow_run reaction.
+  test:
+    uses: ./.github/workflows/test.yaml
+
   # Built once here, then the exact same artifact is promoted through
   # dev and prod below rather than rebuilding for each - dev and prod
   # currently point at the same API host, so there's nothing that would
-  # differ between the two builds anyway.
+  # differ between the two builds anyway. Runs in parallel with test/
+  # rather than after it, since both only need the checked-out code -
+  # deploy-dev is what actually waits on both succeeding.
   build:
     runs-on: ubuntu-latest
     steps:
@@ -61,7 +70,7 @@ jobs:
           path: build/
 
   deploy-dev:
-    needs: build
+    needs: [test, build]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v4
