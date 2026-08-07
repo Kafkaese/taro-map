@@ -1,0 +1,26 @@
+.data-sources h1 {
+  text-align: center;
+  color: white;
+}
+
+.data-sources .columns {
+  display: table;
+  clear: both;
+  margin-left: 50px;
+  margin-right: 50px;
+  color: white;
+  font-size: 11pt;
+}
+
+.data-sources .column {
+  float: left;
+  width: 49%;
+}
+
+.data-sources .column + .column {
+  margin-left: 2%;
+}
+
+.data-sources a {
+  color: #06d3fc;
+}
