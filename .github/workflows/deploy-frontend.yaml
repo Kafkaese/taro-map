@@ -85,11 +85,25 @@ jobs:
 
       - uses: google-github-actions/setup-gcloud@v2
 
+      # index.html and env-config.js are unhashed entry points - the
+      # filename never changes, so they must always be revalidated or
+      # visitors can get stuck on an arbitrarily old deploy for up to an
+      # hour (GCS's default Cache-Control, applied to anything synced
+      # without an explicit one, is "public, max-age=3600"). Everything
+      # else is content-hashed by Vite, so it's safe - and desirable - to
+      # cache for a long time; excluded from the first sync and handled
+      # separately below with the opposite policy.
       - name: Sync to GCS (dev)
         run: |
           gcloud storage rsync build/ gs://${{ vars.GCP_DEV_FRONTEND_BUCKET }} \
             --recursive \
-            --delete-unmatched-destination-objects
+            --delete-unmatched-destination-objects \
+            --exclude="index\.html$|env-config\.js$" \
+            --cache-control="public, max-age=31536000, immutable"
+
+          gcloud storage cp build/index.html build/env-config.js \
+            gs://${{ vars.GCP_DEV_FRONTEND_BUCKET }}/ \
+            --cache-control="no-cache, no-store, must-revalidate"
 
   # Only runs once deploy-dev succeeds, and pauses for manual approval in
   # the Actions UI before it does - the "production" environment has a
@@ -116,8 +130,16 @@ jobs:
       # --delete-unmatched-destination-objects removes objects in the
       # bucket that no longer exist in this build (e.g. old content-hashed
       # JS/CSS chunk filenames) - without it they'd accumulate forever.
+      # See the matching comment in deploy-dev above for why index.html/
+      # env-config.js are synced separately with an opposite cache policy.
       - name: Sync to GCS (prod)
         run: |
           gcloud storage rsync build/ gs://${{ vars.GCP_FRONTEND_BUCKET }} \
             --recursive \
-            --delete-unmatched-destination-objects
+            --delete-unmatched-destination-objects \
+            --exclude="index\.html$|env-config\.js$" \
+            --cache-control="public, max-age=31536000, immutable"
+
+          gcloud storage cp build/index.html build/env-config.js \
+            gs://${{ vars.GCP_FRONTEND_BUCKET }}/ \
+            --cache-control="no-cache, no-store, must-revalidate"
