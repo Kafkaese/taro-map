@@ -7,18 +7,15 @@
     "react": "^18.2.0",
     "react-country-flag": "^3.1.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
     "react-simple-maps": "^3.0.0",
     "react-slider": "^2.0.5",
-    "recharts": "^2.6.2",
-    "web-vitals": "^2.1.4"
+    "recharts": "^2.6.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "vite",
+    "build": "vite build",
     "test": "jest",
-    "test:coverage": "jest --coverage",
-    "eject": "react-scripts eject"
+    "test:coverage": "jest --coverage"
   },
   "eslintConfig": {
     "extends": [
@@ -26,21 +23,15 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^14.0.0"
+    "@testing-library/react": "^14.0.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "babel-jest": "^27.5.1",
+    "eslint-config-react-app": "^7.0.1",
+    "jest": "^27.5.1",
+    "jest-environment-jsdom": "^27.5.1",
+    "vite": "^6.0.7"
   },
   "jest": {
     "setupFilesAfterEnv": [
