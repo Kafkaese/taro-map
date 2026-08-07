@@ -115,6 +115,22 @@
   text-decoration: underline;
 }
 
+.country-data-status {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  transform: translate(-50%);
+  color: #ffffff;
+  background-color: #101827;
+  padding: 6px 12px;
+  border-radius: 8px;
+  z-index: 1;
+}
+
+.country-data-status--error {
+  background-color: #8b0000;
+}
+
 .zoom {
   display: flex;
   position: absolute;
