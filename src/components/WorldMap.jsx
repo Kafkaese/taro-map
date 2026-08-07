@@ -222,8 +222,10 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
       </ComposableMap>
       <div className='zoom'>
                 <button className='button'
+                    aria-label="Zoom in"
                     onClick={handleZoomIn}>+</button>
                 <button className='button'
+                    aria-label="Zoom out"
                     onClick={handleZoomOut}>-</button>
             </div>
       {hoveredCountry && (mapModeImport ? MapTooltipImports(hoveredCountry, settings) : MapTooltipExports(hoveredCountry, settings))}

@@ -155,13 +155,14 @@ function App() {
                 <img className='logo' src="/favicon.png" alt="Taro"/>
                 <div className='title'>Arms-Tracker</div>
                 <button className='settings-button'
+                    aria-label="Settings"
                     onClick={
                         (e) => {
                             e.stopPropagation();
                             setShowSettings(!showSettings)
                         }
                 }>
-                    <img className='settings-icon' src='/settings.png' alt="Settings"/>
+                    <img className='settings-icon' src='/settings.png' alt=""/>
                 </button>
             </div>
 
@@ -209,9 +210,9 @@ function App() {
 
             <div className='footer'>
                 <div className='column'>
-                    <span className="footer-link"><div onClick={() => {showPopUp==='data' ? setShowPopUp('none') : setShowPopUp('data')}}>Data Sources</div>
+                    <span className="footer-link"><button type="button" onClick={() => {showPopUp==='data' ? setShowPopUp('none') : setShowPopUp('data')}}>Data Sources</button>
                     </span>
-                    <span className="footer-link"><div  onClick={() => {showPopUp==='impressum' ? setShowPopUp('none') : setShowPopUp('impressum')}}>Impressum</div>
+                    <span className="footer-link"><button type="button" onClick={() => {showPopUp==='impressum' ? setShowPopUp('none') : setShowPopUp('impressum')}}>Impressum</button>
                     </span>
                 </div>
                 <div className='bar'/>

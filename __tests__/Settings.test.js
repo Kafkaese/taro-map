@@ -14,8 +14,7 @@ test('renders the currently selected currency', () => {
 test('selecting a new currency calls setSettings with the merged settings object', () => {
   const setSettings = jest.fn();
   render(<Settings settings={defaultSettings} setSettings={setSettings} />);
-  fireEvent.click(screen.getByText('US Dollar'));
-  fireEvent.click(screen.getByText('Euro'));
+  fireEvent.change(screen.getByRole('combobox'), { target: { value: 'EUR' } });
   expect(setSettings).toHaveBeenCalledWith({
     ...defaultSettings,
     currency: { value: 'EUR', label: 'Euro', symbol: '€' },
@@ -25,9 +24,22 @@ test('selecting a new currency calls setSettings with the merged settings object
 test('hovering the info icon shows the currency explanation, and hiding it removes it', () => {
   render(<Settings settings={defaultSettings} setSettings={() => {}} />);
   const infoText = /EUR is currency from original data/;
+  const infoButton = screen.getByRole('button', { name: 'Currency information' });
   expect(screen.queryByText(infoText)).not.toBeInTheDocument();
-  fireEvent.mouseOver(screen.getByAltText('i'));
+  fireEvent.mouseOver(infoButton);
   expect(screen.getByText(infoText)).toBeInTheDocument();
-  fireEvent.mouseOut(screen.getByAltText('i'));
+  fireEvent.mouseOut(infoButton);
+  expect(screen.queryByText(infoText)).not.toBeInTheDocument();
+});
+
+test('focusing the info icon via keyboard also shows the currency explanation', () => {
+  // Regression test for the accessibility fix: the info box used to only
+  // open on mouse hover, making it unreachable by keyboard.
+  render(<Settings settings={defaultSettings} setSettings={() => {}} />);
+  const infoText = /EUR is currency from original data/;
+  const infoButton = screen.getByRole('button', { name: 'Currency information' });
+  fireEvent.focus(infoButton);
+  expect(screen.getByText(infoText)).toBeInTheDocument();
+  fireEvent.blur(infoButton);
   expect(screen.queryByText(infoText)).not.toBeInTheDocument();
 });
