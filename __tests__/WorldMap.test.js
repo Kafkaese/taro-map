@@ -120,7 +120,7 @@ test('a country missing from the availability list is greyed out', async () => {
   });
   renderMap();
   await waitFor(() =>
-    expect(screen.getByTestId('geography')).toHaveStyle({ fill: '#D1D5DB' })
+    expect(screen.getByTestId('geography')).toHaveStyle({ fill: '#9CA3AF' })
   );
 });
 
@@ -148,7 +148,7 @@ test('a greyed-out (no-data) country is still selectable and shows its hover too
   renderMap({ onCountrySelect });
 
   await waitFor(() =>
-    expect(screen.getByTestId('geography')).toHaveStyle({ fill: '#D1D5DB' })
+    expect(screen.getByTestId('geography')).toHaveStyle({ fill: '#9CA3AF' })
   );
 
   fireEvent.mouseOver(screen.getByTestId('geography'));

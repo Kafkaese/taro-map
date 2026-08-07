@@ -38,14 +38,15 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
   const hoverColor = '#66B087';
   const pressedColor = '#5b9e79';
 
-  // Pale grey used for countries with no data at all for the selected
-  // year/mode - deliberately light/desaturated (rather than a strong,
-  // heavy grey) so it recedes and lets the pastel green "has data"
-  // countries read as the dominant, more prominent color on the map.
+  // Muted grey used for countries with no data at all for the selected
+  // year/mode - close in lightness to the pastel green "has data" default
+  // (#84B098, ~59% lightness) but desaturated/neutral, so it reads as a
+  // clearly distinct grey without looking like a bright off-white/bone
+  // (too pale) or dominating the map with a heavy dark grey (too strong).
   // Same lightest->darkest progression as the green states above.
-  const noDataColor = '#D1D5DB';
-  const noDataHoverColor = '#9CA3AF';
-  const noDataPressedColor = '#6B7280';
+  const noDataColor = '#9CA3AF';
+  const noDataHoverColor = '#6B7280';
+  const noDataPressedColor = '#4B5563';
 
   // Bulk set of country codes that have any data for the current year/mode,
   // used to grey out the rest. null means "not yet loaded" - deliberately
