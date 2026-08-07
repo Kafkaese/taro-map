@@ -37,7 +37,7 @@ const renderMap = (overrides = {}) =>
       mapModeImport={true}
       year={2020}
       activeCountryData={{}}
-      updateActiveCountry={() => {}}
+      onCountrySelect={() => {}}
       settings={defaultSettings}
       {...overrides}
     />
@@ -82,12 +82,35 @@ test('hovering a country in export mode requests the export endpoints for that c
   ).toBe(true);
 });
 
-test('clicking a country calls updateActiveCountry with its country code', () => {
+test('clicking a country calls onCountrySelect with its country code', () => {
   mockFetchJson(() => ({ value: 'x' }));
-  const updateActiveCountry = jest.fn();
-  renderMap({ updateActiveCountry });
+  const onCountrySelect = jest.fn();
+  renderMap({ onCountrySelect });
   fireEvent.click(screen.getByTestId('geography'));
-  expect(updateActiveCountry).toHaveBeenCalledWith('DE');
+  expect(onCountrySelect).toHaveBeenCalledWith('DE');
+});
+
+test('the tooltip follows the current mouse position immediately, not one event behind', async () => {
+  // Regression test for a stale-closure bug: the position update used to
+  // read the previous render's mousePosition state instead of this event's
+  // own coordinates, so the tooltip lagged one mousemove behind the cursor.
+  mockFetchJson((url) => {
+    if (url.includes('/metadata/name/short')) return { value: 'Germany' };
+    if (url.includes('/metadata/democracy_index')) return { value: 8.67 };
+    if (url.includes('/arms/imports/total')) return { value: 1500000 };
+    if (url.includes('/metadata/peace_index')) return { value: 1.5 };
+    return {};
+  });
+  renderMap();
+  const geo = screen.getByTestId('geography');
+
+  fireEvent.mouseOver(geo);
+  await screen.findByText('Germany');
+
+  fireEvent.mouseMove(geo, { clientX: 100, clientY: 200 });
+
+  const tooltip = screen.getByText('Germany').closest('.hover-box-container');
+  expect(tooltip).toHaveStyle({ left: '110px', top: '205px' });
 });
 
 test('zoom in is clamped so it stabilizes once it reaches the max', () => {

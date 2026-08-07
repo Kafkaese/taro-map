@@ -8,11 +8,11 @@ import App from '../src/App';
 // WorldMap is unit-tested separately (see WorldMap.test.js) and needs real
 // map geometry to render; here we only care about App's own state wiring,
 // so replace it with a stub that echoes the props it was given, plus a
-// button to trigger updateActiveCountry the same way a real country click would.
+// button to trigger onCountrySelect the same way a real country click would.
 jest.mock('../src/components/WorldMap', () => (props) => (
   <div data-testid="world-map">
     {JSON.stringify({ mapModeImport: props.mapModeImport, year: props.year })}
-    <button onClick={() => props.updateActiveCountry('DE')}>select-country</button>
+    <button onClick={() => props.onCountrySelect('DE')}>select-country</button>
   </div>
 ));
 
@@ -66,9 +66,12 @@ test('clicking Impressum in the footer opens the Impressum popup', () => {
   expect(screen.getByRole('heading', { name: 'Impressum' })).toBeInTheDocument();
 });
 
-test('updateActiveCountry issues all of its fetches concurrently rather than one at a time', async () => {
-  // Regression test for a bug where each fetch was awaited before starting
-  // the next, serializing 10 round-trips instead of firing them together.
+test('selecting a country issues exactly one batch of 10 fetches, concurrently', async () => {
+  // Regression test for two bugs: (1) each fetch used to be awaited before
+  // starting the next, serializing 10 round-trips instead of firing them
+  // together, and (2) the fetch batch used to fire *twice* per click (once
+  // from the direct call, once from an effect reacting to the resulting
+  // state change) - so this asserts exactly 10, not just "at least 10".
   const pending = [];
   global.fetch = jest.fn(
     () =>
@@ -82,14 +85,29 @@ test('updateActiveCountry issues all of its fetches concurrently rather than one
 
   // If the fetches were still sequential, only the first would ever be
   // issued, since execution would block on it forever (none of these
-  // promises resolve). A parallel implementation issues the full batch
-  // (all 10 URLs) up front regardless of how many times this ends up
-  // being invoked.
-  await waitFor(() => expect(global.fetch.mock.calls.length).toBeGreaterThanOrEqual(10));
+  // promises resolve).
+  await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(10));
 
   await act(async () => {
     pending.forEach((resolve) => resolve());
   });
+});
+
+test('changing the year while a country is selected refetches its data for the new year', async () => {
+  const fetchMock = jest.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve({}) }));
+  global.fetch = fetchMock;
+
+  render(<App />);
+  fireEvent.click(screen.getByText('select-country'));
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(10));
+
+  const thumb = screen.getByRole('slider');
+  fireEvent.focus(thumb);
+  fireEvent.keyDown(thumb, { key: 'ArrowRight', keyCode: 39 });
+
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(20));
+  const urls = fetchMock.mock.calls.map((call) => call[0]);
+  expect(urls.filter((u) => u.includes('year=2021')).length).toBeGreaterThan(0);
 });
 
 test('shows a loading indicator while country data is being fetched, then hides it', async () => {
@@ -106,7 +124,7 @@ test('shows a loading indicator while country data is being fetched, then hides 
 
   expect(await screen.findByText('Loading country data…')).toBeInTheDocument();
 
-  await waitFor(() => expect(pending.length).toBeGreaterThanOrEqual(10));
+  await waitFor(() => expect(pending.length).toBe(10));
   await act(async () => {
     pending.forEach((resolve) => resolve());
   });
