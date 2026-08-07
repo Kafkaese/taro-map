@@ -1,40 +1,63 @@
+:root {
+  --deck-surface: #101827;
+  --deck-card: #131b2b;
+  --deck-card-inset: #0d1420;
+  --deck-chip: #1c2536;
+  --deck-border: rgba(255, 255, 255, 0.08);
+  --deck-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.5);
+  --deck-text: #ffffff;
+  --deck-text-dim: #9fb0c3;
+  --deck-text-faint: #6c7c93;
+  --deck-accent: #06d3fc;
+  --deck-accent-strong: #06879e;
+  --deck-radius-lg: 14px;
+  --deck-radius-md: 10px;
+  --deck-radius-sm: 8px;
+  --deck-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
 .app {
   background-color: #93B6C9;
   height: 100vh;
   width: 100vw;
+  font-family: var(--deck-font);
 }
 
 .header {
   position: fixed;
-  height: 40px;
+  height: 46px;
   width: 100vw;
-  background-color: #101827;
+  background-color: var(--deck-surface);
   display: flex;
   flex-direction: row;
   align-items: center;
-
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  z-index: 2;
 }
 
 .header .title {
   flex: auto;
-  color: #ffffff;
-  font-weight: bold;
+  color: var(--deck-text);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  font-size: 14px;
   text-align: center;
 }
 
 .header .logo {
-  height: 30px;
-  width: 30px;
-  margin: 5px 5px;
+  height: 28px;
+  width: 28px;
+  margin: 5px 8px;
+  border-radius: 6px;
 }
 
 .header .settings-button {
   height: 30px;
   width: 30px;
-  margin: 4px;
+  margin: 4px 8px;
   padding: 1px;
-  background-color: #242e41;
-  border-radius: 5px;
+  background-color: var(--deck-chip);
+  border-radius: var(--deck-radius-sm);
 }
 
 .header .settings-icon {
@@ -56,24 +79,24 @@
   width: 95vw;
   max-width: 500px;
   height: 40px;
-  background-color: #101827;
+  background-color: var(--deck-card);
   padding: 4px 8px;
-  border: 1px solid #ccc;
+  border: none;
+  box-shadow: var(--deck-shadow);
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  border-radius: 8px;
+  border-radius: var(--deck-radius-md);
 }
 
 .toggle {
-  width: 140px;
-  height: 40px;
-  top: 50px;
-  right: 1vw;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  top: 60px;
+  right: 14px;
   position: absolute;
-  background-color: #242e41;
-  border: 5px solid #101827;
-  border-radius: 25px;
+  z-index: 1;
 }
 
 .toggle .slider {
@@ -84,35 +107,39 @@
 .footer {
   position: fixed;
   bottom: 0px;
-  background-color: #101827;
+  background-color: var(--deck-surface);
   color: white;
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: space-between;
   flex-direction: row;
   width: 100vw;
-  height: 5vh;
-  min-height: 20px;
+  height: 34px;
+  padding: 0 20px;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
+  z-index: 2;
 }
 
 .footer .bar  {
-  height: 100%;
-  border-left: 1px solid #ffffff;
+  height: 60%;
+  border-left: 1px solid var(--deck-border);
 }
 
 .footer .column {
   display: flex;
-  flex-direction: column;
-  align-items: left;
-  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
   color: white;
   height: 100%;
 }
 
 .footer .column .footer-link {
-  font-size: calc(.33em + .5vw);
-  color: #bbbbbb;
+  font-size: 11px;
+  color: var(--deck-text-dim);
   cursor: pointer;
   text-decoration: underline;
+  white-space: nowrap;
 }
 
 .footer .column .footer-link button {
@@ -128,13 +155,15 @@
 
 .country-data-status {
   position: fixed;
-  top: 50px;
+  top: 60px;
   left: 50%;
   transform: translate(-50%);
   color: #ffffff;
-  background-color: #101827;
-  padding: 6px 12px;
-  border-radius: 8px;
+  background-color: var(--deck-card);
+  padding: 8px 14px;
+  border-radius: var(--deck-radius-md);
+  box-shadow: var(--deck-shadow);
+  font-size: 13px;
   z-index: 1;
 }
 
@@ -145,19 +174,22 @@
 .zoom {
   display: flex;
   position: absolute;
-  top: 110px;
-  right: 1vw;
+  top: 108px;
+  right: 14px;
   height: 40px;
   width: 80px;
-  background-color: #101827;
-  border-radius: 15px;
+  background-color: var(--deck-card);
+  border-radius: var(--deck-radius-md);
+  box-shadow: var(--deck-shadow);
+  padding: 5px;
+  gap: 5px;
 }
 
 .zoom .button {
   flex: 1;
-  margin: 5%;
+  margin: 0;
   color: white;
-  font-weight: bolder;
-  background-color: #374151;
-  border-radius: 10px;
+  font-weight: 700;
+  background-color: var(--deck-chip);
+  border-radius: var(--deck-radius-sm);
 }

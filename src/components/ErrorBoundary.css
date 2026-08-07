@@ -5,10 +5,12 @@
   transform: translate(-50%, -50%);
   width: 90vw;
   max-width: 400px;
-  background-color: #101827;
+  background-color: var(--deck-card, #131b2b);
   color: #ffffff;
   padding: 24px;
-  border-radius: 8px;
+  border-radius: 14px;
+  box-shadow: var(--deck-shadow, 0 10px 24px -8px rgba(0, 0, 0, 0.5));
+  font-family: var(--deck-font, -apple-system, sans-serif);
   text-align: center;
 }
 
@@ -20,9 +22,10 @@
 .error-boundary-fallback button {
   margin-top: 12px;
   color: white;
-  background-color: #374151;
+  background-color: var(--deck-chip, #1c2536);
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 8px 16px;
   cursor: pointer;
+  font-weight: 600;
 }

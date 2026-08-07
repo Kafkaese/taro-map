@@ -15,23 +15,23 @@ const MapTooltip = (hoveredCountry, settings) => {
                     
                     <div className="circle-container">
                     
-                    <div className="money-wrapper">
-                        <div className="money" style={{ backgroundColor: getUSDColor(hoveredCountry.totalArmsImports.value) }}>
+                    <div className="money-wrapper" style={{ '--stat-color': getUSDColor(hoveredCountry.totalArmsImports.value) }}>
+                        <div className="money">
                         {formatUSDvalue(hoveredCountry.totalArmsImports.value)}
                         </div>
                         <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountry.totalArmsImports.value) && `${formatUSDorder(hoveredCountry.totalArmsImports.value)} ${settings.currency.symbol}`}</div></div>
                         <span className='money-label'>Imports</span>
                     </div>
 
-                    <div className='circle-wrapper'>
-                        <div className="circle" style={{ backgroundColor: getDemocracyColor(hoveredCountry.democracyIndex.value) }}>
+                    <div className='circle-wrapper' style={{ '--stat-color': getDemocracyColor(hoveredCountry.democracyIndex.value) }}>
+                        <div className="circle">
                         {hoveredCountry.democracyIndex.value}
                         </div>
                         <span className='circle-label'>Democracy Index<sup>[1]</sup></span>
                     </div>
 
-                    <div className='circle-wrapper'>
-                        <div className="circle" style={{ backgroundColor: getPeaceColor(hoveredCountry.peaceIndex.value) }}>
+                    <div className='circle-wrapper' style={{ '--stat-color': getPeaceColor(hoveredCountry.peaceIndex.value) }}>
+                        <div className="circle">
                         {hoveredCountry.peaceIndex.value}
                         </div>
                         <span className='circle-label'>Peace Index <sup>[2]</sup></span>

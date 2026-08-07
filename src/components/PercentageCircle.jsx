@@ -23,7 +23,7 @@ const PercentageCircle = ({percentage}) => {
                 cy="50%"
                 innerRadius={"60%"}
                 outerRadius={"100%"}
-                fill="#808080"
+                fill="#1c2536"
                 />
                 {/* colored circle based on percenag*/}
                 <Pie
@@ -36,11 +36,13 @@ const PercentageCircle = ({percentage}) => {
                 cy="50%"
                 innerRadius={"60%"}
                 outerRadius={"100%"}
-                fill="#8884d8"
+                fill="#06d3fc"
                 >
                 {/* Label at center of circle*/}
-                <Label 
+                <Label
                     position="center"
+                    fill="#ffffff"
+                    style={{ fontWeight: 800, fontSize: '13px' }}
                     >
                     {!Number.isNaN(percentage) && Number.isFinite(percentage) ? (Math.round(percentage) > 0 ?`${Math.round(percentage)}%` : "<1%") : "?%"}
                     </Label>

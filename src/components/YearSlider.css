@@ -5,7 +5,7 @@
     margin: auto;
     bottom: -6px;
   }
-  
+
   .example-thumb.active {
     background-color: grey;
   }
@@ -17,7 +17,7 @@
     position: absolute;
     top: 4.5px;
     height: 10px;
-    background: #f0f4ff;
+    background: var(--deck-chip, #1c2536);
     border-radius: 3px;
   }
   .horizontal-slider .example-thumb {
@@ -29,7 +29,7 @@
     cursor: pointer;
     background: #ffffff;
     border-width: 6px 5px 6px 5px;
-    border-color: #48546e;
+    border-color: var(--deck-accent-strong, #06879e);
     border-style: solid;
     border-radius: 10%;
     display: block;
@@ -47,36 +47,41 @@
     bottom: calc(50% - 6px);
   }
   .example-mark.example-mark-active {
-    border: 2px solid #00d4ff;
+    border: 2px solid #06d3fc;
     background-color: rgb(255, 255, 255);
   }
   .example-mark.example-mark-completed {
     border: 2px solid rgb(255, 255, 255);
-    background-color: #00d4ff;
-  } 
+    background-color: #06d3fc;
+  }
 
   .slider-year-info-box {
     display: flex;
     height: 50%;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
     padding: 0px 50px;
   }
 
   .slider-year-info-box-element1 {
-    font-weight: bold;
-    color: #ffffff;
-    font-size: 20px;
+    font-weight: 700;
+    color: var(--deck-text-faint, #6c7c93);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
 
 
   .slider-year-info-box-element2 {
-    padding: 5px 15px;
-    font-size: 15px;
-    line-height: 60%;
+    padding: 3px 14px;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1.4;
     color: #ffffff;
-    border: 1px solid white;
-    background: #374151;
+    border: none;
+    background: var(--deck-accent-strong, #06879e);
     border-radius: 25px;
     text-align: center;
+    font-variant-numeric: tabular-nums;
   }
