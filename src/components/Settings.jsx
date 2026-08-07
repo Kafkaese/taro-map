@@ -22,7 +22,6 @@ const Settings = ({settings, setSettings}) => {
             ...settings,
             currency: option
         })
-        console.log(settings)
     }
 
 

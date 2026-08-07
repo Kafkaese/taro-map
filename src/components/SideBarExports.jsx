@@ -20,7 +20,6 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year, settings}) =>
 
     const collapse = () => {
         onCollapse(!collapsed)
-        console.log(countryData)
     }
 
     return (
