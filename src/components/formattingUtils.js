@@ -16,20 +16,30 @@
 
   }
 
-  // Color coding for peace index. The Global Peace Index's published scale
-  // runs ~1 (most peaceful) to ~5 (least peaceful); these are just an even
-  // linear split of that range into 5 bands, not an official GPI category.
+  // Color coding for peace index. Colors and cutoffs match the official
+  // GPI "state of peace" five-band map legend (very high/high/medium/low/
+  // very low), read directly off the 2026 Global Peace Index report
+  // (https://gpi.economicsandpeace.org/data/GPI-2026-web.pdf, p.10-11).
+  // IEP doesn't publish an exact numeric cutoff table - countries are
+  // colored by score, so these are the rough midpoints between the last
+  // country of one band and the first of the next in the report's ranked
+  // table: very high/high between Singapore 1.435 and Finland 1.478,
+  // high/medium between Turkmenistan 1.903 and Sri Lanka 1.91,
+  // medium/low between Brazil 2.333 and Libya 2.361, low/very low between
+  // Burkina Faso 2.882 and Central African Republic 2.906.
   const getPeaceColor = (value) => {
-    if (value < 1.0) {
-      return '#00E676' // green
-    } else if (value < 2.0) {
-      return '#C6FF00' // green-yellow
-    } else if (value < 3.0) {
-      return '#d4d400' // yellow
-    } else if (value < 4.0) {
-      return '#FFD600' // orange
+    if (value < 1.45) {
+      return '#048581' // very high
+    } else if (value < 1.905) {
+      return '#53C1AB' // high
+    } else if (value < 2.35) {
+      return '#FAE389' // medium
+    } else if (value < 2.9) {
+      return '#F37053' // low
+    } else if (value >= 2.9) {
+      return '#ED1D24' // very low
     } else {
-      return '#383838' // red
+      return '#383838' // N/A
     }
 
   }

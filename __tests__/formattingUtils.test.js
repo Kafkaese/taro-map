@@ -30,21 +30,27 @@ describe('getDemocracyColor', () => {
 });
 
 describe('getPeaceColor', () => {
-  test('< 1.0 is green', () => {
-    expect(getPeaceColor(0)).toBe('#00E676');
+  test('< 1.45 is very high (GPI map legend teal)', () => {
+    expect(getPeaceColor(1.0)).toBe('#048581');
   });
-  test('< 2.0 is green-yellow', () => {
-    expect(getPeaceColor(1.0)).toBe('#C6FF00');
+  test('1.45 to < 1.905 is high', () => {
+    expect(getPeaceColor(1.45)).toBe('#53C1AB');
+    expect(getPeaceColor(1.7)).toBe('#53C1AB');
   });
-  test('< 3.0 is yellow', () => {
-    expect(getPeaceColor(2.0)).toBe('#d4d400');
+  test('1.905 to < 2.35 is medium', () => {
+    expect(getPeaceColor(1.905)).toBe('#FAE389');
+    expect(getPeaceColor(2.0)).toBe('#FAE389');
   });
-  test('< 4.0 is orange', () => {
-    expect(getPeaceColor(3.0)).toBe('#FFD600');
+  test('2.35 to < 2.9 is low', () => {
+    expect(getPeaceColor(2.35)).toBe('#F37053');
+    expect(getPeaceColor(2.5)).toBe('#F37053');
   });
-  test('>= 4.0 falls back to grey', () => {
-    expect(getPeaceColor(4.0)).toBe('#383838');
-    expect(getPeaceColor(5)).toBe('#383838');
+  test('>= 2.9 is very low', () => {
+    expect(getPeaceColor(2.9)).toBe('#ED1D24');
+    expect(getPeaceColor(3.5)).toBe('#ED1D24');
+  });
+  test('NaN falls back to grey', () => {
+    expect(getPeaceColor(NaN)).toBe('#383838');
   });
 });
 
