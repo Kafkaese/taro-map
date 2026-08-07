@@ -7,6 +7,10 @@
     top: 50%;
     left: 50%;
     margin: -250px 0 0 -250px;
+    /* Higher than the sidebar panel (z-index: 1) and settings (z-index: 2),
+       so Impressum/Data Sources/mobile-warning popups always render above
+       them regardless of DOM order. */
+    z-index: 3;
 }
 
 .impressum {

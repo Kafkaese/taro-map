@@ -23,10 +23,11 @@ import './HoverBox.css';
  * @param {integer} year Year currently selected. Chnages data that is displayed in tooltip and sidebar.
  * @param {object} activeCountryData Data about the currently hovered over country on the Map.
  * @param {function} onCountrySelect Called with a country's alpha-2 code when it's clicked. The parent is responsible for fetching its data.
+ * @param {function} [onMapClick] Called on any click within the map area - both the background and a country - regardless of whether a country was actually selected.
  * @param {object} settings Global app settings, including currency to be displayed and language (language settings currently not used).
  *
  */
-const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, settings}) => {
+const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMapClick, settings}) => {
 
   // geometry colors
   const defaultColor = '#84B098';
@@ -169,8 +170,12 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
   const [collapsed, setCollapsed] = useState(false)
 
   // Gets country data for sidebar from APIs
-  const handleCountryClick = (alpha2, geo, style) => {
-    
+  const handleCountryClick = (event, alpha2, geo) => {
+
+    // Stop this from also reaching handleMapBackgroundClick below - a
+    // country click should open the sidebar, not immediately close it.
+    event.stopPropagation();
+
     // Set active Geography
     setSelectedGeography(geo);
 
@@ -179,6 +184,16 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
 
     // uncollpase sidebar if new country is selected
     setCollapsed(false)
+
+    onMapClick?.();
+  };
+
+  // Clicking the map background (anywhere that isn't a country) closes the
+  // sidebar. Only reachable when the click doesn't land on a Geography,
+  // since handleCountryClick stops propagation.
+  const handleMapBackgroundClick = () => {
+    setCollapsed(true);
+    onMapClick?.();
   };
 
   // Track selected Geography. Needed to keep last clicked country highlighted, and unhighlight if new one is selected.
@@ -191,8 +206,9 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
       {typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data' ? <SideBar mapModeImport={mapModeImport} countryData={activeCountryData} collapsed={collapsed} settings={settings} onCollapse={setCollapsed} year={year} setings={settings}></SideBar> : <div/>}
       <ComposableMap
         projection="geoMercator"
-        style={{ width: '100%', height: '98vh' }}
+        style={{ width: '100%', height: '98vh', cursor: 'grab' }}
         onMouseMove={handleMouseMove}
+        onClick={handleMapBackgroundClick}
       >
         <ZoomableGroup onMoveEnd={handleMoveEnd} zoom={position.zoom} center={position.coordinates} translateExtent={[[-Infinity, -100], [Infinity, 600]]}> {/* [?,maxup,?, maxdown]*/}
           <Geographies geography="/world-new.json">
@@ -206,7 +222,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
                     geography={geo}
                     onMouseOver={() => mapModeImport ? getImportTooltipData(alpha2) : getExportTooltipData(alpha2)}
                     onMouseLeave={handleCountryLeave}
-                    onClick={() => handleCountryClick(alpha2, geo)}
+                    onClick={(event) => handleCountryClick(event, alpha2, geo)}
                     onMouseMove={handleMouseMoveOnGeo}
                     style={{
                       default: {
@@ -216,6 +232,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
                         strokeLinejoin: 'round',
                         strokeWidth: 0.25,
                         outline: 'none',
+                        cursor: 'pointer',
                       },
                       hover: {
                         fill: hoverColor,
@@ -223,6 +240,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
                         strokeLinejoin: 'round',
                         strokeWidth: 0.30,
                         outline: 'none',
+                        cursor: 'pointer',
                       },
                       pressed: {
                         fill: pressedColor,
@@ -230,6 +248,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
                         strokeLinejoin: 'round',
                         strokeWidth: 0.85,
                         outline: 'none',
+                        cursor: 'pointer',
                       },
                     }}
                   />

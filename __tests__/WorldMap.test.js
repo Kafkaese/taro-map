@@ -4,14 +4,18 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import WorldMap from '../src/components/WorldMap';
-import { defaultSettings } from '../testUtils/fixtures';
+import { defaultSettings, buildCountryData } from '../testUtils/fixtures';
 import { mockFetchJson } from '../testUtils/mockFetch';
 
 // react-simple-maps needs real topojson geometry to render anything; for
 // these tests we only care about the fetch/state logic around the map, so
 // swap it for a single fake, clickable/hoverable "country".
 jest.mock('react-simple-maps', () => ({
-  ComposableMap: ({ children, onMouseMove }) => <div onMouseMove={onMouseMove}>{children}</div>,
+  ComposableMap: ({ children, onMouseMove, onClick, style }) => (
+    <div data-testid="composable-map" onMouseMove={onMouseMove} onClick={onClick} style={style}>
+      {children}
+    </div>
+  ),
   ZoomableGroup: ({ children, zoom }) => (
     <div>
       <div data-testid="zoom-level">{zoom}</div>
@@ -20,13 +24,14 @@ jest.mock('react-simple-maps', () => ({
   ),
   Geographies: ({ children }) =>
     children({ geographies: [{ rsmKey: 'DE', properties: { countryKey: 'DE' } }] }),
-  Geography: ({ onMouseOver, onMouseLeave, onClick, onMouseMove }) => (
+  Geography: ({ onMouseOver, onMouseLeave, onClick, onMouseMove, style }) => (
     <div
       data-testid="geography"
       onMouseOver={onMouseOver}
       onMouseLeave={onMouseLeave}
       onClick={onClick}
       onMouseMove={onMouseMove}
+      style={style?.default}
     />
   ),
 }));
@@ -88,6 +93,43 @@ test('clicking a country calls onCountrySelect with its country code', () => {
   renderMap({ onCountrySelect });
   fireEvent.click(screen.getByTestId('geography'));
   expect(onCountrySelect).toHaveBeenCalledWith('DE');
+});
+
+test('onMapClick fires for both a country click and a background click', () => {
+  mockFetchJson(() => ({ value: 'x' }));
+  const onMapClick = jest.fn();
+  renderMap({ onMapClick });
+
+  fireEvent.click(screen.getByTestId('geography'));
+  expect(onMapClick).toHaveBeenCalledTimes(1);
+
+  fireEvent.click(screen.getByTestId('composable-map'));
+  expect(onMapClick).toHaveBeenCalledTimes(2);
+});
+
+test('clicking the map background closes (collapses) the sidebar', () => {
+  renderMap({ activeCountryData: buildCountryData() });
+  const panel = document.querySelector('.panel');
+  expect(panel).not.toHaveStyle({ width: '0%' });
+
+  fireEvent.click(screen.getByTestId('composable-map'));
+
+  expect(panel).toHaveStyle({ width: '0%' });
+});
+
+test('clicking a country does not also trigger the background-click collapse', () => {
+  mockFetchJson(() => ({ value: 'x' }));
+  renderMap({ activeCountryData: buildCountryData() });
+
+  fireEvent.click(screen.getByTestId('geography'));
+
+  expect(document.querySelector('.panel')).not.toHaveStyle({ width: '0%' });
+});
+
+test('the map background has a grab cursor, and countries have a pointer cursor', () => {
+  renderMap();
+  expect(screen.getByTestId('composable-map')).toHaveStyle({ cursor: 'grab' });
+  expect(screen.getByTestId('geography')).toHaveStyle({ cursor: 'pointer' });
 });
 
 test('the tooltip follows the current mouse position immediately, not one event behind', async () => {

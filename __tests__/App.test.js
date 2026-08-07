@@ -9,11 +9,29 @@ import App from '../src/App';
 // map geometry to render; here we only care about App's own state wiring,
 // so replace it with a stub that echoes the props it was given, plus a
 // button to trigger onCountrySelect the same way a real country click would.
+// A real country click fires both onCountrySelect and onMapClick (see
+// WorldMap.jsx's handleCountryClick) - the mock buttons below replicate
+// that pairing so App-level tests see the same composition production does.
 jest.mock('../src/components/WorldMap', () => (props) => (
   <div data-testid="world-map">
     {JSON.stringify({ mapModeImport: props.mapModeImport, year: props.year })}
-    <button onClick={() => props.onCountrySelect('DE')}>select-country</button>
-    <button onClick={() => props.onCountrySelect('FR')}>select-other-country</button>
+    <button
+      onClick={() => {
+        props.onCountrySelect('DE');
+        props.onMapClick();
+      }}
+    >
+      select-country
+    </button>
+    <button
+      onClick={() => {
+        props.onCountrySelect('FR');
+        props.onMapClick();
+      }}
+    >
+      select-other-country
+    </button>
+    <button onClick={() => props.onMapClick()}>click-map-background</button>
   </div>
 ));
 
@@ -29,6 +47,22 @@ test('renders the header and defaults to import mode', () => {
   render(<App />);
   expect(screen.getByText('Arms-Tracker')).toBeInTheDocument();
   expect(screen.getByTestId('world-map').textContent).toContain('"mapModeImport":true');
+});
+
+test('shows the "click a country" hint until the user clicks anywhere on the map', () => {
+  render(<App />);
+  const hint = /Click on Country for more Details/;
+  expect(screen.getByText(hint)).toBeInTheDocument();
+
+  fireEvent.click(screen.getByText('click-map-background'));
+
+  expect(screen.queryByText(hint)).not.toBeInTheDocument();
+});
+
+test('the "click a country" hint also disappears once a country is actually selected', () => {
+  render(<App />);
+  fireEvent.click(screen.getByText('select-country'));
+  expect(screen.queryByText(/Click on Country for more Details/)).not.toBeInTheDocument();
 });
 
 test('toggling Imports/Exports flips the mode passed down to the map', () => {

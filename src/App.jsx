@@ -67,6 +67,11 @@ function App() {
     // Needs to be tracked here for updating activeCountryData on year change
     const [activeCountryAlpha2, setActiveCountryAlpha2] = useState('')
 
+    // Drives the "(Click on Country for more Details)" hint - hidden as
+    // soon as the user clicks anywhere on the map, not just once they've
+    // actually selected a country (a click on open ocean still counts).
+    const [hasInteractedWithMap, setHasInteractedWithMap] = useState(false)
+
     // Tracks whether a country-data fetch is in flight, and the error message
     // if the last one failed - surfaced to the user instead of only logging.
     const [isCountryDataLoading, setIsCountryDataLoading] = useState(false);
@@ -198,7 +203,7 @@ function App() {
             }
 
             {
-            activeCountryAlpha2 === '' ? <div style={
+            !hasInteractedWithMap ? <div style={
                 {
                     color: 'whitesmoke',
                     position: 'absolute',
@@ -218,6 +223,7 @@ function App() {
                 year={year}
                 activeCountryData={activeCountryData}
                 onCountrySelect={setActiveCountryAlpha2}
+                onMapClick={() => setHasInteractedWithMap(true)}
                 settings={settings}
                 />
 
