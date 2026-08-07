@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import MapTooltipImports from './MapTooltipImports';
 import MapTooltipExports from './MapTooltipExports';
@@ -9,7 +9,9 @@ import {
   fetchPeaceIndex,
   fetchTotalImports,
   fetchTotalExports,
-  fetchMerchandiseExports
+  fetchMerchandiseExports,
+  fetchAvailableImportCountries,
+  fetchAvailableExportCountries
 } from '../api';
 
 import './HoverBox.css';
@@ -17,7 +19,9 @@ import './HoverBox.css';
 
 /**
  * Renders world map with tooltip and a conditional, collapsible sidebar with more detailed information.
- * Zoom level and year are controlled by parent component.
+ * Zoom level and year are controlled by parent component. Countries with no
+ * data at all for the current year/mode are greyed out (see availableCountries
+ * below) but remain fully clickable/hoverable.
  *
  * @param {boolean} mapModeImport State of the map. If true: show imports, if false show exports.
  * @param {integer} year Year currently selected. Chnages data that is displayed in tooltip and sidebar.
@@ -33,6 +37,38 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
   const defaultColor = '#84B098';
   const hoverColor = '#66B087';
   const pressedColor = '#5b9e79';
+
+  // Distinct grey used for countries with no data at all for the selected
+  // year/mode - deliberately far from the green palette above so "no data"
+  // reads unambiguously, rather than looking like a shade of "has data".
+  const noDataColor = '#4B5563';
+  const noDataHoverColor = '#6B7280';
+  const noDataPressedColor = '#374151';
+
+  // Bulk set of country codes that have any data for the current year/mode,
+  // used to grey out the rest. null means "not yet loaded" - deliberately
+  // treated as "assume every country has data" below, so the map doesn't
+  // flash all-grey before this resolves.
+  const [availableCountries, setAvailableCountries] = useState(null);
+  const availabilityAbortControllerRef = useRef(null);
+
+  useEffect(() => {
+    availabilityAbortControllerRef.current?.abort();
+    const controller = new AbortController();
+    availabilityAbortControllerRef.current = controller;
+
+    const fetchAvailability = mapModeImport ? fetchAvailableImportCountries : fetchAvailableExportCountries;
+
+    fetchAvailability(year, controller.signal)
+      .then((countryCodes) => setAvailableCountries(new Set(countryCodes)))
+      .catch((error) => {
+        if (error.name === 'AbortError') return; // superseded by a newer year/mode, not a real failure
+        console.error('Error fetching country data availability:', error);
+        setAvailableCountries(null);
+      });
+
+    return () => controller.abort();
+  }, [year, mapModeImport]);
 
   // Position and zoom level for ZoomableGroup
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
@@ -161,11 +197,14 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
 
   }
 
-  // Remove hover tool when leaving geometry
-  const handleCountryLeave = (event) => {
+  // Remove hover tool when leaving geometry. resetFill is this geography's
+  // already-resolved "resting" color (accounting for both selection and
+  // data-availability) - passed in rather than hardcoding defaultColor here,
+  // since that would flash a no-data (grey) country green for a moment.
+  const handleCountryLeave = (event, resetFill) => {
     tooltipAbortControllerRef.current?.abort();
     setHoveredCountry(null)
-    event.target.setAttribute('fill', defaultColor);
+    event.target.setAttribute('fill', resetFill);
   };
 
 
@@ -232,18 +271,20 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
             {({ geographies }) =>
               geographies.map((geo) => {
                 const { 'countryKey': alpha2 } = geo.properties;
+                const hasData = availableCountries === null || availableCountries.has(alpha2);
+                const restingFill = !hasData ? noDataColor : (selectedGeography === geo ? pressedColor : defaultColor);
 
                 return (
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
                     onMouseOver={() => mapModeImport ? getImportTooltipData(alpha2) : getExportTooltipData(alpha2)}
-                    onMouseLeave={handleCountryLeave}
+                    onMouseLeave={(event) => handleCountryLeave(event, restingFill)}
                     onClick={(event) => handleCountryClick(event, alpha2, geo)}
                     onMouseMove={handleMouseMoveOnGeo}
                     style={{
                       default: {
-                        fill: selectedGeography === geo ? pressedColor : defaultColor,
+                        fill: restingFill,
                         stroke: '#607D8B',
                         strokeLinecap: 'round',
                         strokeLinejoin: 'round',
@@ -252,7 +293,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
                         cursor: 'pointer',
                       },
                       hover: {
-                        fill: hoverColor,
+                        fill: hasData ? hoverColor : noDataHoverColor,
                         stroke: '#607D8B',
                         strokeLinejoin: 'round',
                         strokeWidth: 0.30,
@@ -260,7 +301,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
                         cursor: 'pointer',
                       },
                       pressed: {
-                        fill: pressedColor,
+                        fill: hasData ? pressedColor : noDataPressedColor,
                         stroke: '#FFFFFF',
                         strokeLinejoin: 'round',
                         strokeWidth: 0.85,
