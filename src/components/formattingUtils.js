@@ -1,15 +1,30 @@
-  // Color coding for democracy index. Thresholds approximate the EIU
-  // Democracy Index's own four regime categories (full/flawed/hybrid/
-  // authoritarian: officially 8.01/6.01/4.01), rounded here to 9.0/7.0/4.0.
+  // Color coding for democracy index (EIU scale, 0-10). Reuses the same
+  // 5 official GPI peace-index colors (see getPeaceColor below) as every
+  // other integer step, best (10) to worst (0), with the 4 in-between
+  // steps interpolated as the midpoint RGB of their neighbors, plus one
+  // final step (0-1) that's the midpoint between the worst peace color
+  // and black - a dark red beyond anything the peace palette itself has.
   const getDemocracyColor = (value) => {
     if (value >= 9.0) {
-      return '#008000'
+      return '#048581' // GPI "very high" - reused as-is
+    } else if (value >= 8.0) {
+      return '#2CA396' // midpoint of the two neighboring steps
     } else if (value >= 7.0) {
-      return '#98fb98'
+      return '#53C1AB' // GPI "high" - reused as-is
+    } else if (value >= 6.0) {
+      return '#A6D29A'
+    } else if (value >= 5.0) {
+      return '#FAE389' // GPI "medium" - reused as-is
     } else if (value >= 4.0) {
-      return '#ffae42'
+      return '#F6AA6E'
+    } else if (value >= 3.0) {
+      return '#F37053' // GPI "low" - reused as-is
+    } else if (value >= 2.0) {
+      return '#F0463C'
+    } else if (value >= 1.0) {
+      return '#ED1D24' // GPI "very low" - reused as-is
     } else if (value >= 0.0) {
-      return '#8b0000'
+      return '#760E12' // midpoint of '#ED1D24' and black
     } else {
       return '#383838'
     }
