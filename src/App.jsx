@@ -64,8 +64,15 @@ function App() { // API vars from env
     // Needs to be tracked here for updating activeCountryData on year change
     const [activeCountryAlpha2, setActiveCountryAlpha2] = useState('')
 
+    // Tracks whether a country-data fetch is in flight, and the error message
+    // if the last one failed - surfaced to the user instead of only logging.
+    const [isCountryDataLoading, setIsCountryDataLoading] = useState(false);
+    const [countryDataError, setCountryDataError] = useState(null);
+
     // Fetches data for country currently hovered over
     const updateActiveCountry = useCallback(async (alpha2) => {
+        setIsCountryDataLoading(true);
+        setCountryDataError(null);
         try {
 
             setActiveCountryAlpha2(alpha2)
@@ -119,6 +126,9 @@ function App() { // API vars from env
 
         } catch (error) {
             console.error('Error fetching country data:', error);
+            setCountryDataError('Could not load data for this country. Please try again.');
+        } finally {
+            setIsCountryDataLoading(false);
         }
     }, [API_HOST, API_PORT, year, settings])
 
@@ -180,7 +190,10 @@ function App() { // API vars from env
             }>(Click on Country for more Details)</div> : ''
             }
 
-            
+            {isCountryDataLoading ? <div className="country-data-status">Loading country data…</div> : ''}
+            {countryDataError ? <div className="country-data-status country-data-status--error">{countryDataError}</div> : ''}
+
+
 
             <WorldMap mapModeImport={mapModeImport}
                 className='map'
