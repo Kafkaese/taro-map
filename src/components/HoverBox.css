@@ -7,6 +7,10 @@
   flex-direction: column;
   align-items: center;
   border-radius: 8px;
+  /* Purely informational and follows the cursor closely - without this, a
+     fast mouse movement can land the cursor on top of the tooltip itself,
+     which then intercepts hover/click events meant for the map underneath. */
+  pointer-events: none;
 }
 
 .hover-box-container h3 {
