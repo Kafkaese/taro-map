@@ -74,8 +74,14 @@ test('hovering a country in export mode requests the export endpoints for that c
   fireEvent.mouseOver(screen.getByTestId('geography'));
   await waitFor(() => expect(fetchMock).toHaveBeenCalled());
   const urls = fetchMock.mock.calls.map((call) => call[0]);
-  expect(urls.some((u) => u.startsWith('https://api.example.com:443/arms/exports/total?country_code=DE&year=2020'))).toBe(true);
-  expect(urls.some((u) => u.startsWith('https://api.example.com:443/merchandise/exports/total?country_code=DE&year=2020'))).toBe(true);
+  // Regression test for a bug where this path sent settings.currency (the
+  // whole {value, label, symbol} object) instead of settings.currency.value.
+  expect(
+    urls.some((u) => u.includes('/arms/exports/total?country_code=DE&year=2020&currency=USD'))
+  ).toBe(true);
+  expect(
+    urls.some((u) => u.includes('/merchandise/exports/total?country_code=DE&year=2020&currency=USD'))
+  ).toBe(true);
 });
 
 test('clicking a country calls updateActiveCountry with its country code', () => {

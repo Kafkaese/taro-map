@@ -120,8 +120,8 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
     try {
       const fetchPromises = [
         fetch(`https://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
-        fetch(`https://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency}`),
-        fetch(`https://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency}`)
+        fetch(`https://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`),
+        fetch(`https://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`)
       ];
   
       const responses = await Promise.all(fetchPromises);

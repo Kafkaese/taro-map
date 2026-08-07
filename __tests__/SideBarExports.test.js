@@ -37,6 +37,22 @@ test('clicking the collapse button toggles the sidebar', () => {
   expect(onCollapse).toHaveBeenCalledWith(true);
 });
 
+test('collapsing the sidebar actually shrinks the money and circle wrappers', () => {
+  // Regression test for a typo (`widht` instead of `width`) that silently
+  // dropped this style, leaving the wrappers full-width while collapsed.
+  const { container } = render(
+    <SideBarExports
+      countryData={buildCountryData()}
+      collapsed={true}
+      onCollapse={() => {}}
+      year={2020}
+      settings={defaultSettings}
+    />
+  );
+  expect(container.querySelector('.money-wrapper')).toHaveStyle({ width: '0px' });
+  expect(container.querySelector('.circle-wrapper')).toHaveStyle({ width: '0px' });
+});
+
 test('shows "No data available" when there are no export destinations', () => {
   const countryData = buildCountryData({ exportSources: { value: 'no data' } });
   render(

@@ -3,11 +3,8 @@ name: Test frontend
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-  push:
-    branches: [main]
   workflow_dispatch: {}
-  workflow_call: {}   # lets deploy-frontend.yaml call this as a job, gating the deploy on it
-
+  workflow_call: {}   
 
 jobs:
   test:
