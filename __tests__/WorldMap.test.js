@@ -21,9 +21,10 @@ jest.mock('react-simple-maps', () => {
         {children}
       </div>
     ),
-    ZoomableGroup: ({ children, zoom, onMoveEnd }) => (
+    ZoomableGroup: ({ children, zoom, onMoveEnd, translateExtent }) => (
       <div>
         <div data-testid="zoom-level">{zoom}</div>
+        <div data-testid="translate-extent">{JSON.stringify(translateExtent)}</div>
         <button
           data-testid="move-end"
           onClick={(event) => {
@@ -112,6 +113,63 @@ test('clicking a country calls onCountrySelect with its country code', () => {
   expect(onCountrySelect).toHaveBeenCalledWith('DE');
 });
 
+test('a country missing from the availability list is greyed out', async () => {
+  mockFetchJson((url) => {
+    if (url.includes('/arms/imports/available')) return []; // DE has no data
+    return { value: 'x' };
+  });
+  renderMap();
+  await waitFor(() =>
+    expect(screen.getByTestId('geography')).toHaveStyle({ fill: '#4B5563' })
+  );
+});
+
+test('a country present in the availability list keeps the normal color', async () => {
+  mockFetchJson((url) => {
+    if (url.includes('/arms/imports/available')) return ['DE'];
+    return { value: 'x' };
+  });
+  renderMap();
+  await waitFor(() =>
+    expect(screen.getByTestId('geography')).toHaveStyle({ fill: '#84B098' })
+  );
+});
+
+test('a greyed-out (no-data) country is still selectable and shows its hover tooltip', async () => {
+  mockFetchJson((url) => {
+    if (url.includes('/arms/imports/available')) return []; // DE has no data
+    if (url.includes('/metadata/name/short')) return { value: 'Germany' };
+    if (url.includes('/metadata/democracy_index')) return { value: 8.67 };
+    if (url.includes('/arms/imports/total')) return { value: 0 };
+    if (url.includes('/metadata/peace_index')) return { value: 1.5 };
+    return {};
+  });
+  const onCountrySelect = jest.fn();
+  renderMap({ onCountrySelect });
+
+  await waitFor(() =>
+    expect(screen.getByTestId('geography')).toHaveStyle({ fill: '#4B5563' })
+  );
+
+  fireEvent.mouseOver(screen.getByTestId('geography'));
+  expect(await screen.findByText('Germany')).toBeInTheDocument();
+
+  fireEvent.click(screen.getByTestId('geography'));
+  expect(onCountrySelect).toHaveBeenCalledWith('DE');
+});
+
+test('export mode fetches export availability instead of import', async () => {
+  const fetchMock = mockFetchJson((url) => {
+    if (url.includes('/arms/exports/available')) return ['DE'];
+    return { value: 'x' };
+  });
+  renderMap({ mapModeImport: false });
+  await waitFor(() => {
+    const urls = fetchMock.mock.calls.map((call) => call[0]);
+    expect(urls.some((u) => u.includes('/arms/exports/available?year=2020'))).toBe(true);
+  });
+});
+
 test('onMapClick fires for both a country click and a background click', () => {
   mockFetchJson(() => ({ value: 'x' }));
   const onMapClick = jest.fn();
@@ -164,6 +222,15 @@ test('clicking a country does not also trigger the background-click collapse', (
   expect(document.querySelector('.panel')).not.toHaveStyle({ width: '0%' });
 });
 
+test('the map cannot be dragged infinitely off the west/east edge', () => {
+  // Regression test: translateExtent's X bound used to be [-Infinity,
+  // Infinity], so there was no limit at all on how far you could drag west.
+  renderMap();
+  const extentText = screen.getByTestId('translate-extent').textContent;
+  expect(extentText).not.toContain('null'); // Infinity serializes to null via JSON.stringify
+  expect(JSON.parse(extentText)).toEqual([[-100, -100], [900, 600]]);
+});
+
 test('the map background has a grab cursor, and countries have a pointer cursor', () => {
   renderMap();
   expect(screen.getByTestId('composable-map')).toHaveStyle({ cursor: 'grab' });
@@ -196,7 +263,10 @@ test('the tooltip follows the current mouse position immediately, not one event 
 test('hovering again aborts the previous hover fetch instead of letting it resolve later and overwrite the current one', async () => {
   const signals = [];
   global.fetch = jest.fn((url, options = {}) => {
-    if (options.signal) signals.push(options.signal);
+    // Excludes the data-availability bulk fetch (WorldMap.test.js's own
+    // separate tests cover that one) - it also fires on mount and would
+    // otherwise land at signals[0], shifting the tooltip fetch signal out.
+    if (options.signal && !url.includes('/available')) signals.push(options.signal);
     return new Promise(() => {}); // never resolves - only the abort behavior is under test
   });
 
@@ -215,7 +285,7 @@ test('hovering again aborts the previous hover fetch instead of letting it resol
 test('leaving a country aborts its in-flight tooltip fetch', async () => {
   const signals = [];
   global.fetch = jest.fn((url, options = {}) => {
-    if (options.signal) signals.push(options.signal);
+    if (options.signal && !url.includes('/available')) signals.push(options.signal);
     return new Promise(() => {});
   });
 
