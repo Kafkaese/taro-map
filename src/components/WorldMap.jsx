@@ -216,7 +216,18 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
         onMouseMove={handleMouseMove}
         onClick={handleMapBackgroundClick}
       >
-        <ZoomableGroup onMoveEnd={handleMoveEnd} zoom={position.zoom} center={position.coordinates} translateExtent={[[-Infinity, -100], [Infinity, 600]]}> {/* [?,maxup,?, maxdown]*/}
+        {/* Bounds how far the map can be dragged, in ComposableMap's internal
+            800x600 coordinate space (its default viewBox size - unrelated to
+            the CSS-rendered size set via style above). Y already had a real
+            bound (-100 to 600, i.e. the map height plus a bit of slack at the
+            top); X previously had none at all ([-Infinity, Infinity]), which
+            is what let you drag infinitely west into empty space - bounded
+            here the same way, roughly the map width (800) plus matching
+            slack on each side. True east-west wrapping isn't realistic with
+            react-simple-maps (it renders one static SVG projection of the
+            whole world, not repeating map tiles the way Leaflet/Google Maps
+            do), so this just stops the drag at a sane edge instead. */}
+        <ZoomableGroup onMoveEnd={handleMoveEnd} zoom={position.zoom} center={position.coordinates} translateExtent={[[-100, -100], [900, 600]]}>
           <Geographies geography="/world-new.json">
             {({ geographies }) =>
               geographies.map((geo) => {

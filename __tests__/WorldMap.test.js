@@ -21,9 +21,10 @@ jest.mock('react-simple-maps', () => {
         {children}
       </div>
     ),
-    ZoomableGroup: ({ children, zoom, onMoveEnd }) => (
+    ZoomableGroup: ({ children, zoom, onMoveEnd, translateExtent }) => (
       <div>
         <div data-testid="zoom-level">{zoom}</div>
+        <div data-testid="translate-extent">{JSON.stringify(translateExtent)}</div>
         <button
           data-testid="move-end"
           onClick={(event) => {
@@ -162,6 +163,15 @@ test('clicking a country does not also trigger the background-click collapse', (
   fireEvent.click(screen.getByTestId('geography'));
 
   expect(document.querySelector('.panel')).not.toHaveStyle({ width: '0%' });
+});
+
+test('the map cannot be dragged infinitely off the west/east edge', () => {
+  // Regression test: translateExtent's X bound used to be [-Infinity,
+  // Infinity], so there was no limit at all on how far you could drag west.
+  renderMap();
+  const extentText = screen.getByTestId('translate-extent').textContent;
+  expect(extentText).not.toContain('null'); // Infinity serializes to null via JSON.stringify
+  expect(JSON.parse(extentText)).toEqual([[-100, -100], [900, 600]]);
 });
 
 test('the map background has a grab cursor, and countries have a pointer cursor', () => {
