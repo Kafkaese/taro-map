@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import WorldMap from './components/WorldMap';
 import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
@@ -72,6 +72,11 @@ function App() {
     const [isCountryDataLoading, setIsCountryDataLoading] = useState(false);
     const [countryDataError, setCountryDataError] = useState(null);
 
+    // Tracks the in-flight request so a new selection can cancel a slower,
+    // now-stale one instead of letting it resolve later and overwrite
+    // newer data.
+    const countryDataAbortControllerRef = useRef(null);
+
     // Fetches data for the given country. Only called from the effect below,
     // which re-runs whenever the selected country or the year/settings
     // change - callers elsewhere should just call setActiveCountryAlpha2 to
@@ -79,6 +84,11 @@ function App() {
     // bug this replaced: calling this directly *and* relying on the effect
     // fired the whole fetch batch twice per click).
     const fetchCountryData = useCallback(async (alpha2) => {
+        countryDataAbortControllerRef.current?.abort();
+        const controller = new AbortController();
+        countryDataAbortControllerRef.current = controller;
+        const { signal } = controller;
+
         setIsCountryDataLoading(true);
         setCountryDataError(null);
         try {
@@ -96,16 +106,16 @@ function App() {
                 exportTimeSeriesData,
                 merchExportData
             ] = await Promise.all([
-                fetchCountryName(alpha2),
-                fetchDemocracyIndex(alpha2, year),
-                fetchTotalImports(alpha2, year, currency),
-                fetchPeaceIndex(alpha2, year),
-                fetchImportSources(alpha2, year, currency),
-                fetchImportTimeSeries(alpha2, currency),
-                fetchTotalExports(alpha2, year, currency),
-                fetchExportSources(alpha2, year, currency),
-                fetchExportTimeSeries(alpha2, currency),
-                fetchMerchandiseExports(alpha2, year, currency)
+                fetchCountryName(alpha2, signal),
+                fetchDemocracyIndex(alpha2, year, signal),
+                fetchTotalImports(alpha2, year, currency, signal),
+                fetchPeaceIndex(alpha2, year, signal),
+                fetchImportSources(alpha2, year, currency, undefined, signal),
+                fetchImportTimeSeries(alpha2, currency, signal),
+                fetchTotalExports(alpha2, year, currency, signal),
+                fetchExportSources(alpha2, year, currency, undefined, signal),
+                fetchExportTimeSeries(alpha2, currency, signal),
+                fetchMerchandiseExports(alpha2, year, currency, signal)
             ]);
 
             // update object with new data
@@ -124,10 +134,16 @@ function App() {
 
 
         } catch (error) {
+            if (error.name === 'AbortError') return; // superseded by a newer selection, not a real failure
             console.error('Error fetching country data:', error);
             setCountryDataError('Could not load data for this country. Please try again.');
         } finally {
-            setIsCountryDataLoading(false);
+            // Only the still-current request should touch loading state -
+            // otherwise a superseded request's finally could clear it while
+            // the newer request is still legitimately in flight.
+            if (countryDataAbortControllerRef.current === controller) {
+                setIsCountryDataLoading(false);
+            }
         }
     }, [year, settings])
 

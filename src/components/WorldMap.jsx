@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simple-maps';
 import MapTooltipImports from './MapTooltipImports';
 import MapTooltipExports from './MapTooltipExports';
@@ -54,6 +54,11 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
   const [hoveredCountry, setHoveredCountry] = useState(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
+  // Tracks the in-flight tooltip request so hovering a new country (or
+  // leaving one) can cancel a slower, now-stale one instead of letting it
+  // resolve later and overwrite the current tooltip.
+  const tooltipAbortControllerRef = useRef(null);
+
 
   // Track mouse over the map background. handleMouseMoveOnGeo (below) calls
   // stopPropagation while hovering a Geography, so this only ever fires
@@ -89,14 +94,19 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
   // Get data for the tooltip if map mode is import
   const getImportTooltipData = async (alpha2) => {
 
+    tooltipAbortControllerRef.current?.abort();
+    const controller = new AbortController();
+    tooltipAbortControllerRef.current = controller;
+    const { signal } = controller;
+
     try {
       const currency = settings.currency.value;
 
       const [countryName, democracyIndex, totalArmsImports, peaceIndex] = await Promise.all([
-        fetchCountryName(alpha2),
-        fetchDemocracyIndex(alpha2, year),
-        fetchTotalImports(alpha2, year, currency),
-        fetchPeaceIndex(alpha2, year)
+        fetchCountryName(alpha2, signal),
+        fetchDemocracyIndex(alpha2, year, signal),
+        fetchTotalImports(alpha2, year, currency, signal),
+        fetchPeaceIndex(alpha2, year, signal)
       ]);
 
       const data = {
@@ -109,20 +119,26 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
       setHoveredCountry({...data, position: mousePosition});
 
     } catch (error) {
+      if (error.name === 'AbortError') return; // superseded by a newer hover, not a real failure
       console.error('Error fetching country data:', error);
     }
-  } 
+  }
 
   // Get data for tooltuip if map mode export
   const getExportTooltipData = async (alpha2) => {
+
+    tooltipAbortControllerRef.current?.abort();
+    const controller = new AbortController();
+    tooltipAbortControllerRef.current = controller;
+    const { signal } = controller;
 
     try {
       const currency = settings.currency.value;
 
       const [countryName, totalArmsExports, totalMerchExports] = await Promise.all([
-        fetchCountryName(alpha2),
-        fetchTotalExports(alpha2, year, currency),
-        fetchMerchandiseExports(alpha2, year, currency)
+        fetchCountryName(alpha2, signal),
+        fetchTotalExports(alpha2, year, currency, signal),
+        fetchMerchandiseExports(alpha2, year, currency, signal)
       ]);
 
       const data = {
@@ -134,6 +150,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
       setHoveredCountry({...data, position: mousePosition});
 
     } catch (error) {
+      if (error.name === 'AbortError') return; // superseded by a newer hover, not a real failure
       console.error('Error fetching country data:', error);
       throw error; // Rethrow the error to indicate that an error occurred
     }
@@ -142,6 +159,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, sett
 
   // Remove hover tool when leaving geometry
   const handleCountryLeave = (event) => {
+    tooltipAbortControllerRef.current?.abort();
     setHoveredCountry(null)
     event.target.setAttribute('fill', defaultColor);
   };
