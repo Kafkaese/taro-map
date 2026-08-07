@@ -21,8 +21,8 @@ const MapTooltipExports = (hoveredCountry, settings) => {
                     
                     <div className="circle-container">
                     
-                    <div className="money-wrapper">
-                        <div className="money" style={{ backgroundColor: getUSDColor(hoveredCountry.totalArmsExports.value) }}>
+                    <div className="money-wrapper" style={{ '--stat-color': getUSDColor(hoveredCountry.totalArmsExports.value) }}>
+                        <div className="money">
                             {formatUSDvalue(hoveredCountry.totalArmsExports.value)}
                         </div>
                         <div className='annotate'><div className='text'>{formatUSDorder(hoveredCountry.totalArmsExports.value) && `${formatUSDorder(hoveredCountry.totalArmsExports.value)} ${settings.currency.symbol}`}</div></div>

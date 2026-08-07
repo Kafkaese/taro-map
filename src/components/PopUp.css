@@ -1,12 +1,14 @@
 .popup-container {
-    background-color: #101827;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    background-color: var(--deck-card, #131b2b);
+    border: none;
+    box-shadow: var(--deck-shadow, 0 10px 24px -8px rgba(0, 0, 0, 0.5));
+    border-radius: 14px;
     height: 500px;
     position: absolute;
     top: 50%;
     left: 50%;
     margin: -250px 0 0 -250px;
+    font-family: var(--deck-font, -apple-system, sans-serif);
     /* Higher than the sidebar panel (z-index: 1) and settings (z-index: 2),
        so Impressum/Data Sources/mobile-warning popups always render above
        them regardless of DOM order. */
