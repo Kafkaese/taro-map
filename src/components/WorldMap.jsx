@@ -3,6 +3,14 @@ import { ComposableMap, Geographies, Geography, ZoomableGroup } from 'react-simp
 import MapTooltipImports from './MapTooltipImports';
 import MapTooltipExports from './MapTooltipExports';
 import SideBar from './SideBar';
+import {
+  fetchCountryName,
+  fetchDemocracyIndex,
+  fetchPeaceIndex,
+  fetchTotalImports,
+  fetchTotalExports,
+  fetchMerchandiseExports
+} from '../api';
 
 import './HoverBox.css';
 
@@ -10,16 +18,14 @@ import './HoverBox.css';
 /**
  * Renders world map with tooltip and a conditional, collapsible sidebar with more detailed information.
  * Zoom level and year are controlled by parent component.
- * 
+ *
  * @param {boolean} mapModeImport State of the map. If true: show imports, if false show exports.
  * @param {integer} year Year currently selected. Chnages data that is displayed in tooltip and sidebar.
- * @param {object} activeCountryData Data about the currently hovered over country on the Map. 
+ * @param {object} activeCountryData Data about the currently hovered over country on the Map.
  * @param {object} settings Global app settings, including currency to be displayed and language (language settings currently not used).
- * @param {string} API_HOST Host (IP or Domain) of the API.
- * @param {string} API_PORT Port the API is listening on.
  *
  */
-const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, settings, API_HOST, API_PORT}) => {
+const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, settings}) => {
 
   // geometry colors
   const defaultColor = '#84B098';
@@ -83,23 +89,15 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
   const getImportTooltipData = async (alpha2) => {
 
     try {
-      const fetchPromises = [
-        fetch(`https://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
-        fetch(`https://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`),
-        fetch(`https://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`),
-        fetch(`https://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`)
-      ];
-  
-      const responses = await Promise.all(fetchPromises);
-      
-      if (responses.some(response => !response.ok)) {
-        throw new Error('One or more fetch requests failed');
-      }
-  
-      const [countryName, democracyIndex, totalArmsImports, peaceIndex] = await Promise.all(
-        responses.map(response => response.json())
-      );
-  
+      const currency = settings.currency.value;
+
+      const [countryName, democracyIndex, totalArmsImports, peaceIndex] = await Promise.all([
+        fetchCountryName(alpha2),
+        fetchDemocracyIndex(alpha2, year),
+        fetchTotalImports(alpha2, year, currency),
+        fetchPeaceIndex(alpha2, year)
+      ]);
+
       const data = {
         countryName,
         democracyIndex,
@@ -118,22 +116,14 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
   const getExportTooltipData = async (alpha2) => {
 
     try {
-      const fetchPromises = [
-        fetch(`https://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
-        fetch(`https://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`),
-        fetch(`https://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`)
-      ];
-  
-      const responses = await Promise.all(fetchPromises);
-      
-      if (responses.some(response => !response.ok)) {
-        throw new Error('One or more fetch requests failed');
-      }
-  
-      const [countryName, totalArmsExports, totalMerchExports] = await Promise.all(
-        responses.map(response => response.json())
-      );
-  
+      const currency = settings.currency.value;
+
+      const [countryName, totalArmsExports, totalMerchExports] = await Promise.all([
+        fetchCountryName(alpha2),
+        fetchTotalExports(alpha2, year, currency),
+        fetchMerchandiseExports(alpha2, year, currency)
+      ]);
+
       const data = {
         countryName,
         totalArmsExports,
