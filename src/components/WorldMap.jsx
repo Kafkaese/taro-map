@@ -44,9 +44,9 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
   // clearly distinct grey without looking like a bright off-white/bone
   // (too pale) or dominating the map with a heavy dark grey (too strong).
   // Same lightest->darkest progression as the green states above.
-  const noDataColor = '#9CA3AF';
-  const noDataHoverColor = '#6B7280';
-  const noDataPressedColor = '#4B5563';
+  const noDataColor = '#8B95A1';
+  const noDataHoverColor = '#5B6675';
+  const noDataPressedColor = '#3D4652';
 
   // Bulk set of country codes that have any data for the current year/mode,
   // used to grey out the rest. null means "not yet loaded" - deliberately
