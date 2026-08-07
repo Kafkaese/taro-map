@@ -22,7 +22,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  # Built once here, then the exact same artifact is promoted through
+  # dev and prod below rather than rebuilding for each - dev and prod
+  # currently point at the same API host, so there's nothing that would
+  # differ between the two builds anyway.
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,6 +55,48 @@ jobs:
           cp env.sh build/env.sh
           cd build && bash env.sh && rm env.sh .env
 
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: build/
+
+  deploy-dev:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build/
+
+      - uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ vars.GCP_SERVICE_ACCOUNT_EMAIL }}
+
+      - uses: google-github-actions/setup-gcloud@v2
+
+      - name: Sync to GCS (dev)
+        run: |
+          gcloud storage rsync build/ gs://${{ vars.GCP_DEV_FRONTEND_BUCKET }} \
+            --recursive \
+            --delete-unmatched-destination-objects
+
+  # Only runs once deploy-dev succeeds, and pauses for manual approval in
+  # the Actions UI before it does - the "production" environment has a
+  # required-reviewer protection rule configured in the repo settings
+  # (not something expressible in this YAML file itself), which is what
+  # actually creates the gate.
+  deploy-prod:
+    needs: deploy-dev
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: build
+          path: build/
+
       - uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
@@ -61,7 +107,7 @@ jobs:
       # --delete-unmatched-destination-objects removes objects in the
       # bucket that no longer exist in this build (e.g. old content-hashed
       # JS/CSS chunk filenames) - without it they'd accumulate forever.
-      - name: Sync to GCS
+      - name: Sync to GCS (prod)
         run: |
           gcloud storage rsync build/ gs://${{ vars.GCP_FRONTEND_BUCKET }} \
             --recursive \
