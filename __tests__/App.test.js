@@ -9,11 +9,28 @@ import App from '../src/App';
 // map geometry to render; here we only care about App's own state wiring,
 // so replace it with a stub that echoes the props it was given, plus a
 // button to trigger onCountrySelect the same way a real country click would.
+// A real country click fires both onCountrySelect and onMapClick (see
+// WorldMap.jsx's handleCountryClick) - the mock buttons below replicate
+// that pairing so App-level tests see the same composition production does.
 jest.mock('../src/components/WorldMap', () => (props) => (
   <div data-testid="world-map">
     {JSON.stringify({ mapModeImport: props.mapModeImport, year: props.year })}
-    <button onClick={() => props.onCountrySelect('DE')}>select-country</button>
-    <button onClick={() => props.onCountrySelect('FR')}>select-other-country</button>
+    <button
+      onClick={() => {
+        props.onCountrySelect('DE');
+        props.onMapClick();
+      }}
+    >
+      select-country
+    </button>
+    <button
+      onClick={() => {
+        props.onCountrySelect('FR');
+        props.onMapClick();
+      }}
+    >
+      select-other-country
+    </button>
     <button onClick={() => props.onMapClick()}>click-map-background</button>
   </div>
 ));
