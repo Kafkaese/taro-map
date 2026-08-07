@@ -39,8 +39,6 @@ const renderMap = (overrides = {}) =>
       activeCountryData={{}}
       updateActiveCountry={() => {}}
       settings={defaultSettings}
-      API_HOST="api.example.com"
-      API_PORT="443"
       {...overrides}
     />
   );

@@ -4,24 +4,27 @@ import YearSlider from './components/YearSlider';
 import ToggleButton from './components/ToggleButton';
 import Settings from './components/Settings';
 import PopUp from './components/PopUp'
-    
+import {
+    fetchCountryName,
+    fetchDemocracyIndex,
+    fetchPeaceIndex,
+    fetchTotalImports,
+    fetchImportSources,
+    fetchImportTimeSeries,
+    fetchTotalExports,
+    fetchExportSources,
+    fetchExportTimeSeries,
+    fetchMerchandiseExports
+} from './api'
+
 import './App.css'
 
 /**
  * Main Application component. Renderd Header, Footer and Worldmap, plus contionally popups for Impressum, Data Sources and warning for mobile users.
- * 
- * 
+ *
+ *
  */
-function App() { // API vars from env
-
-    // Grab API varibles:
-    // from env_config.js  if production/staging/testing
-    // from process env    if development  
-    
-    const API_HOST = (window._env_ === undefined) ? process.env.REACT_APP_API_HOST : window._env_.REACT_APP_API_HOST
-    const API_PORT = (window._env_ === undefined) ? process.env.REACT_APP_API_PORT : window._env_.REACT_APP_API_PORT
-
-    
+function App() {
 
     // Check for mobile device to display warning message
     const isMobile = ('ontouchstart' in document.documentElement && navigator.userAgent.match(/Mobi/));
@@ -77,24 +80,7 @@ function App() { // API vars from env
 
             setActiveCountryAlpha2(alpha2)
 
-            const fetchPromises = [
-                fetch(`https://${API_HOST}:${API_PORT}/metadata/name/short?country_code=${alpha2}`),
-                fetch(`https://${API_HOST}:${API_PORT}/metadata/democracy_index?country_code=${alpha2}&year=${year}`),
-                fetch(`https://${API_HOST}:${API_PORT}/arms/imports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`),
-                fetch(`https://${API_HOST}:${API_PORT}/metadata/peace_index?country_code=${alpha2}&year=${year}`),
-                fetch(`https://${API_HOST}:${API_PORT}/arms/imports/by_country?country_code=${alpha2}&year=${year}&limit=${20}&currency=${settings.currency.value}`),
-                fetch(`https://${API_HOST}:${API_PORT}/arms/imports/timeseries?country_code=${alpha2}&currency=${settings.currency.value}`),
-                fetch(`https://${API_HOST}:${API_PORT}/arms/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`),
-                fetch(`https://${API_HOST}:${API_PORT}/arms/exports/by_country?country_code=${alpha2}&year=${year}&limit=${5}&currency=${settings.currency.value}`),
-                fetch(`https://${API_HOST}:${API_PORT}/arms/exports/timeseries?country_code=${alpha2}&currency=${settings.currency.value}`),
-                fetch(`https://${API_HOST}:${API_PORT}/merchandise/exports/total?country_code=${alpha2}&year=${year}&currency=${settings.currency.value}`)
-            ];
-
-            const responses = await Promise.all(fetchPromises);
-
-            if (responses.some(response => !response.ok)) {
-                throw new Error('One or more fetch requests failed');
-            }
+            const currency = settings.currency.value;
 
             const [
                 nameData,
@@ -107,7 +93,18 @@ function App() { // API vars from env
                 exportSourcesData,
                 exportTimeSeriesData,
                 merchExportData
-            ] = await Promise.all(responses.map(response => response.json()));
+            ] = await Promise.all([
+                fetchCountryName(alpha2),
+                fetchDemocracyIndex(alpha2, year),
+                fetchTotalImports(alpha2, year, currency),
+                fetchPeaceIndex(alpha2, year),
+                fetchImportSources(alpha2, year, currency),
+                fetchImportTimeSeries(alpha2, currency),
+                fetchTotalExports(alpha2, year, currency),
+                fetchExportSources(alpha2, year, currency),
+                fetchExportTimeSeries(alpha2, currency),
+                fetchMerchandiseExports(alpha2, year, currency)
+            ]);
 
             // update object with new data
             setActiveCountryData({
@@ -130,7 +127,7 @@ function App() { // API vars from env
         } finally {
             setIsCountryDataLoading(false);
         }
-    }, [API_HOST, API_PORT, year, settings])
+    }, [year, settings])
 
     // Effect to update country on year change only once the state has actually been updated
     useEffect(() => {
@@ -201,8 +198,6 @@ function App() { // API vars from env
                 activeCountryData={activeCountryData}
                 updateActiveCountry={updateActiveCountry}
                 settings={settings}
-                API_HOST={API_HOST}
-                API_PORT={API_PORT}
                 />
 
             {isMobile && showMobilePopUp === 'true' ? <PopUp content='mobile' setShowPopUp={setShowMobilePopUp}></PopUp> : ''}
