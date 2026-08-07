@@ -22,10 +22,11 @@ import './HoverBox.css';
  * @param {boolean} mapModeImport State of the map. If true: show imports, if false show exports.
  * @param {integer} year Year currently selected. Chnages data that is displayed in tooltip and sidebar.
  * @param {object} activeCountryData Data about the currently hovered over country on the Map.
+ * @param {function} onCountrySelect Called with a country's alpha-2 code when it's clicked. The parent is responsible for fetching its data.
  * @param {object} settings Global app settings, including currency to be displayed and language (language settings currently not used).
  *
  */
-const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, settings}) => {
+const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, settings}) => {
 
   // geometry colors
   const defaultColor = '#84B098';
@@ -54,32 +55,32 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
 
-  // Track mouse and let tooltip follow
+  // Track mouse over the map background. handleMouseMoveOnGeo (below) calls
+  // stopPropagation while hovering a Geography, so this only ever fires
+  // when the mouse is over open ocean/background - i.e. whenever it does
+  // fire, no tooltip should be showing.
   const handleMouseMove = (event) => {
 
     const { clientX, clientY } = event;
 
     setMousePosition({ x: clientX, y: clientY });
 
-    if (hoveredCountry) {
-      setHoveredCountry({...hoveredCountry, position: mousePosition})
-    }
-
     // Ensures tooltip disappears as soon as Geography is left
     setHoveredCountry(null)
   };
 
-  // Track mouse over Geography
+  // Track mouse over Geography, keeping the tooltip glued to the cursor.
   const handleMouseMoveOnGeo = (event) => {
 
     event.stopPropagation()
 
     const { clientX, clientY } = event;
+    const position = { x: clientX, y: clientY };
 
-    setMousePosition({ x: clientX, y: clientY });
+    setMousePosition(position);
 
     if (hoveredCountry) {
-      setHoveredCountry({...hoveredCountry, position: mousePosition})
+      setHoveredCountry({...hoveredCountry, position})
     }
 
   };
@@ -155,8 +156,8 @@ const WorldMap = ({mapModeImport, year, activeCountryData, updateActiveCountry, 
     // Set active Geography
     setSelectedGeography(geo);
 
-    // Call update function on parent
-    updateActiveCountry(alpha2);
+    // Notify parent, which fetches this country's data
+    onCountrySelect(alpha2);
 
     // uncollpase sidebar if new country is selected
     setCollapsed(false)

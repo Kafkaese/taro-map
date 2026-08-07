@@ -72,14 +72,16 @@ function App() {
     const [isCountryDataLoading, setIsCountryDataLoading] = useState(false);
     const [countryDataError, setCountryDataError] = useState(null);
 
-    // Fetches data for country currently hovered over
-    const updateActiveCountry = useCallback(async (alpha2) => {
+    // Fetches data for the given country. Only called from the effect below,
+    // which re-runs whenever the selected country or the year/settings
+    // change - callers elsewhere should just call setActiveCountryAlpha2 to
+    // select a country, not fetch data directly (see the double-invocation
+    // bug this replaced: calling this directly *and* relying on the effect
+    // fired the whole fetch batch twice per click).
+    const fetchCountryData = useCallback(async (alpha2) => {
         setIsCountryDataLoading(true);
         setCountryDataError(null);
         try {
-
-            setActiveCountryAlpha2(alpha2)
-
             const currency = settings.currency.value;
 
             const [
@@ -129,11 +131,13 @@ function App() {
         }
     }, [year, settings])
 
-    // Effect to update country on year change only once the state has actually been updated
+    // Fetches data whenever the selected country changes, or when
+    // fetchCountryData itself changes identity (i.e. year or settings
+    // changed) - the sole trigger for country-data fetches.
     useEffect(() => {
         if (activeCountryAlpha2 === '') return;
-        updateActiveCountry(activeCountryAlpha2)
-    }, [year, activeCountryAlpha2, updateActiveCountry])
+        fetchCountryData(activeCountryAlpha2)
+    }, [activeCountryAlpha2, fetchCountryData])
 
     
     // Render
@@ -197,7 +201,7 @@ function App() {
                 className='map'
                 year={year}
                 activeCountryData={activeCountryData}
-                updateActiveCountry={updateActiveCountry}
+                onCountrySelect={setActiveCountryAlpha2}
                 settings={settings}
                 />
 
