@@ -92,6 +92,44 @@ test('updateActiveCountry issues all of its fetches concurrently rather than one
   });
 });
 
+test('shows a loading indicator while country data is being fetched, then hides it', async () => {
+  const pending = [];
+  global.fetch = jest.fn(
+    () =>
+      new Promise((resolve) => {
+        pending.push(() => resolve({ ok: true, json: () => Promise.resolve({}) }));
+      })
+  );
+
+  render(<App />);
+  fireEvent.click(screen.getByText('select-country'));
+
+  expect(await screen.findByText('Loading country data…')).toBeInTheDocument();
+
+  await waitFor(() => expect(pending.length).toBeGreaterThanOrEqual(10));
+  await act(async () => {
+    pending.forEach((resolve) => resolve());
+  });
+
+  await waitFor(() =>
+    expect(screen.queryByText('Loading country data…')).not.toBeInTheDocument()
+  );
+});
+
+test('shows an error message if fetching country data fails, instead of failing silently', async () => {
+  global.fetch = jest.fn(() =>
+    Promise.resolve({ ok: false, json: () => Promise.resolve({}) })
+  );
+
+  render(<App />);
+  fireEvent.click(screen.getByText('select-country'));
+
+  expect(
+    await screen.findByText('Could not load data for this country. Please try again.')
+  ).toBeInTheDocument();
+  expect(screen.queryByText('Loading country data…')).not.toBeInTheDocument();
+});
+
 test('shows the mobile warning popup for touch devices with a mobile user agent', () => {
   document.documentElement.ontouchstart = null;
   Object.defineProperty(window.navigator, 'userAgent', {
