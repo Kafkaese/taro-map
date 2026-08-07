@@ -9,32 +9,49 @@ import { mockFetchJson } from '../testUtils/mockFetch';
 
 // react-simple-maps needs real topojson geometry to render anything; for
 // these tests we only care about the fetch/state logic around the map, so
-// swap it for a single fake, clickable/hoverable "country".
-jest.mock('react-simple-maps', () => ({
-  ComposableMap: ({ children, onMouseMove, onClick, style }) => (
-    <div data-testid="composable-map" onMouseMove={onMouseMove} onClick={onClick} style={style}>
-      {children}
-    </div>
-  ),
-  ZoomableGroup: ({ children, zoom }) => (
-    <div>
-      <div data-testid="zoom-level">{zoom}</div>
-      {children}
-    </div>
-  ),
-  Geographies: ({ children }) =>
-    children({ geographies: [{ rsmKey: 'DE', properties: { countryKey: 'DE' } }] }),
-  Geography: ({ onMouseOver, onMouseLeave, onClick, onMouseMove, style }) => (
-    <div
-      data-testid="geography"
-      onMouseOver={onMouseOver}
-      onMouseLeave={onMouseLeave}
-      onClick={onClick}
-      onMouseMove={onMouseMove}
-      style={style?.default}
-    />
-  ),
-}));
+// swap it for a single fake, clickable/hoverable "country". FAKE_GEO is
+// hoisted outside the mock components so it's the *same* object reference
+// across re-renders - WorldMap.jsx compares selectedGeography === geo by
+// identity, which a freshly-recreated-per-render object would never match.
+jest.mock('react-simple-maps', () => {
+  const FAKE_GEO = { rsmKey: 'DE', properties: { countryKey: 'DE' } };
+  return {
+    ComposableMap: ({ children, onMouseMove, onClick, style }) => (
+      <div data-testid="composable-map" onMouseMove={onMouseMove} onClick={onClick} style={style}>
+        {children}
+      </div>
+    ),
+    ZoomableGroup: ({ children, zoom, onMoveEnd }) => (
+      <div>
+        <div data-testid="zoom-level">{zoom}</div>
+        <button
+          data-testid="move-end"
+          onClick={(event) => {
+            // A real drag/zoom gesture ending doesn't also fire a click on
+            // the map background - only this test button's own click does,
+            // as a side effect of being nested inside it in the DOM.
+            event.stopPropagation();
+            onMoveEnd({ coordinates: [0, 0], zoom });
+          }}
+        >
+          end drag/zoom gesture
+        </button>
+        {children}
+      </div>
+    ),
+    Geographies: ({ children }) => children({ geographies: [FAKE_GEO] }),
+    Geography: ({ onMouseOver, onMouseLeave, onClick, onMouseMove, style }) => (
+      <div
+        data-testid="geography"
+        onMouseOver={onMouseOver}
+        onMouseLeave={onMouseLeave}
+        onClick={onClick}
+        onMouseMove={onMouseMove}
+        style={style?.default}
+      />
+    ),
+  };
+});
 
 const renderMap = (overrides = {}) =>
   render(
@@ -107,6 +124,15 @@ test('onMapClick fires for both a country click and a background click', () => {
   expect(onMapClick).toHaveBeenCalledTimes(2);
 });
 
+test('onMapClick also fires when a drag/zoom gesture ends, not just on click', () => {
+  const onMapClick = jest.fn();
+  renderMap({ onMapClick });
+
+  fireEvent.click(screen.getByTestId('move-end'));
+
+  expect(onMapClick).toHaveBeenCalledTimes(1);
+});
+
 test('clicking the map background closes (collapses) the sidebar', () => {
   renderMap({ activeCountryData: buildCountryData() });
   const panel = document.querySelector('.panel');
@@ -115,6 +141,18 @@ test('clicking the map background closes (collapses) the sidebar', () => {
   fireEvent.click(screen.getByTestId('composable-map'));
 
   expect(panel).toHaveStyle({ width: '0%' });
+});
+
+test('clicking the map background un-highlights the previously selected country', () => {
+  mockFetchJson(() => ({ value: 'x' }));
+  renderMap();
+  const geo = screen.getByTestId('geography');
+
+  fireEvent.click(geo);
+  expect(geo).toHaveStyle({ fill: '#5b9e79' }); // pressedColor - selected
+
+  fireEvent.click(screen.getByTestId('composable-map'));
+  expect(geo).toHaveStyle({ fill: '#84B098' }); // defaultColor - back to unhighlighted
 });
 
 test('clicking a country does not also trigger the background-click collapse', () => {

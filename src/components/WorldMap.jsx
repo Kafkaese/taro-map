@@ -49,6 +49,9 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
 
   function handleMoveEnd(position) {
     setPosition(position);
+    // Dragging/panning (or scroll/pinch-zooming) the map is just as much
+    // "engaging with it" as clicking, so it should dismiss the hint too.
+    onMapClick?.();
   }
 
   // Hover states
@@ -193,6 +196,9 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
   // since handleCountryClick stops propagation.
   const handleMapBackgroundClick = () => {
     setCollapsed(true);
+    // Un-highlight the previously selected country too - the sidebar it
+    // was showing detail for is now closed, so it shouldn't still look selected.
+    setSelectedGeography(null);
     onMapClick?.();
   };
 
