@@ -1,5 +1,7 @@
-   // Color coding for democracy index
-   const getDemocracyColor = (value) => {
+  // Color coding for democracy index. Thresholds approximate the EIU
+  // Democracy Index's own four regime categories (full/flawed/hybrid/
+  // authoritarian: officially 8.01/6.01/4.01), rounded here to 9.0/7.0/4.0.
+  const getDemocracyColor = (value) => {
     if (value >= 9.0) {
       return '#008000'
     } else if (value >= 7.0) {
@@ -11,9 +13,12 @@
     } else {
       return '#383838'
     }
-      
+
   }
-      // Color coding for peace index
+
+  // Color coding for peace index. The Global Peace Index's published scale
+  // runs ~1 (most peaceful) to ~5 (least peaceful); these are just an even
+  // linear split of that range into 5 bands, not an official GPI category.
   const getPeaceColor = (value) => {
     if (value < 1.0) {
       return '#00E676' // green
@@ -26,10 +31,13 @@
     } else {
       return '#383838' // red
     }
-      
+
   }
 
-  // Color coding for USD import values
+  // Color coding for USD import/export values. Unlike the two thresholds
+  // above, 4713.75 and 342.5 don't correspond to any known public dataset
+  // or documented rationale - origin unclear. If you're the one who picked
+  // these, please replace this comment with the actual reasoning.
   const getUSDColor = (value) => {
     if (value >= 4713.75) {
       return '#8b0000'
