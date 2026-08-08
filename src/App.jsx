@@ -20,22 +20,23 @@ import {
 import './App.css'
 
 /**
- * Main Application component. Renderd Header, Footer and Worldmap, plus contionally popups for Impressum, Data Sources and warning for mobile users.
+ * Main Application component. Renderd Header, Footer and Worldmap, plus contionally popups for Impressum and Data Sources.
  *
  *
  */
 function App() {
 
-    // Check for mobile device to display warning message
-    const isMobile = ('ontouchstart' in document.documentElement && navigator.userAgent.match(/Mobi/));
-    
+    // Touch devices don't have reliable hover, so the map's hover tooltip
+    // is suppressed on them (see WorldMap's isMobile prop) rather than
+    // attempted and left glitchy.
+    const isMobile = Boolean('ontouchstart' in document.documentElement && navigator.userAgent.match(/Mobi/));
+
     // Controls which map is shown
     const [mapModeImport, setMapModeImport] = useState(true);
 
     // PopUp controls
     const [showPopUp, setShowPopUp] = useState('none')
-    const [showMobilePopUp, setShowMobilePopUp] = useState('true')
-  
+
     // Sets map active based on state of the button
     const toggleComponent = (leftActive) => {
         leftActive ? setMapModeImport(true) : setMapModeImport(false);
@@ -234,9 +235,9 @@ function App() {
                 onCountryDeselect={deselectCountry}
                 onMapClick={() => setHasInteractedWithMap(true)}
                 settings={settings}
+                isMobile={isMobile}
                 />
 
-            {isMobile && showMobilePopUp === 'true' ? <PopUp content='mobile' setShowPopUp={setShowMobilePopUp}></PopUp> : ''}
             {showPopUp === 'none' ? '' : <PopUp content={showPopUp} setShowPopUp={setShowPopUp}></PopUp>}
 
             <div>

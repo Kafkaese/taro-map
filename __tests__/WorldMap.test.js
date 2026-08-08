@@ -105,12 +105,61 @@ test('hovering a country in export mode requests the export endpoints for that c
   ).toBe(true);
 });
 
+test('hovering a country on a mobile device does not fetch or show the tooltip', async () => {
+  // Touch devices don't have reliable hover, so it's suppressed entirely
+  // rather than left glitchy - tapping still selects the country normally
+  // (covered separately below), just without the cursor-following tooltip.
+  const fetchMock = mockFetchJson(() => ({ value: 'Germany' }));
+  renderMap({ isMobile: true });
+  fireEvent.mouseOver(screen.getByTestId('geography'));
+  await new Promise((resolve) => setTimeout(resolve, 0)); // let any stray microtasks flush
+  // Excludes the data-availability bulk fetch, which fires on mount
+  // regardless of hover (see the "aborts the previous hover fetch" test
+  // below for the same exclusion).
+  const hoverUrls = fetchMock.mock.calls
+    .map((call) => call[0])
+    .filter((url) => !url.includes('/available'));
+  expect(hoverUrls).toHaveLength(0);
+  expect(screen.queryByText('Germany')).not.toBeInTheDocument();
+});
+
+test('a country is still fully clickable/selectable on a mobile device', () => {
+  mockFetchJson(() => ({ value: 'x' }));
+  const onCountrySelect = jest.fn();
+  renderMap({ isMobile: true, onCountrySelect });
+  fireEvent.click(screen.getByTestId('geography'));
+  expect(onCountrySelect).toHaveBeenCalledWith('DE');
+});
+
 test('clicking a country calls onCountrySelect with its country code', () => {
   mockFetchJson(() => ({ value: 'x' }));
   const onCountrySelect = jest.fn();
   renderMap({ onCountrySelect });
   fireEvent.click(screen.getByTestId('geography'));
   expect(onCountrySelect).toHaveBeenCalledWith('DE');
+});
+
+test('clicking a country dismisses its hover tooltip instead of leaving it lingering behind the sidebar', async () => {
+  // Regression test: clicking doesn't itself fire onMouseLeave, so without
+  // explicitly clearing hoveredCountry on click, the tooltip stayed up
+  // (rendering behind the newly-opened sidebar, which sits at a higher
+  // z-index) whenever the mouse hadn't actually left the country yet.
+  mockFetchJson((url) => {
+    if (url.includes('/metadata/name/short')) return { value: 'Germany' };
+    if (url.includes('/metadata/democracy_index')) return { value: 8.67 };
+    if (url.includes('/arms/imports/total')) return { value: 1500000 };
+    if (url.includes('/metadata/peace_index')) return { value: 1.5 };
+    return {};
+  });
+  renderMap();
+  const geo = screen.getByTestId('geography');
+
+  fireEvent.mouseOver(geo);
+  expect(await screen.findByText('Germany')).toBeInTheDocument();
+
+  fireEvent.click(geo);
+
+  expect(screen.queryByText('Germany')).not.toBeInTheDocument();
 });
 
 test('a country missing from the availability list is greyed out', async () => {

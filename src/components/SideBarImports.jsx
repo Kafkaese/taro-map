@@ -20,7 +20,7 @@ const SideBarImports = ({countryData, onClose, year, settings}) => {
 
     return (
         <div className="sideBar">
-            <div className="panel" style={{maxWidth: '500px', width: '95vw'}}>
+            <div className="panel">
                 <div className="title">
                     {countryData.name.value}
                 </div>

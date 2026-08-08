@@ -18,6 +18,7 @@ jest.mock('../src/components/WorldMap', () => (props) => (
       mapModeImport: props.mapModeImport,
       year: props.year,
       hasCountryData: typeof props.activeCountryData.name !== 'undefined',
+      isMobile: props.isMobile,
     })}
     <button
       onClick={() => {
@@ -221,12 +222,17 @@ test('deselecting a country clears activeCountryData, hiding the sidebar', async
   expect(screen.getByTestId('world-map').textContent).toContain('"hasCountryData":false');
 });
 
-test('shows the mobile warning popup for touch devices with a mobile user agent', () => {
+test('passes isMobile down to the map for touch devices with a mobile user agent', () => {
   document.documentElement.ontouchstart = null;
   Object.defineProperty(window.navigator, 'userAgent', {
     value: 'Mozilla/5.0 (iPhone; CPU iPhone OS) Mobi/15E148',
     configurable: true,
   });
   render(<App />);
-  expect(screen.getByText('We detected a mobile device being used.')).toBeInTheDocument();
+  expect(screen.getByTestId('world-map').textContent).toContain('"isMobile":true');
+});
+
+test('isMobile is false on a regular desktop browser', () => {
+  render(<App />);
+  expect(screen.getByTestId('world-map').textContent).toContain('"isMobile":false');
 });
