@@ -1,12 +1,30 @@
-FROM node:latest AS build
+# Pinned to a stable LTS rather than a floating :latest tag, for general
+# build reproducibility.
+FROM node:22 AS build
 WORKDIR /build
 
 COPY package.json package.json
 COPY package-lock.json package-lock.json
 RUN npm install
 
+COPY vite.config.js vite.config.js
+COPY index.html index.html
+COPY env.sh env.sh
+COPY .env_prod .env_prod
 COPY public/ public
 COPY src/ src
 COPY assets/ assets
-CMD npm start
+
+# vite.config.js's define-based process.env.REACT_APP_API_HOST/PORT shim
+# (see that file's comment) turned out not to actually substitute anything
+# under Vite's dev-server transform in this setup, for reasons that traced
+# all the way down to esbuild/Node/plugin permutations without a clean
+# answer - direct esbuild calls and Vite's own import.meta.env injection
+# both work fine, just not this custom define. Rather than keep chasing
+# that, this generates env-config.js the same way production already does
+# (env.sh + .env_prod, see deploy-frontend.yaml) instead of leaving the
+# committed static placeholder (window._env_ = undefined) in place -
+# api.js's getApiHost()/getApiPort() check window._env_ before process.env,
+# so this takes priority and the broken define path is never reached.
+CMD cd public && cp ../.env_prod .env && cp ../env.sh . && bash env.sh && rm -f env.sh .env && cd .. && npm start
 
