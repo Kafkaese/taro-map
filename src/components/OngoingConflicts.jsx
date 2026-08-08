@@ -90,7 +90,7 @@ const OngoingConflicts = ({ conflicts }) => {
                                     <div className="val">{formatCompactNumber(conflict.refugees_est)}</div>
                                 </div>
                                 <div className="detail-stat">
-                                    <div className="lbl">IDPs</div>
+                                    <div className="lbl">Internally Displaced</div>
                                     <div className="val">{formatCompactNumber(conflict.idps_est)}</div>
                                 </div>
                             </div>
