@@ -70,6 +70,7 @@
   border: none;
   background-color: var(--deck-chip);
   border-radius: var(--deck-radius-sm);
+  cursor: pointer;
 }
 
 .header .settings-icon {
@@ -209,4 +210,5 @@
   font-weight: 700;
   background-color: var(--deck-chip);
   border-radius: var(--deck-radius-sm);
+  cursor: pointer;
 }
