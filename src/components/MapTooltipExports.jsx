@@ -8,7 +8,7 @@ import { formatUSDvalue, formatUSDorder } from "./formattingUtils";
  * @param {function} handleMouseEnterBox Function on parent that handles mouse being over the tooltip.
  * 
  */
-const MapTooltipExports = (hoveredCountry, settings) => {
+const MapTooltipExports = ({ hoveredCountry, settings }) => {
 
     return (
         <div>

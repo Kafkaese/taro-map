@@ -3,7 +3,7 @@ import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, Responsiv
 import { getDemocracyColor, getPeaceColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
 import SidebarCustomTooltip from "./SidebarCustomTooltip";
 import CustomizedTick from "./CustomizedTicks";
-import './SideBarImports.css'
+import './SideBar.css'
 
 
 /**

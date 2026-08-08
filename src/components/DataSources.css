@@ -22,5 +22,5 @@
 }
 
 .data-sources a {
-  color: #06d3fc;
+  color: var(--deck-accent, #06d3fc);
 }

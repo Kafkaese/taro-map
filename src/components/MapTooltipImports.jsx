@@ -1,7 +1,7 @@
 import React from "react"
 import { formatUSDvalue, formatUSDorder, getDemocracyColor, getPeaceColor } from "./formattingUtils"
 
-const MapTooltip = (hoveredCountry, settings) => {
+const MapTooltipImports = ({ hoveredCountry, settings }) => {
 
     //console.log(hoveredCountry)
     
@@ -44,4 +44,4 @@ const MapTooltip = (hoveredCountry, settings) => {
     )
 }
 
-export default MapTooltip;
+export default MapTooltipImports;

@@ -3,6 +3,7 @@ import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, Responsiv
 import {formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
 import SidebarCustomTooltip from "./SidebarCustomTooltip";
 import CustomizedTick from "./CustomizedTicks";
+import './SideBar.css'
 
 /**
  * Sidebar component for Import Map. Shows info for country currently selected on ImportMap:
