@@ -170,11 +170,12 @@
 
 .zoom {
   display: flex;
+  flex-direction: column;
   position: absolute;
-  top: 108px;
+  top: 58px;
   right: 14px;
-  height: 40px;
-  width: 80px;
+  height: 76px;
+  width: 40px;
   background-color: var(--deck-card);
   border-radius: var(--deck-radius-md);
   box-shadow: var(--deck-shadow);
