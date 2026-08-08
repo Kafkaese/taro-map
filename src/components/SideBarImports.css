@@ -32,22 +32,37 @@
 }
 
 .sideBar .button {
+    /* Was positioned at left: 100% (poking out past .panel's own right
+       edge) with the panel's overflow: hidden clipping it to nothing in a
+       real browser - jsdom's layout-free tests never caught this since
+       they don't compute clipping. Living inside the panel's own bounds
+       now, as a plain corner icon button, so it actually renders. */
     position: absolute;
-    top: 45%;
-    left: 100%;
-    width: 20px;
-    height: 150px;
-    background: var(--deck-card, #131b2b);
-    border-radius: 0px 10px 10px 0px;
+    top: 18px;
+    right: 18px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--deck-chip, #1c2536);
+    border-radius: 8px;
     border: none;
-    box-shadow: var(--deck-shadow, 0 10px 24px -8px rgba(0, 0, 0, 0.5));
     color: white;
     font-weight: 700;
+    font-size: 15px;
 }
 
 .sideBar .panel .title {
     color: white;
     width: 100%;
+    /* box-sizing: border-box so this padding is actually carved out of the
+       100% width (the default content-box would add it on top instead,
+       overflowing past the panel and getting clipped there rather than
+       reserving room) - reserves space so long country names clip before
+       reaching the close button in the corner, instead of running under it. */
+    box-sizing: border-box;
+    padding-right: 40px;
     text-align: left;
     font-size: 20px;
     font-weight: 800;
@@ -82,7 +97,9 @@
     gap: 4px;
     flex: 1;
     min-width: 0;
-    background: var(--deck-card-inset, #0d1420);
+    background: rgba(13, 20, 32, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 8px;
     padding: 10px 6px;
     border-left: 3px solid var(--stat-color, var(--deck-accent-strong, #06879e));
@@ -120,7 +137,9 @@
     gap: 4px;
     flex: 1;
     min-width: 0;
-    background: var(--deck-card-inset, #0d1420);
+    background: rgba(13, 20, 32, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 8px;
     padding: 10px 6px;
   }
@@ -181,7 +200,9 @@
 .sideBar .panel .barPlot {
     text-align: center;
     color: white;
-    background: var(--deck-card-inset, #0d1420);
+    background: rgba(13, 20, 32, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-radius: 8px;
     padding: 6px 4px;
     overflow-y: scroll;
@@ -209,7 +230,9 @@
 
 .sideBar .panel .timeSeries {
   min-height: 35%;
-  background: var(--deck-card-inset, #0d1420);
+  background: rgba(13, 20, 32, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 8px;
   padding: 8px;
   margin-top: 12px;
