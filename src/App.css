@@ -40,7 +40,13 @@
     --deck-surface: #eef1f5;
     --deck-card: #ffffff;
     --deck-card-inset: #f1f4f8;
-    --deck-chip: #e3e8ef;
+    /* Meaningfully darker than --deck-card/--deck-surface/--deck-glass-*,
+       not just a faint tint - this is what actual controls (buttons, the
+       slider rail) sit on, and needs real separation from a near-white
+       surface to read as a distinct element rather than disappear into it.
+       (An earlier, too-subtle #e3e8ef here was only ~1.16:1 contrast
+       against white - practically invisible.) */
+    --deck-chip: #c7d0e0;
     --deck-border: rgba(15, 23, 42, 0.10);
     --deck-shadow: 0 10px 24px -8px rgba(15, 23, 42, 0.18);
     --deck-hairline: rgba(15, 23, 42, 0.14);
@@ -57,7 +63,7 @@
   --deck-surface: #eef1f5;
   --deck-card: #ffffff;
   --deck-card-inset: #f1f4f8;
-  --deck-chip: #e3e8ef;
+  --deck-chip: #c7d0e0;
   --deck-border: rgba(15, 23, 42, 0.10);
   --deck-shadow: 0 10px 24px -8px rgba(15, 23, 42, 0.18);
   --deck-hairline: rgba(15, 23, 42, 0.14);
