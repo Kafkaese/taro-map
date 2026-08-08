@@ -101,9 +101,18 @@
     background: rgba(19, 27, 43, 0.38);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-radius: 8px;
+    /* Bigger than the 8px border-left below, so the border still traces a
+       visible rounded cap at the top/bottom of the stripe instead of the
+       border simply filling the whole corner curve (which is what happens
+       once border-width >= border-radius - that's what flattened it out
+       when the stripe was widened without also widening this). */
+    border-radius: 14px;
     padding: 10px 6px;
-    border-left: 3px solid var(--stat-color, var(--deck-accent-strong, #06879e));
+    /* Wider than the 3px used in the hover tooltip's version of this same
+       card, to keep the same stripe-to-card-width proportion - these cards
+       are roughly 2.5-3x wider than the hover tooltip's, since they live
+       in the full sidebar panel rather than a compact cursor-following box. */
+    border-left: 8px solid var(--stat-color, var(--deck-accent-strong, #06879e));
   }
 
   .sideBar .panel .colorcoded-wrapper .circle-wrapper .circle-label {
@@ -141,7 +150,9 @@
     background: rgba(19, 27, 43, 0.38);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border-radius: 8px;
+    /* Matches circle-wrapper's radius so the row of cards reads as one
+       consistent set even though this one has no color stripe. */
+    border-radius: 14px;
     padding: 10px 6px;
   }
 
