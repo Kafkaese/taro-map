@@ -14,7 +14,11 @@ import App from '../src/App';
 // that pairing so App-level tests see the same composition production does.
 jest.mock('../src/components/WorldMap', () => (props) => (
   <div data-testid="world-map">
-    {JSON.stringify({ mapModeImport: props.mapModeImport, year: props.year })}
+    {JSON.stringify({
+      mapModeImport: props.mapModeImport,
+      year: props.year,
+      hasCountryData: typeof props.activeCountryData.name !== 'undefined',
+    })}
     <button
       onClick={() => {
         props.onCountrySelect('DE');
@@ -32,6 +36,7 @@ jest.mock('../src/components/WorldMap', () => (props) => (
       select-other-country
     </button>
     <button onClick={() => props.onMapClick()}>click-map-background</button>
+    <button onClick={() => props.onCountryDeselect()}>deselect-country</button>
   </div>
 ));
 
@@ -198,6 +203,22 @@ test('shows an error message if fetching country data fails, instead of failing 
     await screen.findByText('Could not load data for this country. Please try again.')
   ).toBeInTheDocument();
   expect(screen.queryByText('Loading country data…')).not.toBeInTheDocument();
+});
+
+test('deselecting a country clears activeCountryData, hiding the sidebar', async () => {
+  global.fetch = jest.fn(() =>
+    Promise.resolve({ ok: true, json: () => Promise.resolve({ value: 'x' }) })
+  );
+
+  render(<App />);
+  fireEvent.click(screen.getByText('select-country'));
+  await waitFor(() =>
+    expect(screen.getByTestId('world-map').textContent).toContain('"hasCountryData":true')
+  );
+
+  fireEvent.click(screen.getByText('deselect-country'));
+
+  expect(screen.getByTestId('world-map').textContent).toContain('"hasCountryData":false');
 });
 
 test('shows the mobile warning popup for touch devices with a mobile user agent', () => {

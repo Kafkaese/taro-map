@@ -160,7 +160,16 @@ function App() {
         fetchCountryData(activeCountryAlpha2)
     }, [activeCountryAlpha2, fetchCountryData])
 
-    
+    // Clears the selected country entirely - the sidebar only renders while
+    // activeCountryData has a name, so this is what actually makes it
+    // disappear (as opposed to the old collapse, which just visually
+    // shrank it while still holding the last country's data).
+    const deselectCountry = () => {
+        setActiveCountryAlpha2('');
+        setActiveCountryData({});
+    }
+
+
     // Render
     return (
         <div className="app"
@@ -222,6 +231,7 @@ function App() {
                 year={year}
                 activeCountryData={activeCountryData}
                 onCountrySelect={setActiveCountryAlpha2}
+                onCountryDeselect={deselectCountry}
                 onMapClick={() => setHasInteractedWithMap(true)}
                 settings={settings}
                 />

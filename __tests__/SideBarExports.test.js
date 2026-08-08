@@ -11,8 +11,7 @@ test('renders country name, total exports, and the export percentage circle', ()
   render(
     <SideBarExports
       countryData={countryData}
-      collapsed={false}
-      onCollapse={() => {}}
+      onClose={() => {}}
       year={2020}
       settings={defaultSettings}
     />
@@ -22,35 +21,18 @@ test('renders country name, total exports, and the export percentage circle', ()
   expect(screen.getByText('<1%')).toBeInTheDocument(); // arms exports are a tiny share of merch exports in the fixture
 });
 
-test('clicking the collapse button toggles the sidebar', () => {
-  const onCollapse = jest.fn();
+test('clicking the close button calls onClose', () => {
+  const onClose = jest.fn();
   render(
     <SideBarExports
       countryData={buildCountryData()}
-      collapsed={false}
-      onCollapse={onCollapse}
+      onClose={onClose}
       year={2020}
       settings={defaultSettings}
     />
   );
-  fireEvent.click(screen.getByText('<'));
-  expect(onCollapse).toHaveBeenCalledWith(true);
-});
-
-test('collapsing the sidebar actually shrinks the money and circle wrappers', () => {
-  // Regression test for a typo (`widht` instead of `width`) that silently
-  // dropped this style, leaving the wrappers full-width while collapsed.
-  const { container } = render(
-    <SideBarExports
-      countryData={buildCountryData()}
-      collapsed={true}
-      onCollapse={() => {}}
-      year={2020}
-      settings={defaultSettings}
-    />
-  );
-  expect(container.querySelector('.money-wrapper')).toHaveStyle({ width: '0px' });
-  expect(container.querySelector('.circle-wrapper')).toHaveStyle({ width: '0px' });
+  fireEvent.click(screen.getByRole('button', { name: 'Close country details' }));
+  expect(onClose).toHaveBeenCalledTimes(1);
 });
 
 test('shows "No data available" when there are no export destinations', () => {
@@ -58,8 +40,7 @@ test('shows "No data available" when there are no export destinations', () => {
   render(
     <SideBarExports
       countryData={countryData}
-      collapsed={false}
-      onCollapse={() => {}}
+      onClose={() => {}}
       year={2020}
       settings={defaultSettings}
     />

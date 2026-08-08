@@ -5,8 +5,7 @@ import SideBarExports from "./SideBarExports";
 const SideBar = ({
     mapModeImport,
     countryData,
-    collapsed,
-    onCollapse,
+    onClose,
     year,
     settings
 }) => {
@@ -14,12 +13,10 @@ const SideBar = ({
     return (
         <div> {
             mapModeImport ? <SideBarImports countryData={countryData}
-                collapsed={collapsed}
-                onCollapse={onCollapse}
+                onClose={onClose}
                 year={year}
                 settings={settings}/> : <SideBarExports countryData={countryData}
-                collapsed={collapsed}
-                onCollapse={onCollapse}
+                onClose={onClose}
                 year={year}
                 settings={settings}/>
         } </div>
