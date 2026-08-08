@@ -25,7 +25,7 @@
 
 .header {
   position: fixed;
-  height: 46px;
+  height: 50px;
   width: 100vw;
   background-color: var(--deck-surface);
   display: flex;
@@ -47,15 +47,27 @@
 .header .logo {
   height: 28px;
   width: 28px;
-  margin: 5px 8px;
+  /* Left inset matches the settings button's 18px right inset (see its
+     margin comment) - the 8px right margin here (gap to the title text)
+     is unrelated and left as-is. */
+  margin: 5px 8px 5px 18px;
   border-radius: 6px;
 }
 
 .header .settings-button {
-  height: 30px;
-  width: 30px;
-  margin: 4px 8px;
+  /* <button> gets box-sizing: border-box from the browser's default
+     stylesheet (unlike a plain div), so width/height here are already the
+     full 32x32 footprint - padding is carved out of that, not added on
+     top - matching the zoom buttons' actual (flex-stretched) 32x32 size. */
+  height: 32px;
+  width: 32px;
+  /* Right margin matches the zoom buttons' actual inset (14px card offset
+     + 4px card padding = 18px), not just the zoom card's own outer edge -
+     otherwise this button lines up with the card's shadow, not the buttons
+     inside it. */
+  margin: 9px 18px 9px 14px;
   padding: 1px;
+  border: none;
   background-color: var(--deck-chip);
   border-radius: var(--deck-radius-sm);
 }
@@ -172,20 +184,24 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 58px;
+  top: 62px;
   right: 14px;
-  height: 76px;
-  width: 40px;
+  /* content-box (no border-box reset in this app), so width/height below
+     are the size of the buttons themselves - padding adds on top of that
+     to get the card's actual 40x76 footprint, it doesn't eat into it. */
+  height: 68px;
+  width: 32px;
   background-color: var(--deck-card);
   border-radius: var(--deck-radius-md);
   box-shadow: var(--deck-shadow);
-  padding: 5px;
-  gap: 5px;
+  padding: 4px;
+  gap: 4px;
 }
 
 .zoom .button {
   flex: 1;
   margin: 0;
+  border: none;
   color: white;
   font-weight: 700;
   background-color: var(--deck-chip);
