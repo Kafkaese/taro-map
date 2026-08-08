@@ -20,7 +20,7 @@
 .wrapper .text-box-active {
     color: var(--deck-text, #ffffff);
     font-weight: 800;
-    border-bottom-color: #06d3fc;
+    border-bottom-color: var(--deck-accent, #06d3fc);
 }
 
 .wrapper .text-box .text,

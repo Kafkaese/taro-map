@@ -49,12 +49,12 @@
     bottom: calc(50% - 6px);
   }
   .example-mark.example-mark-active {
-    border: 2px solid #06d3fc;
+    border: 2px solid var(--deck-accent, #06d3fc);
     background-color: var(--deck-card, rgb(255, 255, 255));
   }
   .example-mark.example-mark-completed {
     border: 2px solid var(--deck-card, rgb(255, 255, 255));
-    background-color: #06d3fc;
+    background-color: var(--deck-accent, #06d3fc);
   }
 
   .slider-year-info-box {

@@ -338,7 +338,9 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onCo
                     aria-label="Zoom out"
                     onClick={handleZoomOut}>-</button>
             </div>
-      {hoveredCountry && (mapModeImport ? MapTooltipImports(hoveredCountry, settings) : MapTooltipExports(hoveredCountry, settings))}
+      {hoveredCountry && (mapModeImport
+        ? <MapTooltipImports hoveredCountry={hoveredCountry} settings={settings} />
+        : <MapTooltipExports hoveredCountry={hoveredCountry} settings={settings} />)}
     </div>
   );
 };
