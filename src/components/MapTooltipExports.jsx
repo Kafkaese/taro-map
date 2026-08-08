@@ -1,5 +1,4 @@
 import React from "react";
-import PercentageCircle from "./PercentageCircle";
 import { formatUSDvalue, formatUSDorder } from "./formattingUtils";
 
 /**
@@ -29,11 +28,6 @@ const MapTooltipExports = (hoveredCountry, settings) => {
                         <span className='money-label'>Exports</span>
                     </div>
 
-                    <div className='circle-wrapper'>
-                        <PercentageCircle percentage={((hoveredCountry.totalArmsExports.value/1000000) / hoveredCountry.totalMerchExports.value) * 100}/>
-                        <span className='circle-label'>Percentage of Exports<sup>[1]</sup></span>
-                    </div>
-                    
                     </div>
                 </div>
             }

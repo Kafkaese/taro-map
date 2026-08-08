@@ -25,7 +25,6 @@ export const buildCountryData = (overrides = {}) => ({
     { year: 2019, value: 700000 },
     { year: 2020, value: 800000 },
   ],
-  merchExports: { value: 50000000 },
   ...overrides,
 });
 

@@ -1,7 +1,6 @@
 import React from "react";
 import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 import {formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
-import PercentageCircle from "./PercentageCircle";
 import SidebarCustomTooltip from "./SidebarCustomTooltip";
 import CustomizedTick from "./CustomizedTicks";
 
@@ -30,11 +29,6 @@ const SideBarExports = ({countryData, onClose, year, settings}) => {
                         </div>
                         <div className='annotate'><div className='text'>{`${formatUSDorder(countryData.totalExports.value)} ${settings.currency.symbol}`}</div></div>
                         <span className='money-label'>Exports</span>
-                    </div>
-
-                    <div className='circle-wrapper'>
-                        <PercentageCircle percentage={((countryData.totalExports.value/1000000) / countryData.merchExports.value) * 100}/>
-                        <span className='circle-label'>Percentage of Exports<sup>[1]</sup></span>
                     </div>
                 </div>
                 <div className="barPlot-title">{`\n Export Destination Countries ${year}`}</div>

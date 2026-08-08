@@ -6,7 +6,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import SideBarExports from '../src/components/SideBarExports';
 import { buildCountryData, defaultSettings } from '../testUtils/fixtures';
 
-test('renders country name, total exports, and the export percentage circle', () => {
+test('renders country name and total exports', () => {
   const countryData = buildCountryData();
   render(
     <SideBarExports
@@ -18,7 +18,6 @@ test('renders country name, total exports, and the export percentage circle', ()
   );
   expect(screen.getByText('Germany')).toBeInTheDocument();
   expect(screen.getByText('800.00')).toBeInTheDocument(); // formatUSDvalue(800,000) -> thousands
-  expect(screen.getByText('<1%')).toBeInTheDocument(); // arms exports are a tiny share of merch exports in the fixture
 });
 
 test('clicking the close button calls onClose', () => {
