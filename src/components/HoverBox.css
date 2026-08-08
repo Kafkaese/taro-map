@@ -1,12 +1,16 @@
 .hover-box-container {
   position: fixed;
-  background-color: #101827;
-  padding: 4px 8px;
-  border: 1px solid #ccc;
+  /* Same frosted-glass treatment as the sidebar panel and year slider. */
+  background: var(--deck-glass-outer, rgba(19, 27, 43, 0.62));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 10px 14px 12px;
+  border: 1px solid var(--deck-glass-border, rgba(255, 255, 255, 0.08));
+  box-shadow: var(--deck-shadow, 0 10px 24px -8px rgba(0, 0, 0, 0.5));
   display: flex;
   flex-direction: column;
-  align-items: center;
-  border-radius: 8px;
+  align-items: stretch;
+  border-radius: 10px;
   /* Purely informational and follows the cursor closely - without this, a
      fast mouse movement can land the cursor on top of the tooltip itself,
      which then intercepts hover/click events meant for the map underneath. */
@@ -14,70 +18,93 @@
 }
 
 .hover-box-container h3 {
-  font-family: verdana;
-  color: #ffffff;
+  font-family: var(--deck-font, -apple-system, sans-serif);
+  font-weight: 800;
+  font-size: 14px;
+  margin: 0;
+  color: var(--deck-text, #ffffff);
 }
 
 .hover-box-container .circle-container {
   display: flex;
-  justify-content: space-evenly;
-  margin-top: 10px;
+  align-items: stretch;
+  gap: 6px;
+  margin-top: 8px;
 }
 
 .hover-box-container .circle-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+  background: var(--deck-glass-inner, rgba(19, 27, 43, 0.38));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 6px;
+  padding: 8px 6px;
+  border-left: 3px solid var(--stat-color, var(--deck-accent-strong, #06879e));
 }
 
 .hover-box-container .circle-wrapper .circle-label {
-  font-size: 12px;
-  margin-top: 4px;
+  order: -1;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   text-align: center;
-  color: #ffffff;
+  color: var(--deck-text-faint, #6c7c93);
 }
 
 .hover-box-container .circle-wrapper .circle {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  margin: 0 4px;
-  font-weight: bold;
-  font-size: 16px;
+  color: var(--deck-text, #ffffff);
+  margin: 0;
+  font-weight: 800;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
 }
 
 .hover-box-container .money-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+  background: var(--deck-glass-inner, rgba(19, 27, 43, 0.38));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 6px;
+  padding: 8px 6px;
 }
 
 .hover-box-container .money-wrapper .money {
-  width: 70px;
-  height: 50px;
-  border-radius: 15%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
-  margin: 0 4px;
-  font-weight: bold;
-  font-size: 16px;
+  color: var(--deck-text, #ffffff);
+  margin: 0;
+  font-weight: 800;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
 }
 
 .hover-box-container .money-wrapper .annotate {
-  width: 70px;
-  height: 20px;
-  color: #fff;
-  background-color: #374151;
-  border-radius: 4px;
+  width: auto;
+  height: auto;
+  color: var(--deck-text-dim, #9fb0c3);
+  background-color: var(--deck-chip, #1c2536);
+  border-radius: 5px;
+  padding: 1px 6px;
   display: flex;
-  font-weight: 100;
-  font-size: small;
+  font-weight: 600;
+  font-size: 9px;
   align-items: center;
 }
 
@@ -87,9 +114,11 @@
 }
 
 .hover-box-container .money-wrapper .money-label {
-  font-size: 12px;
-  margin-top: 4px;
+  order: -1;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   text-align: center;
-  color: #ffffff;
+  color: var(--deck-text-faint, #6c7c93);
 }
-

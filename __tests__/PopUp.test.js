@@ -15,11 +15,6 @@ test('renders Data Sources content', () => {
   expect(screen.getByText('Data Sources')).toBeInTheDocument();
 });
 
-test('renders Mobile warning content', () => {
-  render(<PopUp content="mobile" setShowPopUp={() => {}} />);
-  expect(screen.getByText('We detected a mobile device being used.')).toBeInTheDocument();
-});
-
 test('close button calls setShowPopUp with "none"', () => {
   const setShowPopUp = jest.fn();
   render(<PopUp content="impressum" setShowPopUp={setShowPopUp} />);

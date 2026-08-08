@@ -11,8 +11,7 @@ test('renders country name, total imports, and index values', () => {
   render(
     <SideBarImports
       countryData={countryData}
-      collapsed={false}
-      onCollapse={() => {}}
+      onClose={() => {}}
       year={2020}
       settings={defaultSettings}
     />
@@ -23,19 +22,18 @@ test('renders country name, total imports, and index values', () => {
   expect(screen.getByText('1.5')).toBeInTheDocument(); // peace index
 });
 
-test('clicking the collapse button toggles the sidebar', () => {
-  const onCollapse = jest.fn();
+test('clicking the close button calls onClose', () => {
+  const onClose = jest.fn();
   render(
     <SideBarImports
       countryData={buildCountryData()}
-      collapsed={false}
-      onCollapse={onCollapse}
+      onClose={onClose}
       year={2020}
       settings={defaultSettings}
     />
   );
-  fireEvent.click(screen.getByText('<'));
-  expect(onCollapse).toHaveBeenCalledWith(true);
+  fireEvent.click(screen.getByRole('button', { name: 'Close country details' }));
+  expect(onClose).toHaveBeenCalledTimes(1);
 });
 
 test('shows "No data available" when there are no import sources', () => {
@@ -43,8 +41,7 @@ test('shows "No data available" when there are no import sources', () => {
   render(
     <SideBarImports
       countryData={countryData}
-      collapsed={false}
-      onCollapse={() => {}}
+      onClose={() => {}}
       year={2020}
       settings={defaultSettings}
     />

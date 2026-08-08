@@ -29,12 +29,15 @@ jobs:
   test:
     uses: ./.github/workflows/test.yaml
 
-  # Built once here, then the exact same artifact is promoted through
-  # dev and prod below rather than rebuilding for each - dev and prod
-  # currently point at the same API host, so there's nothing that would
-  # differ between the two builds anyway. Runs in parallel with test/
-  # rather than after it, since both only need the checked-out code -
-  # deploy-dev is what actually waits on both succeeding.
+  # Built once here (the expensive step), then the same JS/CSS artifact is
+  # promoted through dev and prod below without rebuilding - the API host
+  # is a runtime config value (see "Environment variables" in CLAUDE.md),
+  # not baked into the JS bundle, so dev and prod pointing at different API
+  # hosts still doesn't require two builds, just two different
+  # env-config.js generations layered on top of this one artifact (see
+  # deploy-dev/deploy-prod below). Runs in parallel with test/ rather than
+  # after it, since both only need the checked-out code - deploy-dev is
+  # what actually waits on both succeeding.
   build:
     runs-on: ubuntu-latest
     steps:
@@ -48,22 +51,6 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      # env.sh was designed to run inside the Nginx container at boot,
-      # reading a .env file to produce env-config.js - there's no container
-      # here, so this runs the same script as a deploy-time step instead,
-      # writing straight into the build output alongside the other static
-      # files. REACT_APP_API_HOST/PORT are set here rather than left at
-      # .env_prod's placeholder values (localhost:800), since env.sh prefers
-      # an actual environment variable over the .env file's default.
-      - name: Generate env-config.js
-        env:
-          REACT_APP_API_HOST: api.arms-tracker.app
-          REACT_APP_API_PORT: '443'
-        run: |
-          cp .env_prod build/.env
-          cp env.sh build/env.sh
-          cd build && bash env.sh && rm env.sh .env
-
       - uses: actions/upload-artifact@v4
         with:
           name: build
@@ -73,10 +60,28 @@ jobs:
     needs: [test, build]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4   # for env.sh/.env_prod - not part of the build/ artifact
+
       - uses: actions/download-artifact@v4
         with:
           name: build
           path: build/
+
+      # env.sh was designed to run inside the Nginx container at boot,
+      # reading a .env file to produce env-config.js - there's no container
+      # here, so this runs the same script as a deploy-time step instead,
+      # writing straight into the downloaded build output. REACT_APP_API_HOST
+      # points at the dev API (a genuinely separate Lambda/API Gateway from
+      # prod, not just a different frontend) so this environment can
+      # exercise new backend endpoints before they're promoted to prod too.
+      - name: Generate env-config.js (dev)
+        env:
+          REACT_APP_API_HOST: api-dev.arms-tracker.app
+          REACT_APP_API_PORT: '443'
+        run: |
+          cp .env_prod build/.env
+          cp env.sh build/env.sh
+          cd build && bash env.sh && rm env.sh .env
 
       - uses: google-github-actions/auth@v2
         with:
@@ -85,11 +90,25 @@ jobs:
 
       - uses: google-github-actions/setup-gcloud@v2
 
+      # index.html and env-config.js are unhashed entry points - the
+      # filename never changes, so they must always be revalidated or
+      # visitors can get stuck on an arbitrarily old deploy for up to an
+      # hour (GCS's default Cache-Control, applied to anything synced
+      # without an explicit one, is "public, max-age=3600"). Everything
+      # else is content-hashed by Vite, so it's safe - and desirable - to
+      # cache for a long time; excluded from the first sync and handled
+      # separately below with the opposite policy.
       - name: Sync to GCS (dev)
         run: |
           gcloud storage rsync build/ gs://${{ vars.GCP_DEV_FRONTEND_BUCKET }} \
             --recursive \
-            --delete-unmatched-destination-objects
+            --delete-unmatched-destination-objects \
+            --exclude="index\.html$|env-config\.js$" \
+            --cache-control="public, max-age=31536000, immutable"
+
+          gcloud storage cp build/index.html build/env-config.js \
+            gs://${{ vars.GCP_DEV_FRONTEND_BUCKET }}/ \
+            --cache-control="no-cache, no-store, must-revalidate"
 
   # Only runs once deploy-dev succeeds, and pauses for manual approval in
   # the Actions UI before it does - the "production" environment has a
@@ -101,10 +120,24 @@ jobs:
     environment: production
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4   # for env.sh/.env_prod - not part of the build/ artifact
+
       - uses: actions/download-artifact@v4
         with:
           name: build
           path: build/
+
+      # Same env-config.js generation as deploy-dev, pointed at the prod
+      # API instead - REACT_APP_API_HOST is the only thing that differs
+      # between the two deploys of this one build/ artifact.
+      - name: Generate env-config.js (prod)
+        env:
+          REACT_APP_API_HOST: api.arms-tracker.app
+          REACT_APP_API_PORT: '443'
+        run: |
+          cp .env_prod build/.env
+          cp env.sh build/env.sh
+          cd build && bash env.sh && rm env.sh .env
 
       - uses: google-github-actions/auth@v2
         with:
@@ -116,8 +149,16 @@ jobs:
       # --delete-unmatched-destination-objects removes objects in the
       # bucket that no longer exist in this build (e.g. old content-hashed
       # JS/CSS chunk filenames) - without it they'd accumulate forever.
+      # See the matching comment in deploy-dev above for why index.html/
+      # env-config.js are synced separately with an opposite cache policy.
       - name: Sync to GCS (prod)
         run: |
           gcloud storage rsync build/ gs://${{ vars.GCP_FRONTEND_BUCKET }} \
             --recursive \
-            --delete-unmatched-destination-objects
+            --delete-unmatched-destination-objects \
+            --exclude="index\.html$|env-config\.js$" \
+            --cache-control="public, max-age=31536000, immutable"
+
+          gcloud storage cp build/index.html build/env-config.js \
+            gs://${{ vars.GCP_FRONTEND_BUCKET }}/ \
+            --cache-control="no-cache, no-store, must-revalidate"

@@ -1,40 +1,155 @@
+/* Color mode: dark is the default look (bare :root, no condition needed).
+   Light overrides apply either from the OS/browser preference (when the
+   user hasn't forced a choice) or from an explicit choice in Settings,
+   which stamps data-theme="light"/"dark" on <html> and always wins over
+   the OS preference either direction. Everything below is *structural*
+   chrome (surfaces, text, borders, glass) - the map's own land/water
+   colors and the official GPI-sourced democracy/peace index colors are
+   deliberately left alone, since those carry real meaning rather than
+   just being decorative. */
+:root {
+  --deck-surface: #101827;
+  --deck-card: #131b2b;
+  --deck-card-inset: #0d1420;
+  --deck-chip: #1c2536;
+  --deck-border: rgba(255, 255, 255, 0.08);
+  --deck-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.5);
+  /* The 1px hairline separating the header/footer from the content past
+     its edge - a distinct role from --deck-shadow (a soft all-around
+     blur used for floating cards), so it gets its own token. */
+  --deck-hairline: rgba(0, 0, 0, 0.35);
+  --deck-text: #ffffff;
+  --deck-text-dim: #9fb0c3;
+  --deck-text-faint: #6c7c93;
+  --deck-accent: #06d3fc;
+  --deck-accent-strong: #06879e;
+  /* Frosted-glass surfaces (sidebar, hover tooltip, year slider). "outer"
+     is the primary panel background, "inner" the nested stat/chart cards
+     within it, "border" the subtle edge highlight on both. */
+  --deck-glass-outer: rgba(19, 27, 43, 0.62);
+  --deck-glass-inner: rgba(19, 27, 43, 0.38);
+  --deck-glass-border: rgba(255, 255, 255, 0.08);
+  --deck-radius-lg: 14px;
+  --deck-radius-md: 10px;
+  --deck-radius-sm: 8px;
+  --deck-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --deck-surface: #eef1f5;
+    --deck-card: #ffffff;
+    --deck-card-inset: #f1f4f8;
+    /* Meaningfully darker than --deck-card/--deck-surface/--deck-glass-*,
+       not just a faint tint - this is what actual controls (buttons, the
+       slider rail) sit on, and needs real separation from a near-white
+       surface to read as a distinct element rather than disappear into it.
+       (An earlier, too-subtle #e3e8ef here was only ~1.16:1 contrast
+       against white - practically invisible.) */
+    --deck-chip: #c7d0e0;
+    --deck-border: rgba(15, 23, 42, 0.10);
+    --deck-shadow: 0 10px 24px -8px rgba(15, 23, 42, 0.18);
+    --deck-hairline: rgba(15, 23, 42, 0.14);
+    --deck-text: #0f172a;
+    --deck-text-dim: #475569;
+    --deck-text-faint: #64748b;
+    --deck-glass-outer: rgba(255, 255, 255, 0.72);
+    --deck-glass-inner: rgba(226, 232, 240, 0.55);
+    --deck-glass-border: rgba(15, 23, 42, 0.08);
+  }
+}
+
+:root[data-theme="light"] {
+  --deck-surface: #eef1f5;
+  --deck-card: #ffffff;
+  --deck-card-inset: #f1f4f8;
+  --deck-chip: #c7d0e0;
+  --deck-border: rgba(15, 23, 42, 0.10);
+  --deck-shadow: 0 10px 24px -8px rgba(15, 23, 42, 0.18);
+  --deck-hairline: rgba(15, 23, 42, 0.14);
+  --deck-text: #0f172a;
+  --deck-text-dim: #475569;
+  --deck-text-faint: #64748b;
+  --deck-glass-outer: rgba(255, 255, 255, 0.72);
+  --deck-glass-inner: rgba(226, 232, 240, 0.55);
+  --deck-glass-border: rgba(15, 23, 42, 0.08);
+}
+
+:root[data-theme="dark"] {
+  /* Re-asserts the bare-:root defaults explicitly, so an explicit "dark"
+     choice in Settings still wins even when the OS itself prefers light -
+     without this, only the *absence* of an override would mean dark, and
+     an explicit choice couldn't override the light media query above. */
+  --deck-surface: #101827;
+  --deck-card: #131b2b;
+  --deck-card-inset: #0d1420;
+  --deck-chip: #1c2536;
+  --deck-border: rgba(255, 255, 255, 0.08);
+  --deck-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.5);
+  --deck-hairline: rgba(0, 0, 0, 0.35);
+  --deck-text: #ffffff;
+  --deck-text-dim: #9fb0c3;
+  --deck-text-faint: #6c7c93;
+  --deck-glass-outer: rgba(19, 27, 43, 0.62);
+  --deck-glass-inner: rgba(19, 27, 43, 0.38);
+  --deck-glass-border: rgba(255, 255, 255, 0.08);
+}
+
 .app {
   background-color: #93B6C9;
   height: 100vh;
   width: 100vw;
+  font-family: var(--deck-font);
 }
 
 .header {
   position: fixed;
-  height: 40px;
+  height: 50px;
   width: 100vw;
-  background-color: #101827;
+  background-color: var(--deck-surface);
   display: flex;
   flex-direction: row;
   align-items: center;
-
+  box-shadow: 0 1px 0 var(--deck-hairline);
+  z-index: 2;
 }
 
 .header .title {
   flex: auto;
-  color: #ffffff;
-  font-weight: bold;
+  color: var(--deck-text);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  font-size: 14px;
   text-align: center;
 }
 
 .header .logo {
-  height: 30px;
-  width: 30px;
-  margin: 5px 5px;
+  height: 28px;
+  width: 28px;
+  /* Left inset matches the settings button's 18px right inset (see its
+     margin comment) - the 8px right margin here (gap to the title text)
+     is unrelated and left as-is. */
+  margin: 5px 8px 5px 18px;
+  border-radius: 6px;
 }
 
 .header .settings-button {
-  height: 30px;
-  width: 30px;
-  margin: 4px;
+  /* <button> gets box-sizing: border-box from the browser's default
+     stylesheet (unlike a plain div), so width/height here are already the
+     full 32x32 footprint - padding is carved out of that, not added on
+     top - matching the zoom buttons' actual (flex-stretched) 32x32 size. */
+  height: 32px;
+  width: 32px;
+  /* Right margin matches the zoom buttons' actual inset (14px card offset
+     + 4px card padding = 18px), not just the zoom card's own outer edge -
+     otherwise this button lines up with the card's shadow, not the buttons
+     inside it. */
+  margin: 9px 18px 9px 14px;
   padding: 1px;
-  background-color: #242e41;
-  border-radius: 5px;
+  border: none;
+  background-color: var(--deck-chip);
+  border-radius: var(--deck-radius-sm);
+  cursor: pointer;
 }
 
 .header .settings-icon {
@@ -56,63 +171,67 @@
   width: 95vw;
   max-width: 500px;
   height: 40px;
-  background-color: #101827;
+  /* Same frosted-glass treatment as the sidebar panel. */
+  background: var(--deck-glass-outer);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   padding: 4px 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--deck-glass-border);
+  box-shadow: var(--deck-shadow);
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  border-radius: 8px;
+  border-radius: var(--deck-radius-md);
 }
 
 .toggle {
-  width: 140px;
-  height: 40px;
-  top: 50px;
-  right: 1vw;
-  position: absolute;
-  background-color: #242e41;
-  border: 5px solid #101827;
-  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-right: 16px;
 }
 
 .toggle .slider {
-  color: #ffffff;
+  color: var(--deck-text);
   flex: 1
 }
 
 .footer {
   position: fixed;
   bottom: 0px;
-  background-color: #101827;
-  color: white;
+  background-color: var(--deck-surface);
+  color: var(--deck-text);
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: space-between;
   flex-direction: row;
   width: 100vw;
-  height: 5vh;
-  min-height: 20px;
+  height: 34px;
+  padding: 0 20px;
+  box-shadow: 0 -1px 0 var(--deck-hairline);
+  z-index: 2;
 }
 
 .footer .bar  {
-  height: 100%;
-  border-left: 1px solid #ffffff;
+  height: 60%;
+  border-left: 1px solid var(--deck-border);
 }
 
 .footer .column {
   display: flex;
-  flex-direction: column;
-  align-items: left;
-  justify-content: space-around;
-  color: white;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  color: var(--deck-text);
   height: 100%;
 }
 
 .footer .column .footer-link {
-  font-size: calc(.33em + .5vw);
-  color: #bbbbbb;
+  font-size: 11px;
+  color: var(--deck-text-dim);
   cursor: pointer;
   text-decoration: underline;
+  white-space: nowrap;
 }
 
 .footer .column .footer-link button {
@@ -126,15 +245,47 @@
   cursor: inherit;
 }
 
+/* The single-row layout above (3 columns x 2 links, all nowrap) needs way
+   more horizontal space than a phone screen has - it was just overflowing
+   silently past the edge. Stacks the columns instead and lets long
+   citation text wrap, so everything actually fits on screen. */
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    padding: 10px 14px;
+    gap: 6px;
+  }
+
+  .footer .bar {
+    /* A vertical divider between side-by-side columns doesn't make sense
+       once they're stacked - the row gap already separates them. */
+    display: none;
+  }
+
+  .footer .column {
+    height: auto;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+  }
+
+  .footer .column .footer-link {
+    white-space: normal;
+  }
+}
+
 .country-data-status {
   position: fixed;
-  top: 50px;
+  top: 60px;
   left: 50%;
   transform: translate(-50%);
-  color: #ffffff;
-  background-color: #101827;
-  padding: 6px 12px;
-  border-radius: 8px;
+  color: var(--deck-text);
+  background-color: var(--deck-card);
+  padding: 8px 14px;
+  border-radius: var(--deck-radius-md);
+  box-shadow: var(--deck-shadow);
+  font-size: 13px;
   z-index: 1;
 }
 
@@ -144,20 +295,29 @@
 
 .zoom {
   display: flex;
+  flex-direction: column;
   position: absolute;
-  top: 110px;
-  right: 1vw;
-  height: 40px;
-  width: 80px;
-  background-color: #101827;
-  border-radius: 15px;
+  top: 62px;
+  right: 14px;
+  /* content-box (no border-box reset in this app), so width/height below
+     are the size of the buttons themselves - padding adds on top of that
+     to get the card's actual 40x76 footprint, it doesn't eat into it. */
+  height: 68px;
+  width: 32px;
+  background-color: var(--deck-card);
+  border-radius: var(--deck-radius-md);
+  box-shadow: var(--deck-shadow);
+  padding: 4px;
+  gap: 4px;
 }
 
 .zoom .button {
   flex: 1;
-  margin: 5%;
-  color: white;
-  font-weight: bolder;
-  background-color: #374151;
-  border-radius: 10px;
+  margin: 0;
+  border: none;
+  color: var(--deck-text);
+  font-weight: 700;
+  background-color: var(--deck-chip);
+  border-radius: var(--deck-radius-sm);
+  cursor: pointer;
 }

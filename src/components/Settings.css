@@ -1,49 +1,63 @@
 .settings {
     position: fixed;
-    top: 40px;
+    top: 54px;
     right: 1%;
-    width: 200px;
-    height: 100px;
+    width: 210px;
+    height: auto;
     margin-left: 35%;
-    background-color: #101827;
-    padding: 4px 8px;
-    border: 1px solid #ccc;
+    background-color: var(--deck-card, #131b2b);
+    padding: 12px 14px;
+    border: none;
+    box-shadow: var(--deck-shadow, 0 10px 24px -8px rgba(0, 0, 0, 0.5));
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    border-radius: 8px;
+    gap: 10px;
+    border-radius: 10px;
     z-index: 2;
 }
 
 .settings .currency-info-box {
     position: fixed;
     right: 5%;
-    background-color: #101827;
-    color: #ffffff;
-    border: 2px solid #ffffff;
+    background-color: var(--deck-card, #131b2b);
+    color: var(--deck-text-dim, #9fb0c3);
+    border: none;
+    box-shadow: var(--deck-shadow, 0 10px 24px -8px rgba(0, 0, 0, 0.5));
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 11px;
     width: 150px;
 }
 
 .settings .settings-header {
-    color: #ffffff;
-    text-align: center;
+    color: var(--deck-text-faint, #6c7c93);
+    text-align: left;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin: 0;
 }
 
-.settings .currency-selection {
+.settings .settings-row {
     display: flex;
-    height: 10%;
+    align-items: center;
+    height: 20px;
 }
 
-.settings .currency-selection .currency-header{
+.settings .settings-row .settings-row-label {
     width: 40%;
-    color: #ffffff;
+    color: var(--deck-text, #ffffff);
+    font-size: 12px;
+    font-weight: 600;
 }
 
-.settings .currency-selection .currency-dropdown{
+.settings .settings-row .settings-row-dropdown {
     width: 45%;
 }
 
-.settings .currency-selection .currency-info{
+.settings .settings-row .settings-row-info {
     width: 15%;
     display: flex;
     justify-content: center;
@@ -53,8 +67,7 @@
     cursor: pointer;
 }
 
-.settings .currency-selection .currency-info .icon{
+.settings .settings-row .settings-row-info .icon {
     height: 20px;
     width: 20px;
 }
-

@@ -9,11 +9,35 @@ import App from '../src/App';
 // map geometry to render; here we only care about App's own state wiring,
 // so replace it with a stub that echoes the props it was given, plus a
 // button to trigger onCountrySelect the same way a real country click would.
+// A real country click fires both onCountrySelect and onMapClick (see
+// WorldMap.jsx's handleCountryClick) - the mock buttons below replicate
+// that pairing so App-level tests see the same composition production does.
 jest.mock('../src/components/WorldMap', () => (props) => (
   <div data-testid="world-map">
-    {JSON.stringify({ mapModeImport: props.mapModeImport, year: props.year })}
-    <button onClick={() => props.onCountrySelect('DE')}>select-country</button>
-    <button onClick={() => props.onCountrySelect('FR')}>select-other-country</button>
+    {JSON.stringify({
+      mapModeImport: props.mapModeImport,
+      year: props.year,
+      hasCountryData: typeof props.activeCountryData.name !== 'undefined',
+      isMobile: props.isMobile,
+    })}
+    <button
+      onClick={() => {
+        props.onCountrySelect('DE');
+        props.onMapClick();
+      }}
+    >
+      select-country
+    </button>
+    <button
+      onClick={() => {
+        props.onCountrySelect('FR');
+        props.onMapClick();
+      }}
+    >
+      select-other-country
+    </button>
+    <button onClick={() => props.onMapClick()}>click-map-background</button>
+    <button onClick={() => props.onCountryDeselect()}>deselect-country</button>
   </div>
 ));
 
@@ -23,12 +47,30 @@ beforeEach(() => {
 
 afterEach(() => {
   delete document.documentElement.ontouchstart;
+  document.documentElement.removeAttribute('data-theme');
+  localStorage.clear();
 });
 
 test('renders the header and defaults to import mode', () => {
   render(<App />);
   expect(screen.getByText('Arms-Tracker')).toBeInTheDocument();
   expect(screen.getByTestId('world-map').textContent).toContain('"mapModeImport":true');
+});
+
+test('shows the "click a country" hint until the user clicks anywhere on the map', () => {
+  render(<App />);
+  const hint = /Click on Country for more Details/;
+  expect(screen.getByText(hint)).toBeInTheDocument();
+
+  fireEvent.click(screen.getByText('click-map-background'));
+
+  expect(screen.queryByText(hint)).not.toBeInTheDocument();
+});
+
+test('the "click a country" hint also disappears once a country is actually selected', () => {
+  render(<App />);
+  fireEvent.click(screen.getByText('select-country'));
+  expect(screen.queryByText(/Click on Country for more Details/)).not.toBeInTheDocument();
 });
 
 test('toggling Imports/Exports flips the mode passed down to the map', () => {
@@ -52,6 +94,37 @@ test('the settings gear toggles the currency settings panel', () => {
   expect(screen.getByText('Currency:')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
   expect(screen.queryByText('Currency:')).not.toBeInTheDocument();
+});
+
+test('defaults to system color mode, which sets no explicit data-theme override', () => {
+  render(<App />);
+  expect(document.documentElement.getAttribute('data-theme')).toBeNull();
+});
+
+test('choosing a color mode in Settings stamps data-theme on <html> and persists it', () => {
+  render(<App />);
+  fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+
+  fireEvent.change(screen.getByRole('combobox', { name: 'Theme' }), { target: { value: 'light' } });
+  expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+  expect(localStorage.getItem('colorMode')).toBe('light');
+
+  fireEvent.change(screen.getByRole('combobox', { name: 'Theme' }), { target: { value: 'dark' } });
+  expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+  expect(localStorage.getItem('colorMode')).toBe('dark');
+
+  // Back to 'system' removes the override entirely rather than setting
+  // data-theme="system" (which App.css's selectors don't know about) -
+  // the @media (prefers-color-scheme) rules take over again from here.
+  fireEvent.change(screen.getByRole('combobox', { name: 'Theme' }), { target: { value: 'system' } });
+  expect(document.documentElement.getAttribute('data-theme')).toBeNull();
+  expect(localStorage.getItem('colorMode')).toBe('system');
+});
+
+test('a previously saved color mode is restored on the next visit', () => {
+  localStorage.setItem('colorMode', 'dark');
+  render(<App />);
+  expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
 });
 
 test('clicking Data Sources in the footer opens the Data Sources popup', () => {
@@ -166,12 +239,33 @@ test('shows an error message if fetching country data fails, instead of failing 
   expect(screen.queryByText('Loading country data…')).not.toBeInTheDocument();
 });
 
-test('shows the mobile warning popup for touch devices with a mobile user agent', () => {
+test('deselecting a country clears activeCountryData, hiding the sidebar', async () => {
+  global.fetch = jest.fn(() =>
+    Promise.resolve({ ok: true, json: () => Promise.resolve({ value: 'x' }) })
+  );
+
+  render(<App />);
+  fireEvent.click(screen.getByText('select-country'));
+  await waitFor(() =>
+    expect(screen.getByTestId('world-map').textContent).toContain('"hasCountryData":true')
+  );
+
+  fireEvent.click(screen.getByText('deselect-country'));
+
+  expect(screen.getByTestId('world-map').textContent).toContain('"hasCountryData":false');
+});
+
+test('passes isMobile down to the map for touch devices with a mobile user agent', () => {
   document.documentElement.ontouchstart = null;
   Object.defineProperty(window.navigator, 'userAgent', {
     value: 'Mozilla/5.0 (iPhone; CPU iPhone OS) Mobi/15E148',
     configurable: true,
   });
   render(<App />);
-  expect(screen.getByText('We detected a mobile device being used.')).toBeInTheDocument();
+  expect(screen.getByTestId('world-map').textContent).toContain('"isMobile":true');
+});
+
+test('isMobile is false on a regular desktop browser', () => {
+  render(<App />);
+  expect(screen.getByTestId('world-map').textContent).toContain('"isMobile":false');
 });

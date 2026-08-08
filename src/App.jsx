@@ -20,22 +20,23 @@ import {
 import './App.css'
 
 /**
- * Main Application component. Renderd Header, Footer and Worldmap, plus contionally popups for Impressum, Data Sources and warning for mobile users.
+ * Main Application component. Renderd Header, Footer and Worldmap, plus contionally popups for Impressum and Data Sources.
  *
  *
  */
 function App() {
 
-    // Check for mobile device to display warning message
-    const isMobile = ('ontouchstart' in document.documentElement && navigator.userAgent.match(/Mobi/));
-    
+    // Touch devices don't have reliable hover, so the map's hover tooltip
+    // is suppressed on them (see WorldMap's isMobile prop) rather than
+    // attempted and left glitchy.
+    const isMobile = Boolean('ontouchstart' in document.documentElement && navigator.userAgent.match(/Mobi/));
+
     // Controls which map is shown
     const [mapModeImport, setMapModeImport] = useState(true);
 
     // PopUp controls
     const [showPopUp, setShowPopUp] = useState('none')
-    const [showMobilePopUp, setShowMobilePopUp] = useState('true')
-  
+
     // Sets map active based on state of the button
     const toggleComponent = (leftActive) => {
         leftActive ? setMapModeImport(true) : setMapModeImport(false);
@@ -60,12 +61,34 @@ function App() {
         }
     });
 
+    // Color mode: 'light' | 'dark' | 'system', persisted across visits.
+    // Applying it is a plain DOM attribute rather than component state that
+    // components read - the light/dark split lives entirely in App.css's
+    // custom properties, keyed off data-theme on <html> (see the effect
+    // below) or, for 'system', the @media (prefers-color-scheme) rules
+    // there when no explicit override is set at all.
+    const [colorMode, setColorMode] = useState(() => localStorage.getItem('colorMode') || 'system');
+
+    useEffect(() => {
+        if (colorMode === 'system') {
+            document.documentElement.removeAttribute('data-theme');
+        } else {
+            document.documentElement.setAttribute('data-theme', colorMode);
+        }
+        localStorage.setItem('colorMode', colorMode);
+    }, [colorMode]);
+
 
     // Data for sidebar
     const [activeCountryData, setActiveCountryData] = useState({});
 
     // Needs to be tracked here for updating activeCountryData on year change
     const [activeCountryAlpha2, setActiveCountryAlpha2] = useState('')
+
+    // Drives the "(Click on Country for more Details)" hint - hidden as
+    // soon as the user clicks anywhere on the map, not just once they've
+    // actually selected a country (a click on open ocean still counts).
+    const [hasInteractedWithMap, setHasInteractedWithMap] = useState(false)
 
     // Tracks whether a country-data fetch is in flight, and the error message
     // if the last one failed - surfaced to the user instead of only logging.
@@ -155,7 +178,16 @@ function App() {
         fetchCountryData(activeCountryAlpha2)
     }, [activeCountryAlpha2, fetchCountryData])
 
-    
+    // Clears the selected country entirely - the sidebar only renders while
+    // activeCountryData has a name, so this is what actually makes it
+    // disappear (as opposed to the old collapse, which just visually
+    // shrank it while still holding the last country's data).
+    const deselectCountry = () => {
+        setActiveCountryAlpha2('');
+        setActiveCountryData({});
+    }
+
+
     // Render
     return (
         <div className="app"
@@ -174,6 +206,11 @@ function App() {
             <div className='header'>
                 <img className='logo' src="/favicon.png" alt="Taro"/>
                 <div className='title'>Arms-Tracker</div>
+                <div className='toggle'>
+                    <ToggleButton left={"Imports"}
+                        right={"Exports"}
+                        onToggleChange={toggleComponent}/>
+                </div>
                 <button className='settings-button'
                     aria-label="Settings"
                     onClick={
@@ -186,19 +223,15 @@ function App() {
                 </button>
             </div>
 
-            <div className='toggle'>
-                <ToggleButton left={"Imports"}
-                    right={"Exports"}
-                    onToggleChange={toggleComponent}/>
-            </div>
-
             {
             showSettings ? <Settings settings={settings}
-                setSettings={setSettings}></Settings> : ''
+                setSettings={setSettings}
+                colorMode={colorMode}
+                setColorMode={setColorMode}></Settings> : ''
             }
 
             {
-            activeCountryAlpha2 === '' ? <div style={
+            !hasInteractedWithMap ? <div style={
                 {
                     color: 'whitesmoke',
                     position: 'absolute',
@@ -218,10 +251,12 @@ function App() {
                 year={year}
                 activeCountryData={activeCountryData}
                 onCountrySelect={setActiveCountryAlpha2}
+                onCountryDeselect={deselectCountry}
+                onMapClick={() => setHasInteractedWithMap(true)}
                 settings={settings}
+                isMobile={isMobile}
                 />
 
-            {isMobile && showMobilePopUp === 'true' ? <PopUp content='mobile' setShowPopUp={setShowMobilePopUp}></PopUp> : ''}
             {showPopUp === 'none' ? '' : <PopUp content={showPopUp} setShowPopUp={setShowPopUp}></PopUp>}
 
             <div>

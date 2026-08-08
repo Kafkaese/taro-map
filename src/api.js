@@ -53,7 +53,7 @@ export const fetchImportTimeSeries = (countryCode, currency, signal) =>
 export const fetchTotalExports = (countryCode, year, currency, signal) =>
     apiFetch('/arms/exports/total', { country_code: countryCode, year, currency }, signal);
 
-export const fetchExportSources = (countryCode, year, currency, limit = 5, signal) =>
+export const fetchExportSources = (countryCode, year, currency, limit = 20, signal) =>
     apiFetch('/arms/exports/by_country', { country_code: countryCode, year, limit, currency }, signal);
 
 export const fetchExportTimeSeries = (countryCode, currency, signal) =>
@@ -61,3 +61,13 @@ export const fetchExportTimeSeries = (countryCode, currency, signal) =>
 
 export const fetchMerchandiseExports = (countryCode, year, currency, signal) =>
     apiFetch('/merchandise/exports/total', { country_code: countryCode, year, currency }, signal);
+
+// Bulk lookups: which countries have any data at all for a given year (used
+// to grey out countries with nothing to show, before the user even hovers).
+// Returns a bare array of country codes, e.g. ["DE", "FR"] - not currency
+// scoped, since data presence/absence doesn't depend on display currency.
+export const fetchAvailableImportCountries = (year, signal) =>
+    apiFetch('/arms/imports/available', { year }, signal);
+
+export const fetchAvailableExportCountries = (year, signal) =>
+    apiFetch('/arms/exports/available', { year }, signal);

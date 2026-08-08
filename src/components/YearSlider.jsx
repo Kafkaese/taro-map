@@ -9,20 +9,22 @@ import './YearSlider.css';
  * @param {function} onYearChange Function to be called when the year is changed via the slider by the user.
  * 
  */
+const currentYear = new Date().getFullYear();
+
 const YearSlider = ({ onYearChange }) => {
     const [year, setYear] = useState(2020);
-  
+
     const handleChange = (newYear, index) => {
       setYear(newYear);
       onYearChange(newYear)
       // Call the onChange prop with the updated value
     };
-  
+
     return (
       <div className='slider-container'>
         <div className='slider-year-info-box'>
           <div className='slider-year-info-box-element1'>select year: </div>
-          <div className='slider-year-info-box-element2'>{year}</div>  
+          <div className='slider-year-info-box-element2'>{year}</div>
         </div>
         <ReactSlider
             className="horizontal-slider"
@@ -31,7 +33,7 @@ const YearSlider = ({ onYearChange }) => {
             markClassName="example-mark"
             trackClassName="example-track"
             defaultValue={2020}
-            max={2022}
+            max={currentYear}
             min={1996}
             onChange={handleChange}
         />
