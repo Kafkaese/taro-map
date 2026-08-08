@@ -179,6 +179,11 @@ function App() {
             <div className='header'>
                 <img className='logo' src="/favicon.png" alt="Taro"/>
                 <div className='title'>Arms-Tracker</div>
+                <div className='toggle'>
+                    <ToggleButton left={"Imports"}
+                        right={"Exports"}
+                        onToggleChange={toggleComponent}/>
+                </div>
                 <button className='settings-button'
                     aria-label="Settings"
                     onClick={
@@ -189,12 +194,6 @@ function App() {
                 }>
                     <img className='settings-icon' src='/settings.png' alt=""/>
                 </button>
-            </div>
-
-            <div className='toggle'>
-                <ToggleButton left={"Imports"}
-                    right={"Exports"}
-                    onToggleChange={toggleComponent}/>
             </div>
 
             {
