@@ -97,9 +97,9 @@
     gap: 4px;
     flex: 1;
     min-width: 0;
-    background: rgba(13, 20, 32, 0.55);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(19, 27, 43, 0.38);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 8px;
     padding: 10px 6px;
     border-left: 3px solid var(--stat-color, var(--deck-accent-strong, #06879e));
@@ -137,9 +137,9 @@
     gap: 4px;
     flex: 1;
     min-width: 0;
-    background: rgba(13, 20, 32, 0.55);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(19, 27, 43, 0.38);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 8px;
     padding: 10px 6px;
   }
@@ -200,9 +200,9 @@
 .sideBar .panel .barPlot {
     text-align: center;
     color: white;
-    background: rgba(13, 20, 32, 0.55);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(19, 27, 43, 0.38);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     border-radius: 8px;
     padding: 6px 4px;
     overflow-y: scroll;
@@ -230,9 +230,9 @@
 
 .sideBar .panel .timeSeries {
   min-height: 35%;
-  background: rgba(13, 20, 32, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(19, 27, 43, 0.38);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 8px;
   padding: 8px;
   margin-top: 12px;

@@ -40,9 +40,9 @@
   gap: 3px;
   flex: 1;
   min-width: 0;
-  background: rgba(13, 20, 32, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(19, 27, 43, 0.38);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 6px;
   padding: 8px 6px;
   border-left: 3px solid var(--stat-color, var(--deck-accent-strong, #06879e));
@@ -77,9 +77,9 @@
   gap: 3px;
   flex: 1;
   min-width: 0;
-  background: rgba(13, 20, 32, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(19, 27, 43, 0.38);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 6px;
   padding: 8px 6px;
 }
