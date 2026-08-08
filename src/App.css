@@ -1,3 +1,12 @@
+/* Color mode: dark is the default look (bare :root, no condition needed).
+   Light overrides apply either from the OS/browser preference (when the
+   user hasn't forced a choice) or from an explicit choice in Settings,
+   which stamps data-theme="light"/"dark" on <html> and always wins over
+   the OS preference either direction. Everything below is *structural*
+   chrome (surfaces, text, borders, glass) - the map's own land/water
+   colors and the official GPI-sourced democracy/peace index colors are
+   deliberately left alone, since those carry real meaning rather than
+   just being decorative. */
 :root {
   --deck-surface: #101827;
   --deck-card: #131b2b;
@@ -5,15 +14,85 @@
   --deck-chip: #1c2536;
   --deck-border: rgba(255, 255, 255, 0.08);
   --deck-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.5);
+  /* The 1px hairline separating the header/footer from the content past
+     its edge - a distinct role from --deck-shadow (a soft all-around
+     blur used for floating cards), so it gets its own token. */
+  --deck-hairline: rgba(0, 0, 0, 0.35);
   --deck-text: #ffffff;
   --deck-text-dim: #9fb0c3;
   --deck-text-faint: #6c7c93;
   --deck-accent: #06d3fc;
   --deck-accent-strong: #06879e;
+  /* Frosted-glass surfaces (sidebar, hover tooltip, year slider). "outer"
+     is the primary panel background, "inner" the nested stat/chart cards
+     within it, "border" the subtle edge highlight on both. */
+  --deck-glass-outer: rgba(19, 27, 43, 0.62);
+  --deck-glass-inner: rgba(19, 27, 43, 0.38);
+  --deck-glass-border: rgba(255, 255, 255, 0.08);
   --deck-radius-lg: 14px;
   --deck-radius-md: 10px;
   --deck-radius-sm: 8px;
   --deck-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --deck-surface: #eef1f5;
+    --deck-card: #ffffff;
+    --deck-card-inset: #f1f4f8;
+    /* Meaningfully darker than --deck-card/--deck-surface/--deck-glass-*,
+       not just a faint tint - this is what actual controls (buttons, the
+       slider rail) sit on, and needs real separation from a near-white
+       surface to read as a distinct element rather than disappear into it.
+       (An earlier, too-subtle #e3e8ef here was only ~1.16:1 contrast
+       against white - practically invisible.) */
+    --deck-chip: #c7d0e0;
+    --deck-border: rgba(15, 23, 42, 0.10);
+    --deck-shadow: 0 10px 24px -8px rgba(15, 23, 42, 0.18);
+    --deck-hairline: rgba(15, 23, 42, 0.14);
+    --deck-text: #0f172a;
+    --deck-text-dim: #475569;
+    --deck-text-faint: #64748b;
+    --deck-glass-outer: rgba(255, 255, 255, 0.72);
+    --deck-glass-inner: rgba(226, 232, 240, 0.55);
+    --deck-glass-border: rgba(15, 23, 42, 0.08);
+  }
+}
+
+:root[data-theme="light"] {
+  --deck-surface: #eef1f5;
+  --deck-card: #ffffff;
+  --deck-card-inset: #f1f4f8;
+  --deck-chip: #c7d0e0;
+  --deck-border: rgba(15, 23, 42, 0.10);
+  --deck-shadow: 0 10px 24px -8px rgba(15, 23, 42, 0.18);
+  --deck-hairline: rgba(15, 23, 42, 0.14);
+  --deck-text: #0f172a;
+  --deck-text-dim: #475569;
+  --deck-text-faint: #64748b;
+  --deck-glass-outer: rgba(255, 255, 255, 0.72);
+  --deck-glass-inner: rgba(226, 232, 240, 0.55);
+  --deck-glass-border: rgba(15, 23, 42, 0.08);
+}
+
+:root[data-theme="dark"] {
+  /* Re-asserts the bare-:root defaults explicitly, so an explicit "dark"
+     choice in Settings still wins even when the OS itself prefers light -
+     without this, only the *absence* of an override would mean dark, and
+     an explicit choice couldn't override the light media query above. */
+  --deck-surface: #101827;
+  --deck-card: #131b2b;
+  --deck-card-inset: #0d1420;
+  --deck-chip: #1c2536;
+  --deck-border: rgba(255, 255, 255, 0.08);
+  --deck-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.5);
+  --deck-hairline: rgba(0, 0, 0, 0.35);
+  --deck-text: #ffffff;
+  --deck-text-dim: #9fb0c3;
+  --deck-text-faint: #6c7c93;
+  --deck-glass-outer: rgba(19, 27, 43, 0.62);
+  --deck-glass-inner: rgba(19, 27, 43, 0.38);
+  --deck-glass-border: rgba(255, 255, 255, 0.08);
 }
 
 .app {
@@ -31,7 +110,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: 0 1px 0 var(--deck-hairline);
   z-index: 2;
 }
 
@@ -93,11 +172,11 @@
   max-width: 500px;
   height: 40px;
   /* Same frosted-glass treatment as the sidebar panel. */
-  background: rgba(19, 27, 43, 0.62);
+  background: var(--deck-glass-outer);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   padding: 4px 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--deck-glass-border);
   box-shadow: var(--deck-shadow);
   display: flex;
   flex-direction: column;
@@ -113,7 +192,7 @@
 }
 
 .toggle .slider {
-  color: #ffffff;
+  color: var(--deck-text);
   flex: 1
 }
 
@@ -121,7 +200,7 @@
   position: fixed;
   bottom: 0px;
   background-color: var(--deck-surface);
-  color: white;
+  color: var(--deck-text);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -129,7 +208,7 @@
   width: 100vw;
   height: 34px;
   padding: 0 20px;
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35);
+  box-shadow: 0 -1px 0 var(--deck-hairline);
   z-index: 2;
 }
 
@@ -143,7 +222,7 @@
   flex-direction: row;
   align-items: center;
   gap: 14px;
-  color: white;
+  color: var(--deck-text);
   height: 100%;
 }
 
@@ -201,7 +280,7 @@
   top: 60px;
   left: 50%;
   transform: translate(-50%);
-  color: #ffffff;
+  color: var(--deck-text);
   background-color: var(--deck-card);
   padding: 8px 14px;
   border-radius: var(--deck-radius-md);
@@ -236,7 +315,7 @@
   flex: 1;
   margin: 0;
   border: none;
-  color: white;
+  color: var(--deck-text);
   font-weight: 700;
   background-color: var(--deck-chip);
   border-radius: var(--deck-radius-sm);

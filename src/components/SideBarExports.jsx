@@ -57,7 +57,7 @@ const SideBarExports = ({countryData, onClose, year, settings}) => {
                         <YAxis dataKey="name" tick={CustomizedTick} type="category"/>
                         <XAxis type="number" domain={[0, countryData.totalExports.value]} tick={false}/>
                         <Tooltip content={<SidebarCustomTooltip settings={settings}/>} />
-                        <Bar dataKey="value" fill="#06d3fc" background={{ fill: '#1c2536' }} name=" "/>
+                        <Bar dataKey="value" fill="#06d3fc" background={{ fill: 'var(--deck-chip)' }} name=" "/>
                     </BarChart> : <div style={{height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                                     <p style={{flex: '0', textDecoration: 'none'}}>No data available</p>
                                 </div>}
@@ -88,7 +88,7 @@ const SideBarExports = ({countryData, onClose, year, settings}) => {
                             position: 'right',
                             offset: -15,
                     }}/>
-                    <Tooltip contentStyle={{background: '#131b2b', border: 'none', borderRadius: '8px'}} separator="" itemStyle={{color: 'white'}} labelStyle={{color: 'white', textAlign: 'center', fontWeight: 'bolder'}} formatter={formatTooltipValue}/>
+                    <Tooltip contentStyle={{background: 'var(--deck-card)', border: '1px solid var(--deck-border)', borderRadius: '8px'}} separator="" itemStyle={{color: 'var(--deck-text)'}} labelStyle={{color: 'var(--deck-text)', textAlign: 'center', fontWeight: 'bolder'}} formatter={formatTooltipValue}/>
                     <Line unit={` ${settings.currency.symbol}`} dot={false} type="monotone" dataKey="value" stroke="#06d3fc" activeDot={{ r: 6, fill: '#06d3fc' }} name=" "/>
                     <ReferenceLine x={year} stroke="red" />
                 </LineChart>

@@ -3,7 +3,7 @@
     top: 54px;
     right: 1%;
     width: 210px;
-    height: 100px;
+    height: auto;
     margin-left: 35%;
     background-color: var(--deck-card, #131b2b);
     padding: 12px 14px;
@@ -12,6 +12,7 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
     border-radius: 10px;
     z-index: 2;
 }
@@ -36,27 +37,27 @@
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.06em;
-    margin: 0 0 10px;
+    margin: 0;
 }
 
-.settings .currency-selection {
+.settings .settings-row {
     display: flex;
     align-items: center;
-    height: 10%;
+    height: 20px;
 }
 
-.settings .currency-selection .currency-header{
+.settings .settings-row .settings-row-label {
     width: 40%;
-    color: #ffffff;
+    color: var(--deck-text, #ffffff);
     font-size: 12px;
     font-weight: 600;
 }
 
-.settings .currency-selection .currency-dropdown{
+.settings .settings-row .settings-row-dropdown {
     width: 45%;
 }
 
-.settings .currency-selection .currency-info{
+.settings .settings-row .settings-row-info {
     width: 15%;
     display: flex;
     justify-content: center;
@@ -66,7 +67,7 @@
     cursor: pointer;
 }
 
-.settings .currency-selection .currency-info .icon{
+.settings .settings-row .settings-row-info .icon {
     height: 20px;
     width: 20px;
 }

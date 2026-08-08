@@ -1,5 +1,5 @@
 .dropdown {
-    color: #ffffff;
+    color: var(--deck-text, #ffffff);
     background-color: var(--deck-chip, #1c2536);
     border: 1px solid var(--deck-border, rgba(255, 255, 255, 0.08));
     border-radius: 6px;

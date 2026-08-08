@@ -4,7 +4,13 @@ import Dropdown from "./Dropdown";
 
 import './Settings.css';
 
-const Settings = ({settings, setSettings}) => {
+const colorModeOptions = [
+    { value: 'system', label: 'System' },
+    { value: 'light', label: 'Light' },
+    { value: 'dark', label: 'Dark' }
+]
+
+const Settings = ({settings, setSettings, colorMode, setColorMode}) => {
 
     const currencyOptions = [
         {
@@ -24,8 +30,12 @@ const Settings = ({settings, setSettings}) => {
         })
     }
 
+    const changeColorMode = (option) => {
+        setColorMode(option.value)
+    }
 
-    // Handles currency info 
+
+    // Handles currency info
     const [showCurrencyInfo, setShowCurrencyInfo] = useState(false);
 
     const handleMouseEnterInfoIcon = () => {
@@ -38,24 +48,34 @@ const Settings = ({settings, setSettings}) => {
     return (
         <div className="settings" onClick={(e) => {e.stopPropagation();}}>
             <h3 className="settings-header">Settings</h3>
-            <div className="currency-selection">
-                <div className="currency-header">Currency:</div>
-                <div className="currency-dropdown">
+            <div className="settings-row">
+                <div className="settings-row-label">Currency:</div>
+                <div className="settings-row-dropdown">
                 <Dropdown  options={currencyOptions}
                     onSelect={changeCurrency}
-                    value={
-                        settings.currency
-                }></Dropdown>
+                    value={settings.currency}
+                    ariaLabel="Currency"
+                ></Dropdown>
                 </div>
                 <button
                     type="button"
-                    className="currency-info"
+                    className="settings-row-info"
                     onMouseOver={handleMouseEnterInfoIcon}
                     onMouseOut={handleMouseLeaveInfoIcon}
                     onFocus={handleMouseEnterInfoIcon}
                     onBlur={handleMouseLeaveInfoIcon}
                     aria-label="Currency information"
                 ><img className="icon" src="/information-button.png" alt=''></img></button>
+            </div>
+            <div className="settings-row">
+                <div className="settings-row-label">Theme:</div>
+                <div className="settings-row-dropdown">
+                <Dropdown options={colorModeOptions}
+                    onSelect={changeColorMode}
+                    value={colorModeOptions.find((option) => option.value === colorMode)}
+                    ariaLabel="Theme"
+                ></Dropdown>
+                </div>
             </div>
             {showCurrencyInfo ? <p className="currency-info-box">EUR is currency from original data. For USD historical exchange rate for the corresponding year is used.</p> : ''}
         </div>

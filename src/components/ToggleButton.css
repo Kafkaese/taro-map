@@ -14,11 +14,11 @@
 }
 
 .wrapper .text-box {
-    color: #9fb0c3;
+    color: var(--deck-text-dim, #9fb0c3);
 }
 
 .wrapper .text-box-active {
-    color: #ffffff;
+    color: var(--deck-text, #ffffff);
     font-weight: 800;
     border-bottom-color: #06d3fc;
 }
