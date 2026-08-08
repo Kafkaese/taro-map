@@ -1,5 +1,5 @@
 import React from "react"
-import { formatUSDvalue, formatUSDorder, getDemocracyColor, getPeaceColor, getUSDColor } from "./formattingUtils"
+import { formatUSDvalue, formatUSDorder, getDemocracyColor, getPeaceColor } from "./formattingUtils"
 
 const MapTooltip = (hoveredCountry, settings) => {
 
@@ -15,7 +15,7 @@ const MapTooltip = (hoveredCountry, settings) => {
                     
                     <div className="circle-container">
                     
-                    <div className="money-wrapper" style={{ '--stat-color': getUSDColor(hoveredCountry.totalArmsImports.value) }}>
+                    <div className="money-wrapper">
                         <div className="money">
                         {formatUSDvalue(hoveredCountry.totalArmsImports.value)}
                         </div>

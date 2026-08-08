@@ -1,6 +1,6 @@
 import React from "react";
 import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
-import { getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
+import { getDemocracyColor, getPeaceColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
 import SidebarCustomTooltip from "./SidebarCustomTooltip";
 import CustomizedTick from "./CustomizedTicks";
 import './SideBarImports.css'
@@ -31,7 +31,7 @@ const SideBarImports = ({countryData, collapsed, onCollapse, year, settings}) =>
                     {countryData.name.value}
                 </div>
                 <div className="colorcoded-wrapper">
-                    <div className="money-wrapper" style={{ '--stat-color': getUSDColor(countryData.totalImports.value) }}>
+                    <div className="money-wrapper">
                         <div className="money">
                         {formatUSDvalue(countryData.totalImports.value)}
                         </div>

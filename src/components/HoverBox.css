@@ -75,7 +75,6 @@
   background: var(--deck-card-inset, #0d1420);
   border-radius: 6px;
   padding: 8px 6px;
-  border-left: 3px solid var(--stat-color, var(--deck-accent-strong, #06879e));
 }
 
 .hover-box-container .money-wrapper .money {

@@ -1,6 +1,6 @@
 import React from "react";
 import PercentageCircle from "./PercentageCircle";
-import { formatUSDvalue, formatUSDorder, getUSDColor } from "./formattingUtils";
+import { formatUSDvalue, formatUSDorder } from "./formattingUtils";
 
 /**
  * Renders Tooltip with export data on the WorldMap.
@@ -21,7 +21,7 @@ const MapTooltipExports = (hoveredCountry, settings) => {
                     
                     <div className="circle-container">
                     
-                    <div className="money-wrapper" style={{ '--stat-color': getUSDColor(hoveredCountry.totalArmsExports.value) }}>
+                    <div className="money-wrapper">
                         <div className="money">
                             {formatUSDvalue(hoveredCountry.totalArmsExports.value)}
                         </div>

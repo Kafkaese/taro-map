@@ -114,7 +114,6 @@
     background: var(--deck-card-inset, #0d1420);
     border-radius: 8px;
     padding: 10px 6px;
-    border-left: 3px solid var(--stat-color, var(--deck-accent-strong, #06879e));
   }
 
   .sideBar .panel .colorcoded-wrapper .money-wrapper .money {
