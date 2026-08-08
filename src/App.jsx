@@ -13,7 +13,8 @@ import {
     fetchImportTimeSeries,
     fetchTotalExports,
     fetchExportSources,
-    fetchExportTimeSeries
+    fetchExportTimeSeries,
+    fetchConflictsByCountry
 } from './api'
 
 import './App.css'
@@ -125,7 +126,8 @@ function App() {
                 importTimeSeriesData,
                 totalExportsData,
                 exportSourcesData,
-                exportTimeSeriesData
+                exportTimeSeriesData,
+                conflictsData
             ] = await Promise.all([
                 fetchCountryName(alpha2, signal),
                 fetchDemocracyIndex(alpha2, year, signal),
@@ -135,7 +137,8 @@ function App() {
                 fetchImportTimeSeries(alpha2, currency, signal),
                 fetchTotalExports(alpha2, year, currency, signal),
                 fetchExportSources(alpha2, year, currency, undefined, signal),
-                fetchExportTimeSeries(alpha2, currency, signal)
+                fetchExportTimeSeries(alpha2, currency, signal),
+                fetchConflictsByCountry(alpha2, signal)
             ]);
 
             // update object with new data
@@ -148,7 +151,8 @@ function App() {
                 importTimeSeries: importTimeSeriesData,
                 totalExports: totalExportsData,
                 exportSources: exportSourcesData,
-                exportTimeSeries: exportTimeSeriesData
+                exportTimeSeries: exportTimeSeriesData,
+                conflicts: conflictsData
             });
 
 

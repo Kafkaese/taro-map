@@ -248,35 +248,92 @@
     -webkit-backdrop-filter: blur(10px);
     border-radius: 8px;
     padding: 6px 4px;
-    overflow-y: scroll;
     min-height: 100px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--deck-chip, #1c2536) transparent;
 }
 
-.sideBar .panel .barPlot::-webkit-scrollbar {
-    width: 6px;
+.sideBar .panel .expand-sources-button {
+    display: block;
+    margin: 6px auto 0;
+    background: none;
+    border: none;
+    padding: 2px 4px;
+    color: var(--deck-accent-strong, #06879e);
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    cursor: pointer;
 }
 
-.sideBar .panel .barPlot::-webkit-scrollbar-track {
-    background: transparent;
+.sideBar .panel .expand-sources-button:hover,
+.sideBar .panel .expand-sources-button:focus-visible {
+    text-decoration: underline;
 }
 
-.sideBar .panel .barPlot::-webkit-scrollbar-thumb {
-    background-color: var(--deck-chip, #1c2536);
-    border-radius: 999px;
-}
-
-.sideBar .panel .barPlot::-webkit-scrollbar-thumb:hover {
-    background-color: var(--deck-text-faint, #6c7c93);
+.sideBar .panel .expand-sources-button:focus-visible {
+    outline: 2px solid var(--deck-accent, #06d3fc);
+    outline-offset: 2px;
 }
 
 .sideBar .panel .timeSeries {
-  min-height: 35%;
+  /* Used to be min-height: 35%, relying on percentage-height resolving
+     through .panel's flex layout. Now that this section lives inside
+     .scrollable-content (itself a flex-basis: auto item being stretched by
+     flex-grow), that percentage chain is the classic "percentage height
+     inside flexbox" gotcha - browsers are inconsistent about resolving it,
+     and it was silently collapsing to 0 (the chart never rendered at all).
+     The LineChart now gets an explicit height={200} prop instead (see
+     SideBarImports.jsx, matching how the bar plot already sizes itself) -
+     this rule just needs to fit that fixed content height. */
   background: var(--deck-glass-inner, rgba(19, 27, 43, 0.38));
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-radius: 8px;
   padding: 8px;
   margin-top: 12px;
+}
+
+/* Everything below the fixed header (title + imports/democracy/peace stat
+   row) lives in here and scrolls as one region, instead of each section
+   (bar plot, time series, conflicts) trying to manage its own overflow
+   independently. .panel keeps overflow: hidden (for its rounded corners)
+   and a fixed height (see above/media queries) - min-height: 0 overrides
+   the flex default of "auto" (which sizes to fit all content and blocks
+   shrinking below that), letting this region actually shrink to the
+   remaining space and scroll rather than pushing past the panel's bottom
+   edge and getting silently clipped. */
+.sideBar .panel .scrollable-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--deck-chip, #1c2536) transparent;
+    /* Without this, scrolled content hard-clips flush against the bottom
+       edge of the fixed stat row above (.colorcoded-wrapper) as soon as
+       you scroll even slightly - the ~18px gap above the bar plot title is
+       part of the scrolling content, so it disappears with everything
+       else. This fades content out over the same ~16px .colorcoded-wrapper
+       uses as its own margin-top, so content appears to sink into a
+       consistent "invisible border" rather than getting chopped off. The
+       mask is fixed to this element's own box, not the scroll offset, so
+       the fade band stays put regardless of scroll position. */
+    -webkit-mask-image: linear-gradient(to bottom, transparent, black 16px);
+    mask-image: linear-gradient(to bottom, transparent, black 16px);
+}
+
+.sideBar .panel .scrollable-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sideBar .panel .scrollable-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sideBar .panel .scrollable-content::-webkit-scrollbar-thumb {
+    background-color: var(--deck-chip, #1c2536);
+    border-radius: 999px;
+}
+
+.sideBar .panel .scrollable-content::-webkit-scrollbar-thumb:hover {
+    background-color: var(--deck-text-faint, #6c7c93);
 }

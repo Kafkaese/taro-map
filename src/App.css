@@ -33,6 +33,15 @@
   --deck-radius-md: 10px;
   --deck-radius-sm: 8px;
   --deck-font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  /* Ongoing Conflicts sidebar section: severity stripe/label colors (by
+     total_deaths_est, see getConflictSeverityColor) and the disclaimer
+     banner's warning tint. Kept separate from --deck-accent on purpose -
+     this is semantic "danger" color, not the app's brand accent. */
+  --conflict-severity-critical: #ff6b5c;
+  --conflict-severity-major: #f5a545;
+  --conflict-severity-active: #e8c04a;
+  --conflict-banner-bg: rgba(255, 107, 92, 0.14);
+  --conflict-banner-border: rgba(255, 107, 92, 0.4);
 }
 
 @media (prefers-color-scheme: light) {
@@ -56,6 +65,11 @@
     --deck-glass-outer: rgba(255, 255, 255, 0.72);
     --deck-glass-inner: rgba(226, 232, 240, 0.55);
     --deck-glass-border: rgba(15, 23, 42, 0.08);
+    --conflict-severity-critical: #c9372c;
+    --conflict-severity-major: #a8641a;
+    --conflict-severity-active: #8a6c14;
+    --conflict-banner-bg: rgba(201, 55, 44, 0.08);
+    --conflict-banner-border: rgba(201, 55, 44, 0.3);
   }
 }
 
@@ -73,6 +87,11 @@
   --deck-glass-outer: rgba(255, 255, 255, 0.72);
   --deck-glass-inner: rgba(226, 232, 240, 0.55);
   --deck-glass-border: rgba(15, 23, 42, 0.08);
+  --conflict-severity-critical: #c9372c;
+  --conflict-severity-major: #a8641a;
+  --conflict-severity-active: #8a6c14;
+  --conflict-banner-bg: rgba(201, 55, 44, 0.08);
+  --conflict-banner-border: rgba(201, 55, 44, 0.3);
 }
 
 :root[data-theme="dark"] {
@@ -93,6 +112,11 @@
   --deck-glass-outer: rgba(19, 27, 43, 0.62);
   --deck-glass-inner: rgba(19, 27, 43, 0.38);
   --deck-glass-border: rgba(255, 255, 255, 0.08);
+  --conflict-severity-critical: #ff6b5c;
+  --conflict-severity-major: #f5a545;
+  --conflict-severity-active: #e8c04a;
+  --conflict-banner-bg: rgba(255, 107, 92, 0.14);
+  --conflict-banner-border: rgba(255, 107, 92, 0.4);
 }
 
 body {
