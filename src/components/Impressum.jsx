@@ -15,7 +15,7 @@ const Impressum = () => {
                     <a href="mailto:f.laubisch@posteo.de">f.laubisch@posteo.de</a>
                 </p>
                 <p>
-                    <a href="github.com/Kafkaese">github.com/Kafkaese</a>
+                    <a href="https://github.com/Kafkaese">github.com/Kafkaese</a>
                 </p>
                 <br/>
                 <p>Responsible for the content in accordance with  §18 Abs. 2 MStV: Frederik Laubisch</p>
