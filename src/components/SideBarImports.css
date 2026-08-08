@@ -177,6 +177,25 @@
     padding: 6px 4px;
     overflow-y: scroll;
     min-height: 100px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--deck-chip, #1c2536) transparent;
+}
+
+.sideBar .panel .barPlot::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sideBar .panel .barPlot::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sideBar .panel .barPlot::-webkit-scrollbar-thumb {
+    background-color: var(--deck-chip, #1c2536);
+    border-radius: 999px;
+}
+
+.sideBar .panel .barPlot::-webkit-scrollbar-thumb:hover {
+    background-color: var(--deck-text-faint, #6c7c93);
 }
 
 .sideBar .panel .timeSeries {
