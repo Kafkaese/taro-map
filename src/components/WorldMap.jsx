@@ -227,6 +227,15 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onCo
     // Notify parent, which fetches this country's data
     onCountrySelect(alpha2);
 
+    // The sidebar now shows this country's full detail, so the cursor
+    // tooltip is redundant - without this it would linger (since clicking
+    // doesn't itself fire onMouseLeave) and end up rendering behind the
+    // newly-opened sidebar instead of disappearing. Also aborts any
+    // in-flight tooltip fetch, so a response that lands just after the
+    // click can't resurrect it a moment later.
+    tooltipAbortControllerRef.current?.abort();
+    setHoveredCountry(null);
+
     onMapClick?.();
   };
 

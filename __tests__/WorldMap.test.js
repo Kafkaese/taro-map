@@ -139,6 +139,29 @@ test('clicking a country calls onCountrySelect with its country code', () => {
   expect(onCountrySelect).toHaveBeenCalledWith('DE');
 });
 
+test('clicking a country dismisses its hover tooltip instead of leaving it lingering behind the sidebar', async () => {
+  // Regression test: clicking doesn't itself fire onMouseLeave, so without
+  // explicitly clearing hoveredCountry on click, the tooltip stayed up
+  // (rendering behind the newly-opened sidebar, which sits at a higher
+  // z-index) whenever the mouse hadn't actually left the country yet.
+  mockFetchJson((url) => {
+    if (url.includes('/metadata/name/short')) return { value: 'Germany' };
+    if (url.includes('/metadata/democracy_index')) return { value: 8.67 };
+    if (url.includes('/arms/imports/total')) return { value: 1500000 };
+    if (url.includes('/metadata/peace_index')) return { value: 1.5 };
+    return {};
+  });
+  renderMap();
+  const geo = screen.getByTestId('geography');
+
+  fireEvent.mouseOver(geo);
+  expect(await screen.findByText('Germany')).toBeInTheDocument();
+
+  fireEvent.click(geo);
+
+  expect(screen.queryByText('Germany')).not.toBeInTheDocument();
+});
+
 test('a country missing from the availability list is greyed out', async () => {
   mockFetchJson((url) => {
     if (url.includes('/arms/imports/available')) return []; // DE has no data
