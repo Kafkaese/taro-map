@@ -35,7 +35,7 @@ const OngoingConflicts = ({ conflicts }) => {
             <div className="disclaimer-banner">
                 <span className="icon" aria-hidden="true">⚠️</span>
                 <span className="copy">
-                    <b>This section contains rough, contested estimates— not verified data.</b>
+                    <b>This section contains rough, contested estimates— not verified data, and makes no claims of completeness.</b>
                     <button type="button" className="link" onClick={() => setIsDisclaimerOpen(true)}>
                         Read the full disclaimer here.
                     </button>
