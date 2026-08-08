@@ -91,9 +91,12 @@
   width: 95vw;
   max-width: 500px;
   height: 40px;
-  background-color: var(--deck-card);
+  /* Same frosted-glass treatment as the sidebar panel. */
+  background: rgba(19, 27, 43, 0.62);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   padding: 4px 8px;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: var(--deck-shadow);
   display: flex;
   flex-direction: column;
