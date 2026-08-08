@@ -36,13 +36,16 @@ test('renders a fallback instead of a blank page when a child throws', () => {
 });
 
 test('the reload button reloads the page', () => {
+  // Injected via the reload prop rather than mocking window.location.reload
+  // itself - recent jsdom versions make window.location (and its reload
+  // property) non-configurable and non-writable, so no standard mocking
+  // technique (Object.defineProperty, jest.spyOn, jest.replaceProperty) can
+  // intercept it anymore. See ErrorBoundary.jsx's reload prop doc comment.
   const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
   const reload = jest.fn();
-  delete window.location;
-  window.location = { reload };
 
   render(
-    <ErrorBoundary>
+    <ErrorBoundary reload={reload}>
       <Bomb />
     </ErrorBoundary>
   );

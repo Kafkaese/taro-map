@@ -47,6 +47,17 @@ beforeEach(() => {
 
 afterEach(() => {
   delete document.documentElement.ontouchstart;
+  // Restores jsdom's own default userAgent getter, undoing the
+  // Object.defineProperty override the mobile-user-agent test below uses -
+  // without this it leaks into every later test in this file (userAgent is
+  // an own-property override on the shared jsdom window/navigator, not
+  // reset between individual tests, only between files). This went
+  // unnoticed under Jest 27's older bundled jsdom, where
+  // 'ontouchstart' in document.documentElement was false by default and
+  // masked the leak by itself making isMobile false regardless; the jsdom
+  // bundled with Jest 30 exposes ontouchstart unconditionally, so the
+  // leaked user agent alone was enough to flip isMobile back to true.
+  delete window.navigator.userAgent;
   document.documentElement.removeAttribute('data-theme');
   localStorage.clear();
 });
