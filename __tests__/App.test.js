@@ -47,6 +47,8 @@ beforeEach(() => {
 
 afterEach(() => {
   delete document.documentElement.ontouchstart;
+  document.documentElement.removeAttribute('data-theme');
+  localStorage.clear();
 });
 
 test('renders the header and defaults to import mode', () => {
@@ -92,6 +94,37 @@ test('the settings gear toggles the currency settings panel', () => {
   expect(screen.getByText('Currency:')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
   expect(screen.queryByText('Currency:')).not.toBeInTheDocument();
+});
+
+test('defaults to system color mode, which sets no explicit data-theme override', () => {
+  render(<App />);
+  expect(document.documentElement.getAttribute('data-theme')).toBeNull();
+});
+
+test('choosing a color mode in Settings stamps data-theme on <html> and persists it', () => {
+  render(<App />);
+  fireEvent.click(screen.getByRole('button', { name: 'Settings' }));
+
+  fireEvent.change(screen.getByRole('combobox', { name: 'Theme' }), { target: { value: 'light' } });
+  expect(document.documentElement.getAttribute('data-theme')).toBe('light');
+  expect(localStorage.getItem('colorMode')).toBe('light');
+
+  fireEvent.change(screen.getByRole('combobox', { name: 'Theme' }), { target: { value: 'dark' } });
+  expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+  expect(localStorage.getItem('colorMode')).toBe('dark');
+
+  // Back to 'system' removes the override entirely rather than setting
+  // data-theme="system" (which App.css's selectors don't know about) -
+  // the @media (prefers-color-scheme) rules take over again from here.
+  fireEvent.change(screen.getByRole('combobox', { name: 'Theme' }), { target: { value: 'system' } });
+  expect(document.documentElement.getAttribute('data-theme')).toBeNull();
+  expect(localStorage.getItem('colorMode')).toBe('system');
+});
+
+test('a previously saved color mode is restored on the next visit', () => {
+  localStorage.setItem('colorMode', 'dark');
+  render(<App />);
+  expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
 });
 
 test('clicking Data Sources in the footer opens the Data Sources popup', () => {

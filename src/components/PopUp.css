@@ -16,7 +16,7 @@
 }
 
 .impressum {
-    color: white;
+    color: var(--deck-text, #ffffff);
     border: no;
 }
 

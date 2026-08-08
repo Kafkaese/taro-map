@@ -61,6 +61,23 @@ function App() {
         }
     });
 
+    // Color mode: 'light' | 'dark' | 'system', persisted across visits.
+    // Applying it is a plain DOM attribute rather than component state that
+    // components read - the light/dark split lives entirely in App.css's
+    // custom properties, keyed off data-theme on <html> (see the effect
+    // below) or, for 'system', the @media (prefers-color-scheme) rules
+    // there when no explicit override is set at all.
+    const [colorMode, setColorMode] = useState(() => localStorage.getItem('colorMode') || 'system');
+
+    useEffect(() => {
+        if (colorMode === 'system') {
+            document.documentElement.removeAttribute('data-theme');
+        } else {
+            document.documentElement.setAttribute('data-theme', colorMode);
+        }
+        localStorage.setItem('colorMode', colorMode);
+    }, [colorMode]);
+
 
     // Data for sidebar
     const [activeCountryData, setActiveCountryData] = useState({});
@@ -208,7 +225,9 @@ function App() {
 
             {
             showSettings ? <Settings settings={settings}
-                setSettings={setSettings}></Settings> : ''
+                setSettings={setSettings}
+                colorMode={colorMode}
+                setColorMode={setColorMode}></Settings> : ''
             }
 
             {
