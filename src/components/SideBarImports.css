@@ -46,7 +46,13 @@
 @media (max-width: 768px) {
   .sideBar .panel {
     right: 14px;
-    bottom: 44px;
+    /* The footer is no longer a fixed 34px on mobile (see App.css) - it
+       wraps onto several lines instead, so this needs to clear a rough
+       worst-case estimate of that wrapped height rather than the old
+       34px + gap. Approximate - check against the real footer height on
+       a device/emulator and adjust if it's still overlapping or too big
+       a gap. */
+    bottom: 140px;
     /* Cancels the 1400px breakpoint's fixed height above (which would
        otherwise still apply here too, since both conditions are true at
        once) so top/bottom drive the size again instead. */
