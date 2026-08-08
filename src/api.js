@@ -53,7 +53,7 @@ export const fetchImportTimeSeries = (countryCode, currency, signal) =>
 export const fetchTotalExports = (countryCode, year, currency, signal) =>
     apiFetch('/arms/exports/total', { country_code: countryCode, year, currency }, signal);
 
-export const fetchExportSources = (countryCode, year, currency, limit = 5, signal) =>
+export const fetchExportSources = (countryCode, year, currency, limit = 20, signal) =>
     apiFetch('/arms/exports/by_country', { country_code: countryCode, year, limit, currency }, signal);
 
 export const fetchExportTimeSeries = (countryCode, currency, signal) =>

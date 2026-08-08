@@ -191,14 +191,26 @@ test('onMapClick also fires when a drag/zoom gesture ends, not just on click', (
   expect(onMapClick).toHaveBeenCalledTimes(1);
 });
 
-test('clicking the map background closes (collapses) the sidebar', () => {
-  renderMap({ activeCountryData: buildCountryData() });
-  const panel = document.querySelector('.panel');
-  expect(panel).not.toHaveStyle({ width: '0%' });
+test('clicking the map background closes the sidebar by calling onCountryDeselect', () => {
+  // The sidebar only renders while the parent's activeCountryData has a
+  // name - WorldMap itself doesn't own that state, so closing it means
+  // asking the parent to clear it via onCountryDeselect, not toggling a
+  // local collapsed flag.
+  const onCountryDeselect = jest.fn();
+  renderMap({ activeCountryData: buildCountryData(), onCountryDeselect });
 
   fireEvent.click(screen.getByTestId('composable-map'));
 
-  expect(panel).toHaveStyle({ width: '0%' });
+  expect(onCountryDeselect).toHaveBeenCalledTimes(1);
+});
+
+test('clicking the sidebar close button also calls onCountryDeselect', () => {
+  const onCountryDeselect = jest.fn();
+  renderMap({ activeCountryData: buildCountryData(), onCountryDeselect });
+
+  fireEvent.click(screen.getByRole('button', { name: 'Close country details' }));
+
+  expect(onCountryDeselect).toHaveBeenCalledTimes(1);
 });
 
 test('clicking the map background un-highlights the previously selected country', () => {
@@ -213,13 +225,14 @@ test('clicking the map background un-highlights the previously selected country'
   expect(geo).toHaveStyle({ fill: '#84B098' }); // defaultColor - back to unhighlighted
 });
 
-test('clicking a country does not also trigger the background-click collapse', () => {
+test('clicking a country does not also trigger the background-click deselect', () => {
   mockFetchJson(() => ({ value: 'x' }));
-  renderMap({ activeCountryData: buildCountryData() });
+  const onCountryDeselect = jest.fn();
+  renderMap({ activeCountryData: buildCountryData(), onCountryDeselect });
 
   fireEvent.click(screen.getByTestId('geography'));
 
-  expect(document.querySelector('.panel')).not.toHaveStyle({ width: '0%' });
+  expect(onCountryDeselect).not.toHaveBeenCalled();
 });
 
 test('the map cannot be dragged infinitely off the west/east edge', () => {

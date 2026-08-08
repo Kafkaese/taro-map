@@ -18,7 +18,8 @@ import './HoverBox.css';
 
 
 /**
- * Renders world map with tooltip and a conditional, collapsible sidebar with more detailed information.
+ * Renders world map with tooltip and a sidebar with more detailed information,
+ * shown only while a country is selected.
  * Zoom level and year are controlled by parent component. Countries with no
  * data at all for the current year/mode are greyed out (see availableCountries
  * below) but remain fully clickable/hoverable.
@@ -27,11 +28,12 @@ import './HoverBox.css';
  * @param {integer} year Year currently selected. Chnages data that is displayed in tooltip and sidebar.
  * @param {object} activeCountryData Data about the currently hovered over country on the Map.
  * @param {function} onCountrySelect Called with a country's alpha-2 code when it's clicked. The parent is responsible for fetching its data.
+ * @param {function} [onCountryDeselect] Called when the sidebar's close button is clicked, or the map background is clicked while a country is selected. The parent is responsible for clearing activeCountryData, which is what actually makes the sidebar disappear.
  * @param {function} [onMapClick] Called on any click within the map area - both the background and a country - regardless of whether a country was actually selected.
  * @param {object} settings Global app settings, including currency to be displayed and language (language settings currently not used).
  *
  */
-const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMapClick, settings}) => {
+const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onCountryDeselect, onMapClick, settings}) => {
 
   // geometry colors
   const defaultColor = '#84B098';
@@ -211,9 +213,6 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
   };
 
 
-  // Collapse for sidebar
-  const [collapsed, setCollapsed] = useState(false)
-
   // Gets country data for sidebar from APIs
   const handleCountryClick = (event, alpha2, geo) => {
 
@@ -227,9 +226,6 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
     // Notify parent, which fetches this country's data
     onCountrySelect(alpha2);
 
-    // uncollpase sidebar if new country is selected
-    setCollapsed(false)
-
     onMapClick?.();
   };
 
@@ -237,11 +233,19 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
   // sidebar. Only reachable when the click doesn't land on a Geography,
   // since handleCountryClick stops propagation.
   const handleMapBackgroundClick = () => {
-    setCollapsed(true);
     // Un-highlight the previously selected country too - the sidebar it
     // was showing detail for is now closed, so it shouldn't still look selected.
     setSelectedGeography(null);
+    onCountryDeselect?.();
     onMapClick?.();
+  };
+
+  // Called from the sidebar's own close button - same effect as clicking
+  // the map background (unhighlight + tell the parent to drop the data),
+  // just triggered from inside the panel instead.
+  const handleSidebarClose = () => {
+    setSelectedGeography(null);
+    onCountryDeselect?.();
   };
 
   // Track selected Geography. Needed to keep last clicked country highlighted, and unhighlight if new one is selected.
@@ -251,7 +255,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onMa
   // Render
   return (
     <div className='map'>
-      {typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data' ? <SideBar mapModeImport={mapModeImport} countryData={activeCountryData} collapsed={collapsed} settings={settings} onCollapse={setCollapsed} year={year} setings={settings}></SideBar> : <div/>}
+      {typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data' ? <SideBar mapModeImport={mapModeImport} countryData={activeCountryData} settings={settings} onClose={handleSidebarClose} year={year}></SideBar> : <div/>}
       <ComposableMap
         projection="geoMercator"
         style={{ width: '100%', height: '98vh', cursor: 'grab' }}

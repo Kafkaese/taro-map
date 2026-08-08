@@ -27,7 +27,9 @@
     height: 10px;
     line-height: 38px;
     cursor: pointer;
-    background: #ffffff;
+    /* Matches .example-track's color (not white) so the thumb's center
+       reads as a hole punched through it, not a white dot sitting on top. */
+    background: var(--deck-chip, #1c2536);
     border-width: 6px 5px 6px 5px;
     border-color: var(--deck-accent-strong, #06879e);
     border-style: solid;

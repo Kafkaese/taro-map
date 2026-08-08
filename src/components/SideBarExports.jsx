@@ -1,6 +1,6 @@
 import React from "react";
 import { BarChart, Bar, CartesianGrid, LineChart, Line, ReferenceLine, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
-import {getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
+import {formatUSDorder, formatUSDvalue, formatTooltipValue } from "./formattingUtils";
 import PercentageCircle from "./PercentageCircle";
 import SidebarCustomTooltip from "./SidebarCustomTooltip";
 import CustomizedTick from "./CustomizedTicks";
@@ -12,24 +12,19 @@ import CustomizedTick from "./CustomizedTicks";
  *  
  * 
  * @param {object} countryData Data to be sidplayed in the side bar for the currently selected country
- * @param {boolean} collapsed Wether or not the side bar is currently collapsed. 
- * @param {function} onCollapse Funcion to be called when the side bar is being (un-)collapsed by the cooresponding button. 
+ * @param {function} onClose Called when the close button is clicked - the parent is responsible for actually hiding the sidebar and un-selecting the country on the map.
  * @param {integer} year Year currently selected on the parent map. Influences the data being displayed.
  */
-const SideBarExports = ({countryData, collapsed, onCollapse, year, settings}) => {
-
-    const collapse = () => {
-        onCollapse(!collapsed)
-    }
+const SideBarExports = ({countryData, onClose, year, settings}) => {
 
     return (
         <div className="sideBar">
-            <div className="panel" style={collapsed ? {width: '0%'} : {maxWidth: '500px', width: '95vw'}}>
+            <div className="panel" style={{maxWidth: '500px', width: '95vw'}}>
                 <div className="title">
                     {countryData.name.value}
                 </div>
                 <div className="colorcoded-wrapper">
-                    <div className="money-wrapper" style={{width: collapsed ? '0px' : '70px', overflow: "hidden", '--stat-color': getUSDColor(countryData.totalExports.value)}}>
+                    <div className="money-wrapper">
                         <div className="money">
                             {formatUSDvalue(countryData.totalExports.value)}
                         </div>
@@ -37,15 +32,15 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year, settings}) =>
                         <span className='money-label'>Exports</span>
                     </div>
 
-                    <div className='circle-wrapper' style={{width: collapsed ? '0px' : '70px', overflow: "hidden"}}>
-                        <PercentageCircle percentage={((countryData.totalExports.value/1000000) / countryData.merchExports.value) * 100} style={{width: collapsed ? '0px' : '70px', overflow: "hidden"}}/>
-                        <span className='circle-label' style={{width: collapsed ? '0' : '100%', }}>Percentage of Exports<sup>[1]</sup></span>
+                    <div className='circle-wrapper'>
+                        <PercentageCircle percentage={((countryData.totalExports.value/1000000) / countryData.merchExports.value) * 100}/>
+                        <span className='circle-label'>Percentage of Exports<sup>[1]</sup></span>
                     </div>
                 </div>
-                <div className="barPlot-title" style={{width: collapsed ? '0' : '100%'}}>{`\n Export Destination Countries ${year}`}</div>
+                <div className="barPlot-title">{`\n Export Destination Countries ${year}`}</div>
 
                 <div className="barPlot">
-                    <ResponsiveContainer width={collapsed ? 0 : "100%"} height={countryData.exportSources.length*30+20}>
+                    <ResponsiveContainer width="100%" height={countryData.exportSources.length*30+20}>
                     { (countryData.exportSources.value !== 'no data') ? <BarChart
                         layout="vertical"
                         barSize={10}
@@ -70,9 +65,9 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year, settings}) =>
                 </div>
 
                 <div className="timeSeries">
-                <ResponsiveContainer width={collapsed ? 0 : "100%"} height={300}>
+                <ResponsiveContainer width="100%" height={300}>
                 <LineChart
-                width={collapsed ? 0 : 500}
+                width={500}
                 height={300}
                 data={countryData.exportTimeSeries}
                 margin={{
@@ -100,12 +95,12 @@ const SideBarExports = ({countryData, collapsed, onCollapse, year, settings}) =>
                 </ResponsiveContainer>
                 </div>
 
-                <button 
-                    className="button" 
-                    style={collapsed ? {left: '0%'} : {left: '100%'}}
-                    onClick={collapse}
+                <button
+                    className="button"
+                    aria-label="Close country details"
+                    onClick={onClose}
                 >
-                    {collapsed ? ">" : "<"} 
+                    ←
                 </button>
             </div>
         </div>

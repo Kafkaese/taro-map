@@ -59,21 +59,6 @@
 
   }
 
-  // Color coding for USD import/export values. Unlike the two thresholds
-  // above, 4713.75 and 342.5 don't correspond to any known public dataset
-  // or documented rationale - origin unclear. If you're the one who picked
-  // these, please replace this comment with the actual reasoning.
-  const getUSDColor = (value) => {
-    if (value >= 4713.75) {
-      return '#8b0000'
-    } else if (value >= 342.5) {
-      return '#ffae42'
-    } else if (value >= 0) {
-      return '#008000'
-    } else {
-      return '#383838'}
-  }
-
   // Formatting for USD import values to k, mn or bn
   const formatUSDvalue = (value) => {
     if (value > 1000000000) {
@@ -105,4 +90,4 @@
   }
 
 
-  export {getDemocracyColor, getPeaceColor, getUSDColor, formatUSDorder, formatUSDvalue, formatTooltipValue};
+  export {getDemocracyColor, getPeaceColor, formatUSDorder, formatUSDvalue, formatTooltipValue};

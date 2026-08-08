@@ -1,7 +1,6 @@
 import {
   getDemocracyColor,
   getPeaceColor,
-  getUSDColor,
   formatUSDorder,
   formatUSDvalue,
   formatTooltipValue,
@@ -70,21 +69,6 @@ describe('getPeaceColor', () => {
   });
   test('NaN falls back to grey', () => {
     expect(getPeaceColor(NaN)).toBe('#383838');
-  });
-});
-
-describe('getUSDColor', () => {
-  test('high values (>= 4713.75) are dark red', () => {
-    expect(getUSDColor(4713.75)).toBe('#8b0000');
-  });
-  test('mid values (>= 342.5, < 4713.75) are orange', () => {
-    expect(getUSDColor(342.5)).toBe('#ffae42');
-  });
-  test('low non-negative values (>= 0, < 342.5) are green', () => {
-    expect(getUSDColor(0)).toBe('#008000');
-  });
-  test('negative values fall back to grey', () => {
-    expect(getUSDColor(-1)).toBe('#383838');
   });
 });
 
