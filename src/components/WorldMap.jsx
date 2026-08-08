@@ -31,9 +31,10 @@ import './HoverBox.css';
  * @param {function} [onCountryDeselect] Called when the sidebar's close button is clicked, or the map background is clicked while a country is selected. The parent is responsible for clearing activeCountryData, which is what actually makes the sidebar disappear.
  * @param {function} [onMapClick] Called on any click within the map area - both the background and a country - regardless of whether a country was actually selected.
  * @param {object} settings Global app settings, including currency to be displayed and language (language settings currently not used).
+ * @param {boolean} [isMobile] Touch devices don't have reliable hover, so the cursor-following hover tooltip is suppressed entirely when true - tapping a country still selects it and opens the sidebar as normal.
  *
  */
-const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onCountryDeselect, onMapClick, settings}) => {
+const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onCountryDeselect, onMapClick, settings, isMobile}) => {
 
   // geometry colors
   const defaultColor = '#84B098';
@@ -285,7 +286,7 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onCo
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    onMouseOver={() => mapModeImport ? getImportTooltipData(alpha2) : getExportTooltipData(alpha2)}
+                    onMouseOver={isMobile ? undefined : () => mapModeImport ? getImportTooltipData(alpha2) : getExportTooltipData(alpha2)}
                     onMouseLeave={(event) => handleCountryLeave(event, restingFill)}
                     onClick={(event) => handleCountryClick(event, alpha2, geo)}
                     onMouseMove={handleMouseMoveOnGeo}

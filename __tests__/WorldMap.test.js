@@ -105,6 +105,32 @@ test('hovering a country in export mode requests the export endpoints for that c
   ).toBe(true);
 });
 
+test('hovering a country on a mobile device does not fetch or show the tooltip', async () => {
+  // Touch devices don't have reliable hover, so it's suppressed entirely
+  // rather than left glitchy - tapping still selects the country normally
+  // (covered separately below), just without the cursor-following tooltip.
+  const fetchMock = mockFetchJson(() => ({ value: 'Germany' }));
+  renderMap({ isMobile: true });
+  fireEvent.mouseOver(screen.getByTestId('geography'));
+  await new Promise((resolve) => setTimeout(resolve, 0)); // let any stray microtasks flush
+  // Excludes the data-availability bulk fetch, which fires on mount
+  // regardless of hover (see the "aborts the previous hover fetch" test
+  // below for the same exclusion).
+  const hoverUrls = fetchMock.mock.calls
+    .map((call) => call[0])
+    .filter((url) => !url.includes('/available'));
+  expect(hoverUrls).toHaveLength(0);
+  expect(screen.queryByText('Germany')).not.toBeInTheDocument();
+});
+
+test('a country is still fully clickable/selectable on a mobile device', () => {
+  mockFetchJson(() => ({ value: 'x' }));
+  const onCountrySelect = jest.fn();
+  renderMap({ isMobile: true, onCountrySelect });
+  fireEvent.click(screen.getByTestId('geography'));
+  expect(onCountrySelect).toHaveBeenCalledWith('DE');
+});
+
 test('clicking a country calls onCountrySelect with its country code', () => {
   mockFetchJson(() => ({ value: 'x' }));
   const onCountrySelect = jest.fn();
