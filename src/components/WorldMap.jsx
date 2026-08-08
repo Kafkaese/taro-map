@@ -9,7 +9,6 @@ import {
   fetchPeaceIndex,
   fetchTotalImports,
   fetchTotalExports,
-  fetchMerchandiseExports,
   fetchAvailableImportCountries,
   fetchAvailableExportCountries
 } from '../api';
@@ -181,16 +180,14 @@ const WorldMap = ({mapModeImport, year, activeCountryData, onCountrySelect, onCo
     try {
       const currency = settings.currency.value;
 
-      const [countryName, totalArmsExports, totalMerchExports] = await Promise.all([
+      const [countryName, totalArmsExports] = await Promise.all([
         fetchCountryName(alpha2, signal),
-        fetchTotalExports(alpha2, year, currency, signal),
-        fetchMerchandiseExports(alpha2, year, currency, signal)
+        fetchTotalExports(alpha2, year, currency, signal)
       ]);
 
       const data = {
         countryName,
-        totalArmsExports,
-        totalMerchExports
+        totalArmsExports
       };
 
       setHoveredCountry({...data, position: mousePosition});

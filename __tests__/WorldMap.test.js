@@ -88,7 +88,6 @@ test('hovering a country in export mode requests the export endpoints for that c
   const fetchMock = mockFetchJson((url) => {
     if (url.includes('/metadata/name/short')) return { value: 'Germany' };
     if (url.includes('/arms/exports/total')) return { value: 800000 };
-    if (url.includes('/merchandise/exports/total')) return { value: 50000000 };
     return {};
   });
   renderMap({ mapModeImport: false });
@@ -99,9 +98,6 @@ test('hovering a country in export mode requests the export endpoints for that c
   // whole {value, label, symbol} object) instead of settings.currency.value.
   expect(
     urls.some((u) => u.includes('/arms/exports/total?country_code=DE&year=2020&currency=USD'))
-  ).toBe(true);
-  expect(
-    urls.some((u) => u.includes('/merchandise/exports/total?country_code=DE&year=2020&currency=USD'))
   ).toBe(true);
 });
 
