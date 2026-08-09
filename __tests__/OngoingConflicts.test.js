@@ -50,7 +50,7 @@ test('shows the military/civilian split and displacement figures in the card det
   expect(screen.getByText(/Civilian 1\.4M/)).toBeInTheDocument();
   expect(screen.getByText('Refugees')).toBeInTheDocument();
   expect(screen.getByText('3.5M')).toBeInTheDocument();
-  expect(screen.getByText('IDPs')).toBeInTheDocument();
+  expect(screen.getByText('Internally Displaced')).toBeInTheDocument();
   expect(screen.getByText('8.9M')).toBeInTheDocument();
   expect(screen.getByText('low confidence')).toBeInTheDocument();
 });

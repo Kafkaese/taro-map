@@ -81,12 +81,12 @@ const SideBarImports = ({countryData, onClose, year, settings}) => {
                             margin={{
                                 top: 5,
                                 right: 30,
-                                left: 20,
+                                left: 4,
                                 bottom: 5,
                             }}
                         >
 
-                            <YAxis dataKey="name" tick={CustomizedTick} type="category"/>
+                            <YAxis dataKey="name" tick={CustomizedTick} type="category" width={28}/>
                             <XAxis hide={true} type="number" domain={[0, countryData.totalImports.value]} tick={false} />
                             <Tooltip content={<SidebarCustomTooltip settings={settings}/>} />
                             <Bar dataKey="value" fill="#06d3fc" background={{ fill: 'var(--deck-chip)' }}  name=" "/>
@@ -113,7 +113,7 @@ const SideBarImports = ({countryData, onClose, year, settings}) => {
                     margin={{
                         top: 5,
                         right: 30,
-                        left: 20,
+                        left: 4,
                         bottom: 5,
                     }}
                     >
@@ -121,12 +121,12 @@ const SideBarImports = ({countryData, onClose, year, settings}) => {
                         <XAxis dataKey="year" />
                         <YAxis
                             tick={false}
+                            width={40}
                             label={{
                                 value: `Total Import Value (${settings.currency.value})`,
                                 style: { textAnchor: 'middle' },
                                 angle: -90,
-                                position: 'right',
-                                offset: -15,
+                                position: 'center',
                         }}/>
                         <Tooltip contentStyle={{background: 'var(--deck-card)', border: '1px solid var(--deck-border)', borderRadius: '8px'}} formatter={formatTooltipValue} itemStyle={{color: 'var(--deck-text)'}} labelStyle={{color: 'var(--deck-text)', textAlign: 'center', fontWeight: 'bolder'}} separator=""/>
                         <Line unit={` ${settings.currency.symbol}`} dot={false} type="monotone" dataKey="value" stroke="#06d3fc" activeDot={{ r: 6, fill: '#06d3fc' }} name=" "/>
