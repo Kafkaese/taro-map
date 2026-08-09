@@ -248,8 +248,15 @@ body {
   color: var(--deck-text);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   flex-direction: row;
+  gap: 20px;
+  /* width: 100vw + this padding used to add up to 40px wider than the
+     viewport (content-box is the default box model) - border-box folds
+     the padding back inside that 100vw instead of adding to it, which is
+     what was pushing the right-hand column off-screen regardless of
+     viewport size or content, not just at narrow widths. */
+  box-sizing: border-box;
   width: 100vw;
   height: 34px;
   padding: 0 20px;
