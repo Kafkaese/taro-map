@@ -151,6 +151,13 @@ test('clicking Impressum in the footer opens the Impressum popup', () => {
   expect(screen.getByRole('heading', { name: 'Impressum' })).toBeInTheDocument();
 });
 
+test('clicking Image Credits in the footer opens the attributions popup', () => {
+  render(<App />);
+  expect(screen.queryByRole('heading', { name: 'Image Credits' })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByText('Image Credits'));
+  expect(screen.getByRole('heading', { name: 'Image Credits' })).toBeInTheDocument();
+});
+
 test('selecting a country issues exactly one batch of 10 fetches, concurrently', async () => {
   // Regression test for two bugs: (1) each fetch used to be awaited before
   // starting the next, serializing 10 round-trips instead of firing them

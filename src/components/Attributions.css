@@ -1,0 +1,19 @@
+.attributions {
+  color: var(--deck-text, #ffffff);
+}
+
+.attributions h1 {
+  text-align: center;
+}
+
+.attributions .content {
+  margin-left: 100px;
+  margin-right: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.attributions a {
+  color: var(--deck-accent, #06d3fc);
+}

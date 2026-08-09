@@ -42,6 +42,11 @@
   --conflict-severity-active: #e8c04a;
   --conflict-banner-bg: rgba(255, 107, 92, 0.14);
   --conflict-banner-border: rgba(255, 107, 92, 0.4);
+  /* Icons ship as separate black/white PNGs (no SVG recolor-via-currentColor
+     available) rather than one asset - swapped per theme the same way as
+     every other token here. White set for dark's white/near-white surfaces. */
+  --icon-settings: url('/settings_white.png');
+  --icon-info: url('/info_white.png');
 }
 
 @media (prefers-color-scheme: light) {
@@ -70,6 +75,8 @@
     --conflict-severity-active: #8a6c14;
     --conflict-banner-bg: rgba(201, 55, 44, 0.08);
     --conflict-banner-border: rgba(201, 55, 44, 0.3);
+    --icon-settings: url('/settings_black.png');
+    --icon-info: url('/info_black.png');
   }
 }
 
@@ -92,6 +99,8 @@
   --conflict-severity-active: #8a6c14;
   --conflict-banner-bg: rgba(201, 55, 44, 0.08);
   --conflict-banner-border: rgba(201, 55, 44, 0.3);
+  --icon-settings: url('/settings_black.png');
+  --icon-info: url('/info_black.png');
 }
 
 :root[data-theme="dark"] {
@@ -117,6 +126,8 @@
   --conflict-severity-active: #e8c04a;
   --conflict-banner-bg: rgba(255, 107, 92, 0.14);
   --conflict-banner-border: rgba(255, 107, 92, 0.4);
+  --icon-settings: url('/settings_white.png');
+  --icon-info: url('/info_white.png');
 }
 
 body {
@@ -182,9 +193,14 @@ body {
 }
 
 .header .settings-icon {
-  vertical-align: middle  ;
+  display: inline-block;
+  vertical-align: middle;
   height: 20px;
   width: 20px;
+  background-image: var(--icon-settings);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .map {
