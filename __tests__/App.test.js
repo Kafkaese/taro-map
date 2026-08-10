@@ -60,6 +60,9 @@ afterEach(() => {
   delete window.navigator.userAgent;
   document.documentElement.removeAttribute('data-theme');
   localStorage.clear();
+  // Safety net beyond the explicit cleanup at the end of the flag-disabled
+  // test itself, in case an assertion throws before reaching it.
+  delete process.env.REACT_APP_FEATURE_CONFLICTS;
 });
 
 test('renders the header and defaults to import mode', () => {
@@ -183,6 +186,23 @@ test('selecting a country issues exactly one batch of 10 fetches, concurrently',
   await act(async () => {
     pending.forEach((resolve) => resolve());
   });
+});
+
+test('does not fetch conflicts data when the feature flag is disabled', async () => {
+  process.env.REACT_APP_FEATURE_CONFLICTS = 'false';
+  delete window._env_;
+
+  const fetchMock = jest.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve({}) }));
+  global.fetch = fetchMock;
+
+  render(<App />);
+  fireEvent.click(screen.getByText('select-country'));
+
+  // 9, not 10 - the tenth (conflicts) call is skipped entirely rather than
+  // fetched and discarded.
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(9));
+  const urls = fetchMock.mock.calls.map((call) => call[0]);
+  expect(urls.some((u) => u.includes('/conflicts/'))).toBe(false);
 });
 
 test('changing the year while a country is selected refetches its data for the new year', async () => {

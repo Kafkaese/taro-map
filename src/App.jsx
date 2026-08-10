@@ -16,6 +16,7 @@ import {
     fetchExportTimeSeries,
     fetchConflictsByCountry
 } from './api'
+import { isConflictsFeatureEnabled } from './featureFlags'
 
 import './App.css'
 
@@ -138,7 +139,12 @@ function App() {
                 fetchTotalExports(alpha2, year, currency, signal),
                 fetchExportSources(alpha2, year, currency, undefined, signal),
                 fetchExportTimeSeries(alpha2, currency, signal),
-                fetchConflictsByCountry(alpha2, signal)
+                // Skips the network call entirely when the feature is
+                // flagged off, rather than fetching and then hiding the
+                // result - OngoingConflicts already renders nothing for an
+                // empty array, so this is the one place that needs to know
+                // about the flag at all.
+                isConflictsFeatureEnabled() ? fetchConflictsByCountry(alpha2, signal) : Promise.resolve([])
             ]);
 
             // update object with new data
