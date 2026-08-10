@@ -15,6 +15,11 @@ test('renders Data Sources content', () => {
   expect(screen.getByText('Data Sources')).toBeInTheDocument();
 });
 
+test('renders Attributions content', () => {
+  render(<PopUp content="attributions" setShowPopUp={() => {}} />);
+  expect(screen.getByText('Image Credits')).toBeInTheDocument();
+});
+
 test('close button calls setShowPopUp with "none"', () => {
   const setShowPopUp = jest.fn();
   render(<PopUp content="impressum" setShowPopUp={setShowPopUp} />);

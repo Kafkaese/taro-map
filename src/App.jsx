@@ -13,8 +13,10 @@ import {
     fetchImportTimeSeries,
     fetchTotalExports,
     fetchExportSources,
-    fetchExportTimeSeries
+    fetchExportTimeSeries,
+    fetchConflictsByCountry
 } from './api'
+import { isConflictsFeatureEnabled } from './featureFlags'
 
 import './App.css'
 
@@ -125,7 +127,8 @@ function App() {
                 importTimeSeriesData,
                 totalExportsData,
                 exportSourcesData,
-                exportTimeSeriesData
+                exportTimeSeriesData,
+                conflictsData
             ] = await Promise.all([
                 fetchCountryName(alpha2, signal),
                 fetchDemocracyIndex(alpha2, year, signal),
@@ -135,7 +138,13 @@ function App() {
                 fetchImportTimeSeries(alpha2, currency, signal),
                 fetchTotalExports(alpha2, year, currency, signal),
                 fetchExportSources(alpha2, year, currency, undefined, signal),
-                fetchExportTimeSeries(alpha2, currency, signal)
+                fetchExportTimeSeries(alpha2, currency, signal),
+                // Skips the network call entirely when the feature is
+                // flagged off, rather than fetching and then hiding the
+                // result - OngoingConflicts already renders nothing for an
+                // empty array, so this is the one place that needs to know
+                // about the flag at all.
+                isConflictsFeatureEnabled() ? fetchConflictsByCountry(alpha2, signal) : Promise.resolve([])
             ]);
 
             // update object with new data
@@ -148,7 +157,8 @@ function App() {
                 importTimeSeries: importTimeSeriesData,
                 totalExports: totalExportsData,
                 exportSources: exportSourcesData,
-                exportTimeSeries: exportTimeSeriesData
+                exportTimeSeries: exportTimeSeriesData,
+                conflicts: conflictsData
             });
 
 
@@ -208,7 +218,7 @@ function App() {
                             setShowSettings(!showSettings)
                         }
                 }>
-                    <img className='settings-icon' src='/settings.png' alt=""/>
+                    <span className='settings-icon' aria-hidden="true"></span>
                 </button>
             </div>
 
@@ -258,18 +268,15 @@ function App() {
                     </span>
                     <span className="footer-link"><button type="button" onClick={() => {showPopUp==='impressum' ? setShowPopUp('none') : setShowPopUp('impressum')}}>Impressum</button>
                     </span>
-                </div>
-                <div className='bar'/>
-                <div className='column'>
-                    <span className="footer-link">[1]<a href='https://www.eiu.com/n/campaigns/democracy-index-2022/'>Economist Intelligence Unit: Democracy Index Report 2022</a>
-                    </span>
-                    <span className="footer-link">[2]<a href='https://www.visionofhumanity.org/resources/?type=research'>Visions of Humanity: Global Peace Index</a>
+                    <span className="footer-link"><button type="button" onClick={() => {showPopUp==='attributions' ? setShowPopUp('none') : setShowPopUp('attributions')}}>Image Credits</button>
                     </span>
                 </div>
                 <div className='bar'/>
                 <div className='column'>
-                    <a className="footer-link" href="https://www.flaticon.com/free-icons/settings" title="settings icons">Settings icons created by Freepik - Flaticon</a>
-                    <a className="footer-link" href="https://www.flaticon.com/free-icons/info" title="info icons">Info icons created by Freepik - Flaticon</a>
+                    <span className="footer-link">[1]<a href='https://www.eiu.com/n/global-themes/democracy-index-2025-hub/'>Democracy Index</a>
+                    </span>
+                    <span className="footer-link">[2]<a href='https://www.visionofhumanity.org/resources/?type=research'>Global Peace Index</a>
+                    </span>
                 </div>
             </div>
         </div>

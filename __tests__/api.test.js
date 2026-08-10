@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { fetchCountryName, fetchDemocracyIndex } from '../src/api';
+import { fetchCountryName, fetchDemocracyIndex, fetchConflictsByCountry } from '../src/api';
 import { mockFetchJson } from '../testUtils/mockFetch';
 
 beforeEach(() => {
@@ -55,4 +55,13 @@ test('rejects when the response is not ok, instead of resolving with an error bo
     Promise.resolve({ ok: false, status: 500, json: () => Promise.resolve({}) })
   );
   await expect(fetchCountryName('DE')).rejects.toThrow();
+});
+
+test('fetchConflictsByCountry builds the request URL from country_code', async () => {
+  const fetchMock = mockFetchJson(() => []);
+  await fetchConflictsByCountry('EG');
+  expect(fetchMock).toHaveBeenCalledWith(
+    'https://api.example.com:443/conflicts/by_country?country_code=EG',
+    expect.anything()
+  );
 });

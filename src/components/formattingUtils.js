@@ -89,5 +89,44 @@
     return `${value.toLocaleString('en')}`
   }
 
+  // Severity buckets for the Ongoing Conflicts sidebar section, keyed off
+  // total_deaths_est. The floor (10,000) matches the dataset's own
+  // definition of "major conflict" - every conflict surfaced here already
+  // cleared that bar just to be included, so there's no "below active" tier.
+  const getConflictSeverityColor = (totalDeathsEst) => {
+    if (totalDeathsEst >= 1000000) {
+      return 'var(--conflict-severity-critical)'
+    } else if (totalDeathsEst >= 100000) {
+      return 'var(--conflict-severity-major)'
+    } else {
+      return 'var(--conflict-severity-active)'
+    }
+  }
 
-  export {getDemocracyColor, getPeaceColor, formatUSDorder, formatUSDvalue, formatTooltipValue};
+  const getConflictSeverityLabel = (totalDeathsEst) => {
+    if (totalDeathsEst >= 1000000) {
+      return 'Critical'
+    } else if (totalDeathsEst >= 100000) {
+      return 'Major'
+    } else {
+      return 'Active'
+    }
+  }
+
+  // Compact single-value formatting for large casualty/displacement
+  // figures, e.g. 258000 -> "258K", 1600000 -> "1.6M". Distinct from
+  // formatUSDvalue/formatUSDorder above (which split a currency value into
+  // a separate number + unit-word pair for the money-wrapper stat card) -
+  // this is a single inline string for prose-like labels ("~258K killed").
+  const formatCompactNumber = (value) => {
+    if (value >= 1000000) {
+      return `${(value / 1000000).toFixed(1)}M`
+    } else if (value >= 1000) {
+      return `${Math.round(value / 1000)}K`
+    } else {
+      return `${value}`
+    }
+  }
+
+
+  export {getDemocracyColor, getPeaceColor, formatUSDorder, formatUSDvalue, formatTooltipValue, getConflictSeverityColor, getConflictSeverityLabel, formatCompactNumber};

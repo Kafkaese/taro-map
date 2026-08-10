@@ -7,8 +7,6 @@ const Impressum = () => {
             <h1>Impressum</h1>
             <div className="content">
                 <p>Frederik Laubisch</p>
-                <p>Allerstr. 43</p>
-                <p>12049 Berlin</p>
                 <p>Germany</p>
                 <br/>
                 <p>

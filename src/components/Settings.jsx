@@ -65,7 +65,7 @@ const Settings = ({settings, setSettings, colorMode, setColorMode}) => {
                     onFocus={handleMouseEnterInfoIcon}
                     onBlur={handleMouseLeaveInfoIcon}
                     aria-label="Currency information"
-                ><img className="icon" src="/information-button.png" alt=''></img></button>
+                ><span className="icon" aria-hidden="true"></span></button>
             </div>
             <div className="settings-row">
                 <div className="settings-row-label">Theme:</div>

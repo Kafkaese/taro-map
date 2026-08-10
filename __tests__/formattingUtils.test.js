@@ -4,6 +4,9 @@ import {
   formatUSDorder,
   formatUSDvalue,
   formatTooltipValue,
+  getConflictSeverityColor,
+  getConflictSeverityLabel,
+  formatCompactNumber,
 } from '../src/components/formattingUtils';
 
 describe('getDemocracyColor', () => {
@@ -102,5 +105,37 @@ describe('formatUSDorder', () => {
 describe('formatTooltipValue', () => {
   test('formats with thousands separators', () => {
     expect(formatTooltipValue(1234567)).toBe('1,234,567');
+  });
+});
+
+describe('getConflictSeverityColor / getConflictSeverityLabel', () => {
+  test('1M+ deaths is Critical', () => {
+    expect(getConflictSeverityColor(1600000)).toBe('var(--conflict-severity-critical)');
+    expect(getConflictSeverityLabel(1600000)).toBe('Critical');
+    expect(getConflictSeverityLabel(1000000)).toBe('Critical');
+  });
+  test('100K to < 1M deaths is Major', () => {
+    expect(getConflictSeverityColor(258000)).toBe('var(--conflict-severity-major)');
+    expect(getConflictSeverityLabel(258000)).toBe('Major');
+    expect(getConflictSeverityLabel(100000)).toBe('Major');
+  });
+  test('below 100K deaths is Active', () => {
+    expect(getConflictSeverityColor(42000)).toBe('var(--conflict-severity-active)');
+    expect(getConflictSeverityLabel(42000)).toBe('Active');
+  });
+});
+
+describe('formatCompactNumber', () => {
+  test('values at or over a million are shown in millions with one decimal', () => {
+    expect(formatCompactNumber(1600000)).toBe('1.6M');
+    expect(formatCompactNumber(5900000)).toBe('5.9M');
+  });
+  test('values at or over a thousand are shown in whole thousands', () => {
+    expect(formatCompactNumber(258000)).toBe('258K');
+    expect(formatCompactNumber(1500)).toBe('2K');
+  });
+  test('values under a thousand are returned as-is', () => {
+    expect(formatCompactNumber(999)).toBe('999');
+    expect(formatCompactNumber(0)).toBe('0');
   });
 });

@@ -25,6 +25,34 @@ export const buildCountryData = (overrides = {}) => ({
     { year: 2019, value: 700000 },
     { year: 2020, value: 800000 },
   ],
+  conflicts: [],
+  ...overrides,
+});
+
+/**
+ * A single conflicts entry shaped exactly like GET /conflicts/by_country's
+ * response, for tests that need the Ongoing Conflicts section to actually
+ * render something.
+ */
+export const buildConflict = (overrides = {}) => ({
+  conflict_id: 3,
+  name: 'Sudanese civil wars',
+  start_year: 1955,
+  total_deaths_low: 1521000,
+  total_deaths_high: 1521000,
+  total_deaths_est: 1600000,
+  military_deaths_est: 240000,
+  civilian_deaths_est: 1360000,
+  refugees_est: 3500000,
+  idps_est: 8860000,
+  confidence: 'low',
+  wikipedia_url: 'https://en.wikipedia.org/wiki/Sudanese_civil_war_(2023%E2%80%93present)',
+  notes: 'Test fixture notes.',
+  belligerents: [
+    { country_name: 'Sudan', alpha2: 'SD' },
+    { country_name: 'South Sudan', alpha2: 'SS' },
+    { country_name: 'Egypt', alpha2: 'EG' },
+  ],
   ...overrides,
 });
 

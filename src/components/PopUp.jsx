@@ -2,11 +2,12 @@ import React from 'react';
 import './PopUp.css'
 import Impressum from './Impressum';
 import DataSources from './DataSources';
+import Attributions from './Attributions';
 
 /**
  * Renders PopUp at center of screen to be filled with content.
  *
- * @param {string} content Type of content to be displayed. ust be one of [impressum, data]
+ * @param {string} content Type of content to be displayed. ust be one of [impressum, data, attributions]
  * @param {function} setShowPopUp Function that controlled wether the popup is enabled. Passed from App.
  *
  */
@@ -23,7 +24,8 @@ const PopUp = ({ content, setShowPopUp }) => {
             <div>
                 {{
                     'impressum': <Impressum />,
-                    'data': <DataSources />
+                    'data': <DataSources />,
+                    'attributions': <Attributions />
                 }[content]}
             </div>
         </div>

@@ -68,3 +68,10 @@ export const fetchAvailableImportCountries = (year, signal) =>
 
 export const fetchAvailableExportCountries = (year, signal) =>
     apiFetch('/arms/exports/available', { year }, signal);
+
+// Ongoing armed conflicts the given country is a belligerent in. Returns a
+// bare array (empty if none), like the *_available calls above - the
+// import sidebar's "Ongoing Conflicts" section renders nothing at all when
+// this comes back empty.
+export const fetchConflictsByCountry = (countryCode, signal) =>
+    apiFetch('/conflicts/by_country', { country_code: countryCode }, signal);

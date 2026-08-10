@@ -68,6 +68,11 @@
 }
 
 .settings .settings-row .settings-row-info .icon {
+    display: inline-block;
     height: 20px;
     width: 20px;
+    background-image: var(--icon-info);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }

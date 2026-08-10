@@ -60,6 +60,9 @@ afterEach(() => {
   delete window.navigator.userAgent;
   document.documentElement.removeAttribute('data-theme');
   localStorage.clear();
+  // Safety net beyond the explicit cleanup at the end of the flag-disabled
+  // test itself, in case an assertion throws before reaching it.
+  delete process.env.REACT_APP_FEATURE_CONFLICTS;
 });
 
 test('renders the header and defaults to import mode', () => {
@@ -151,12 +154,19 @@ test('clicking Impressum in the footer opens the Impressum popup', () => {
   expect(screen.getByRole('heading', { name: 'Impressum' })).toBeInTheDocument();
 });
 
-test('selecting a country issues exactly one batch of 9 fetches, concurrently', async () => {
+test('clicking Image Credits in the footer opens the attributions popup', () => {
+  render(<App />);
+  expect(screen.queryByRole('heading', { name: 'Image Credits' })).not.toBeInTheDocument();
+  fireEvent.click(screen.getByText('Image Credits'));
+  expect(screen.getByRole('heading', { name: 'Image Credits' })).toBeInTheDocument();
+});
+
+test('selecting a country issues exactly one batch of 10 fetches, concurrently', async () => {
   // Regression test for two bugs: (1) each fetch used to be awaited before
-  // starting the next, serializing 9 round-trips instead of firing them
+  // starting the next, serializing 10 round-trips instead of firing them
   // together, and (2) the fetch batch used to fire *twice* per click (once
   // from the direct call, once from an effect reacting to the resulting
-  // state change) - so this asserts exactly 9, not just "at least 9".
+  // state change) - so this asserts exactly 10, not just "at least 10".
   const pending = [];
   global.fetch = jest.fn(
     () =>
@@ -171,11 +181,28 @@ test('selecting a country issues exactly one batch of 9 fetches, concurrently', 
   // If the fetches were still sequential, only the first would ever be
   // issued, since execution would block on it forever (none of these
   // promises resolve).
-  await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(9));
+  await waitFor(() => expect(global.fetch).toHaveBeenCalledTimes(10));
 
   await act(async () => {
     pending.forEach((resolve) => resolve());
   });
+});
+
+test('does not fetch conflicts data when the feature flag is disabled', async () => {
+  process.env.REACT_APP_FEATURE_CONFLICTS = 'false';
+  delete window._env_;
+
+  const fetchMock = jest.fn(() => Promise.resolve({ ok: true, json: () => Promise.resolve({}) }));
+  global.fetch = fetchMock;
+
+  render(<App />);
+  fireEvent.click(screen.getByText('select-country'));
+
+  // 9, not 10 - the tenth (conflicts) call is skipped entirely rather than
+  // fetched and discarded.
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(9));
+  const urls = fetchMock.mock.calls.map((call) => call[0]);
+  expect(urls.some((u) => u.includes('/conflicts/'))).toBe(false);
 });
 
 test('changing the year while a country is selected refetches its data for the new year', async () => {
@@ -184,13 +211,13 @@ test('changing the year while a country is selected refetches its data for the n
 
   render(<App />);
   fireEvent.click(screen.getByText('select-country'));
-  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(9));
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(10));
 
   const thumb = screen.getByRole('slider');
   fireEvent.focus(thumb);
   fireEvent.keyDown(thumb, { key: 'ArrowRight', keyCode: 39 });
 
-  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(18));
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(20));
   const urls = fetchMock.mock.calls.map((call) => call[0]);
   expect(urls.filter((u) => u.includes('year=2021')).length).toBeGreaterThan(0);
 });
@@ -226,7 +253,7 @@ test('shows a loading indicator while country data is being fetched, then hides 
 
   expect(await screen.findByText('Loading country data…')).toBeInTheDocument();
 
-  await waitFor(() => expect(pending.length).toBe(9));
+  await waitFor(() => expect(pending.length).toBe(10));
   await act(async () => {
     pending.forEach((resolve) => resolve());
   });
