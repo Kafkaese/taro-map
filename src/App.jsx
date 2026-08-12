@@ -194,9 +194,14 @@ function App() {
     }
 
 
+    // Mirrors the condition WorldMap.jsx uses to decide whether to render
+    // <SideBar> - drives the .sidebar-open class the slider's positioning
+    // reacts to (see App.css), rather than duplicating this check there too.
+    const hasActiveCountryData = typeof activeCountryData.name !== 'undefined' && activeCountryData.name.value !== 'no data';
+
     // Render
     return (
-        <div className="app"
+        <div className={`app${hasActiveCountryData ? ' sidebar-open' : ''}`}
             onClick={
                 () => {
                     setShowSettings(false)
