@@ -1,89 +1,85 @@
   .horizontal-slider {
     width: 100%;
-    max-width: 800px;
-    height: 50%;
-    margin: auto;
-    bottom: -6px;
+    height: 14px;
   }
 
-  .example-thumb.active {
-    background-color: grey;
-  }
-  .example-track {
-    position: relative;
-    background: #ddd;
-  }
   .horizontal-slider .example-track {
     position: absolute;
-    top: 4.5px;
-    height: 10px;
-    background: var(--deck-chip, #1c2536);
+    top: 4px;
+    height: 6px;
     border-radius: 3px;
   }
-  .horizontal-slider .example-thumb {
-    top: -2px;
-    width: 3px;
-    outline: none;
-    height: 10px;
-    line-height: 38px;
-    cursor: pointer;
-    /* Matches .example-track's color (not white) so the thumb's center
-       reads as a hole punched through it, not a white dot sitting on top. */
+  /* react-slider gives each track segment its own index suffix (-0 before
+     the thumb, -1 after, for a single-thumb slider) - styling them apart
+     turns the flat bar into a filled progress track, using the slider's
+     own real thumb position rather than a hand-picked percentage. */
+  .horizontal-slider .example-track-0 {
+    background: var(--deck-accent-strong, #06879e);
+  }
+  .horizontal-slider .example-track-1 {
     background: var(--deck-chip, #1c2536);
-    border-width: 6px 5px 6px 5px;
-    border-color: var(--deck-accent-strong, #06879e);
-    border-style: solid;
-    border-radius: 10%;
-    display: block;
-    box-shadow: 0 0 2px 0 rgb(0 0 0 / 44%);
   }
-  .example-mark {
-    width: 6px;
-    height: 6px;
-    border: 2px solid var(--deck-text-faint, rgb(0, 0, 0));
-    background-color: var(--deck-card, rgb(255, 255, 255));
+
+  .horizontal-slider .example-thumb {
+    box-sizing: border-box;
+    top: 0;
+    width: 14px;
+    height: 14px;
+    outline: none;
     cursor: pointer;
+    background: var(--deck-accent, #06d3fc);
+    border: 3px solid var(--deck-card, #131b2b);
     border-radius: 50%;
-    vertical-align: middle;
-    margin: 0px calc(19px);
-    bottom: calc(50% - 6px);
+    box-shadow: 0 1px 4px rgb(0 0 0 / 44%);
   }
-  .example-mark.example-mark-active {
-    border: 2px solid var(--deck-accent, #06d3fc);
-    background-color: var(--deck-card, rgb(255, 255, 255));
-  }
-  .example-mark.example-mark-completed {
-    border: 2px solid var(--deck-card, rgb(255, 255, 255));
-    background-color: var(--deck-accent, #06d3fc);
+  .horizontal-slider .example-thumb.active {
+    /* Dragging feedback - was a flat grey fill on the old rectangular
+       thumb, doesn't read as "active" on a small circle the same way, so
+       a scale-up stands in for it instead. */
+    transform: scale(1.2);
   }
 
   .slider-year-info-box {
     display: flex;
-    height: 50%;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding: 0px 50px;
   }
 
   .slider-year-info-box-element1 {
     font-weight: 700;
     color: var(--deck-text-faint, #6c7c93);
-    font-size: 10px;
+    font-size: 9.5px;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.07em;
   }
-
 
   .slider-year-info-box-element2 {
     padding: 3px 14px;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 800;
     line-height: 1.4;
     color: #ffffff;
     border: none;
     background: var(--deck-accent-strong, #06879e);
-    border-radius: 25px;
+    border-radius: 20px;
     text-align: center;
     font-variant-numeric: tabular-nums;
+  }
+
+  .slider-year-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 2px;
+  }
+
+  .slider-year-labels span {
+    font-size: 9px;
+    color: var(--deck-text-faint, #6c7c93);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .slider-year-labels span.active {
+    color: var(--deck-accent-strong, #06879e);
+    font-weight: 800;
   }

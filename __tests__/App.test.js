@@ -293,6 +293,28 @@ test('deselecting a country clears activeCountryData, hiding the sidebar', async
   expect(screen.getByTestId('world-map').textContent).toContain('"hasCountryData":false');
 });
 
+test('applies a sidebar-open class while a country is selected, for the slider to reposition around', async () => {
+  // Regression test: the year slider used to center on the full viewport
+  // regardless of whether the sidebar was showing, sliding underneath it
+  // at anything less than very wide screens. App.css keys off this class
+  // (see .app.sidebar-open .slider-container) to dock the slider clear of
+  // the sidebar instead - this only checks the class is applied/removed in
+  // sync with the sidebar itself, not the resulting CSS position (jsdom
+  // doesn't compute layout).
+  global.fetch = jest.fn(() =>
+    Promise.resolve({ ok: true, json: () => Promise.resolve({ value: 'x' }) })
+  );
+
+  const { container } = render(<App />);
+  expect(container.querySelector('.app')).not.toHaveClass('sidebar-open');
+
+  fireEvent.click(screen.getByText('select-country'));
+  await waitFor(() => expect(container.querySelector('.app')).toHaveClass('sidebar-open'));
+
+  fireEvent.click(screen.getByText('deselect-country'));
+  expect(container.querySelector('.app')).not.toHaveClass('sidebar-open');
+});
+
 test('passes isMobile down to the map for touch devices with a mobile user agent', () => {
   document.documentElement.ontouchstart = null;
   Object.defineProperty(window.navigator, 'userAgent', {

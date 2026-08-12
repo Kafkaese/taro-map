@@ -210,23 +210,110 @@ body {
 
 .slider-container {
   position: fixed;
+  /* Without this, width below sets only the content box - the 16px
+     padding + 2px border add on top of it for the actual rendered size,
+     which threw off the sidebar-open width calc below by exactly that
+     amount (content-box is the default in this app, see the near-
+     identical .footer overflow bug fixed earlier). */
+  box-sizing: border-box;
   left: 50%;
   transform: translate(-50%);
   bottom: 5vh;
   width: 95vw;
   max-width: 500px;
-  height: 40px;
+  /* Content-driven rather than a fixed pixel height, now that there are 3
+     stacked rows (year badge, track, year labels) instead of the original
+     2 - a fixed height would just need re-tuning every time a row's
+     content changes, the same fragility fixed elsewhere in this file. */
+  height: auto;
   /* Same frosted-glass treatment as the sidebar panel. */
   background: var(--deck-glass-outer);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  padding: 4px 8px;
+  padding: 12px 20px 10px;
   border: 1px solid var(--deck-glass-border);
   box-shadow: var(--deck-shadow);
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  gap: 8px;
   border-radius: var(--deck-radius-md);
+}
+
+/* The sidebar's own width is responsive (95vw capped at 500px) and can
+   extend well past the viewport's horizontal center on narrower desktop/
+   tablet widths - centering the slider on the *full* viewport while the
+   sidebar is open slides its left portion underneath the sidebar's
+   bottom-right corner (confirmed happening even at 1600px wide, badly by
+   ~1000px). Docking to the right edge instead - the same 14px inset the
+   zoom controls use, see .zoom above - avoids the collision at any
+   viewport width without needing to compute "remaining space" against a
+   sidebar width that itself varies by viewport. Bounded to >768px: below
+   that the sidebar goes full-width when open (see SideBar.css's own
+   breakpoint), so there's no "beside it" position left to dock into - the
+   mobile rule below handles that case instead. */
+@media (min-width: 769px) {
+  .app.sidebar-open .slider-container {
+    left: auto;
+    right: 14px;
+    transform: none;
+    /* Right-docking alone isn't enough: the sidebar's rendered width
+       (500px content + its own 44px padding + 2px border = 546px) plus
+       this element's own (500 + 16 padding + 2 border = 518px) add up to
+       more than the viewport at tablet/narrow-desktop widths - both
+       pinned to their own edges would still overlap in the middle. Cap
+       the width to whatever's actually left: sidebar right edge (14+546)
+       + a matching 14px gap + this element's own 14px right margin. */
+    width: min(95vw, 500px, calc(100vw - 588px));
+    max-width: none;
+  }
+}
+
+/* Below ~900px the sidebar-open width calc above leaves too little room
+   (as little as ~212px at 800px wide) for 7 year labels to sit side by
+   side without overlapping each other - the badge above the track already
+   shows the exact selected year, so hiding this supplementary row here is
+   a straightforward way to avoid the overlap rather than trying to
+   abbreviate or wrap 7 four-digit labels into a shrinking space. */
+@media (min-width: 769px) and (max-width: 899px) {
+  .app.sidebar-open .slider-year-labels {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider-container {
+    /* .footer switches to a taller, stacked layout below this same
+       breakpoint (~52px measured across real phone widths, see its own
+       media query further down this file) - 5vh isn't tall enough to
+       clear it at typical mobile viewport heights, so the slider's own
+       bottom edge was dipping behind the footer's top edge.
+       76px left ~24px of slack below the slider and none above it, which
+       overlapped .sideBar .panel's own 140px mobile clearance (see
+       SideBar.css) once this container grew from 40px to ~73px tall for
+       the 3-row redesign. 60px splits that 140px budget evenly: ~7px
+       clear of the panel above, ~8px clear of the footer below. */
+    bottom: 60px;
+  }
+
+  /* This container went from a fixed 40px (badge + track only) to
+     content-driven height across 3 rows - since it's anchored by `bottom`,
+     that growth pushed its *top* edge up into the ~140px zone
+     .sideBar .panel's own mobile rule reserves for it, overlapping the
+     sidebar's bottom corner. The year labels are supplementary (the badge
+     above the track already shows the exact selected year) and mobile is
+     the tightest width budget of all, so drop them here the same way the
+     tablet/sidebar-open case above does, rather than growing the
+     sidebar's reserved zone (and shrinking its actual content area) to
+     chase this row. */
+  /* Specificity needs to beat YearSlider.css's own base .slider-year-labels
+     rule (display: flex) - both are plain single-class selectors, so
+     without this the winner would come down to unreliable cross-file
+     source order in the bundle rather than this media query actually
+     taking effect. */
+  .slider-container .slider-year-labels {
+    display: none;
+  }
 }
 
 .toggle {
